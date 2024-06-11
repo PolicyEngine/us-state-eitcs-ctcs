@@ -200,24 +200,10 @@ df.columns = [
     "EITC Total",
 ]
 
-# @st.cache_data
-# def load_csv_data(file_path):
-#     csv_data = pd.read_csv(file_path)
-#     return csv_data
 
 # # Toggle switch for map selection
 # map_selection = st.selectbox("Select Map", ["Simulation Data", "CSV Data"])
 
-# # Metric selector
-# metrics = {
-#     "Net Income Difference ($)": "net_income_diff",
-#     "Poverty Percentage Difference (%)": "poverty_pct_diff",
-#     "Child Poverty Percentage Difference (%)": "child_poverty_pct_diff",
-#     "Poverty Gap Percentage Difference (%)": "poverty_gap_pct_diff",
-#     "Gini Index Percentage Difference (%)": "gini_index_pct_diff"
-# }
-
-# selected_metric = st.selectbox("Select Metric", list(metrics.keys()))
 
 # if map_selection == "Simulation Data":
 #     household_data = calculate_household_data()
@@ -253,25 +239,25 @@ df.columns = [
 #     csv_data = load_csv_data(csv_file_path)
 #     metric_column = metrics[selected_metric]
 
-#     fig = px.choropleth(
-#         csv_data,
-#         locations="state",
-#         locationmode="USA-states",
-#         color=metric_column,
-#         scope="usa",
-#         color_continuous_scale=px.colors.diverging.RdBu,
-#         color_continuous_midpoint=0,
-#         labels={metric_column: selected_metric},
-#         title=f"Microsimulation Impact Compared ({selected_metric})",
-#         hover_data={
-#             "state": True,
-#             metric_column: ":.2f",
-#             "poverty_pct_diff": ":.2f",
-#             "child_poverty_pct_diff": ":.2f",
-#             "poverty_gap_pct_diff": ":.2f",
-#             "gini_index_pct_diff": ":.2f",
-#         },
-#     )
+    # fig = px.choropleth(
+    #     filtered_data,
+    #     locations="state",
+    #     locationmode="USA-states",
+    #     color=metric_column,
+    #     scope="usa",
+    #     color_continuous_scale=px.colors.diverging.RdBu,
+    #     color_continuous_midpoint=0,
+    #     labels={metric_column: selected_metric},
+    #     title=f"CTCs and EITCs Impact Compared ({selected_metric})",
+    #     hover_data={
+    #         "state": True,
+    #         "net_income_diff": ":.2f",
+    #         "poverty_pct_diff": ":.2f",
+    #         "child_poverty_pct_diff": ":.2f",
+    #         "poverty_gap_pct_diff": ":.2f",
+    #         "gini_index_pct_diff": ":.2f",
+    #     },
+    # )
 
 
 # @st.cache_data
