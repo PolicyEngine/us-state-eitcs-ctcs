@@ -92,7 +92,7 @@ def calculate_household_data():
         simulation = Simulation(situation=situation, reform=reform)
         baseline_net_income = float(baseline.calculate("household_net_income", 2024))
         reform_net_income = float(simulation.calculate("household_net_income", 2024))
-        net_income_change = reform_net_income - baseline_net_income
+        net_income_change = baseline_net_income - reform_net_income
 
         baseline_ctc = sum([float(baseline.calculate(var, 2024)[0]) for var in CTCS])
         reform_ctc = sum([float(simulation.calculate(var, 2024)[0]) for var in CTCS])
@@ -200,23 +200,66 @@ df.columns = [
     "EITC Total",
 ]
 
-fig = px.choropleth(
-    df,
-    locations="State",
-    locationmode="USA-states",
-    color="Net Income Change",
-    scope="usa",
-    color_continuous_scale=px.colors.diverging.RdBu,
-    color_continuous_midpoint=0,
-    labels={"Net Income Change": "Net Income Difference ($)"},
-    title="Household CTC and EITC Impact Compared",
-    hover_data={
-        "State": True,
-        "Net Income Change": ":.2f",
-        "CTC Total": ":.2f",
-        "EITC Total": ":.2f",
-    },
-)
+@st.cache_data
+def load_csv_data(file_path):
+    csv_data = pd.read_csv(file_path)
+    return csv_data
+
+# Toggle switch for map selection
+map_selection = st.selectbox("Select Map", ["Simulation Data", "CSV Data"])
+
+if map_selection == "Simulation Data":
+    household_data = calculate_household_data()
+    states = list(household_data.keys())
+
+    df = pd.DataFrame(household_data).T.reset_index()
+    df.columns = [
+        "State",
+        "Net Income Change",
+        "CTC Total",
+        "EITC Total",
+    ]
+
+    fig = px.choropleth(
+        df,
+        locations="State",
+        locationmode="USA-states",
+        color="Net Income Change",
+        scope="usa",
+        color_continuous_scale=px.colors.diverging.RdBu,
+        color_continuous_midpoint=0,
+        labels={"Net Income Change": "Net Income Difference ($)"},
+        title="Household CTC and EITC Impact Compared",
+        hover_data={
+            "State": True,
+            "Net Income Change": ":.2f",
+            "CTC Total": ":.2f",
+            "EITC Total": ":.2f",
+        },
+    )
+else:
+    csv_file_path = "results.csv"
+    if csv_file_path is not None:
+        csv_data = load_csv_data(csv_file_path)
+        fig = px.choropleth(
+            csv_data,
+            locations="state",
+            locationmode="USA-states",
+            color="net_income_diff",
+            scope="usa",
+            color_continuous_scale=px.colors.diverging.RdBu,
+            color_continuous_midpoint=0,
+            labels={"net_income_diff": "Net Income Difference ($)"},
+            title="CSV Data Impact Compared",
+            hover_data={
+                "state": True,
+                "net_income_diff": ":.2f",
+                "poverty_pct_diff": ":.2f",
+                "child_poverty_pct_diff": ":.2f",
+                "poverty_gap_pct_diff": ":.2f",
+                "gini_index_pct_diff": ":.2f",
+            },
+        )
 
 st.plotly_chart(fig)
 
