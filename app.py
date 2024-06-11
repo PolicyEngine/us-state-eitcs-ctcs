@@ -187,7 +187,7 @@ df.columns = [
     "Net Income Change",
 ]
 
-df["Net Income Difference"] = df["Net Income Change"]
+df["Net Income Change"] = df["Net Income Change"]
 
 fig = px.choropleth(
     df,
