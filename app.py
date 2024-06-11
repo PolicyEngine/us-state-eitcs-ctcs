@@ -283,7 +283,7 @@ st.title("State-Level CTC and EITC Impact Visualization")
 
 st.markdown(
     """
-This visualization shows the impact of "CTCs and EITCs" reform on net income, poverty, and inequality metrics by state.
+This visualization shows the impact of state CTCs and EITCs based on cost, poverty, and inequality metrics by state.
 """
 )
 
@@ -344,18 +344,3 @@ Data and calculations provided by [PolicyEngine](https://policyengine.org/).
     )
 )
 
-st.plotly_chart(fig)
-
-policyengine_version = pkg_resources.get_distribution(
-    "policyengine_us"
-).version
-
-st.markdown(
-    """
-Data and calculations provided by [PolicyEngine](https://policyengine.org/).
-
-`policyengine-us` v{}
-""".format(
-        policyengine_version
-    )
-)
