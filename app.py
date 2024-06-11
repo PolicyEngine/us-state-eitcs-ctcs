@@ -262,7 +262,7 @@ else:
         color_continuous_scale=px.colors.diverging.RdBu,
         color_continuous_midpoint=0,
         labels={metric_column: selected_metric},
-        title=f"CSV Data Impact Compared ({selected_metric})",
+        title=f"Microsimulation Impact Compared ({selected_metric})",
         hover_data={
             "state": True,
             metric_column: ":.2f",
