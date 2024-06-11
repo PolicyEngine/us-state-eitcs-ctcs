@@ -166,7 +166,7 @@ def calculate_household_data():
     return household_data
 
 
-st.title("Household Financial Data by State (PRELIMINARY)")
+st.title("Household CTC and EITC impact by State (PRELIMINARY)")
 
 st.markdown(
     """
@@ -197,8 +197,8 @@ fig = px.choropleth(
     scope="usa",
     color_continuous_scale=px.colors.diverging.RdBu,
     color_continuous_midpoint=0,
-    labels={"Net Income Difference": "Net Income Difference ($)"},
-    title=f"Household Net Income Difference Compared ",
+    labels={"Credit Impact": "Net Income Difference ($)"},
+    title=f"Household CTC and EITC Impact Compared ",
     hover_data={
         "State": True,
         "Net Income Difference": ":.2f",
