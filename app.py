@@ -1,5 +1,6 @@
 import streamlit as st
 from policyengine_us import Simulation
+from policyengine_core.reforms import Reform
 import pandas as pd
 import plotly.express as px
 import pkg_resources
@@ -32,10 +33,10 @@ def calculate_household_data():
             "people": {
                 "you": {
                     "age": {"2024": 40},
-                    "employment_income": {"2024": 25000},
+                    "employment_income": {"2024": 20000},
                 },
-                "your first dependent": {"age": {"2024": 2}},
-                "your second dependent": {"age": {"2024": 4}},
+                "your first dependent": {"age": {"2024": 10}},
+                "your second dependent": {"age": {"2024": 5}},
             },
             "families": {
                 "your family": {
@@ -86,24 +87,14 @@ def calculate_household_data():
                 }
             },
         }
-
+        
+        baseline = Simulation(situation=situation)
         simulation = Simulation(situation=situation, reform=reform)
-        net_income = float(simulation.calculate("household_net_income", 2024))
-        benefits = float(simulation.calculate("household_benefits", 2024))
-        refundable_credits = float(
-            simulation.calculate("household_refundable_tax_credits", 2024)
-        )
-        tax_before_credits = float(
-            simulation.calculate(
-                "household_tax_before_refundable_credits", 2024
-            )
-        )
-
+        baseline_net_income = float(baseline.calculate("household_net_income", 2024))
+        reform_net_income = float(simulation.calculate("household_net_income", 2024))
+        net_income_change = reform_net_income - baseline_net_income
         return {
-            "net_income": net_income,
-            "benefits": benefits,
-            "refundable_credits": refundable_credits,
-            "tax_before_credits": tax_before_credits,
+            "net_income_change": net_income_change,
         }
 
     states = [
@@ -180,37 +171,23 @@ st.title("Household Financial Data by State (PRELIMINARY)")
 st.markdown(
     """
 The household consists of:
-- A married couple, each age 40 with \$25,000 wages
-- Two children, age 2 and 4
-- Monthly expenses of \$2,000 for rent and \$500 for childcare
+- A single parent, age 40 with \$20,000 wages
+- Two children, age 10 and 5
 """
 )
 
 household_data = calculate_household_data()
 
 states = list(household_data.keys())
-selected_state = st.selectbox(
-    "Select a state for comparison:", states, index=states.index("VA")
-)
+
 
 df = pd.DataFrame(household_data).T.reset_index()
 df.columns = [
     "State",
-    "Net Income",
-    "Benefits",
-    "Refundable Credits",
-    "Tax Before Credits",
+    "Net Income Change",
 ]
 
-reference_data = household_data[selected_state]
-df["Net Income Difference"] = df["Net Income"] - reference_data["net_income"]
-df["Benefits Difference"] = df["Benefits"] - reference_data["benefits"]
-df["Refundable Credits Difference"] = (
-    df["Refundable Credits"] - reference_data["refundable_credits"]
-)
-df["Tax Before Credits Difference"] = (
-    df["Tax Before Credits"] - reference_data["tax_before_credits"]
-)
+df["Net Income Difference"] = df["Net Income Change"]
 
 fig = px.choropleth(
     df,
@@ -221,13 +198,10 @@ fig = px.choropleth(
     color_continuous_scale=px.colors.diverging.RdBu,
     color_continuous_midpoint=0,
     labels={"Net Income Difference": "Net Income Difference ($)"},
-    title=f"Household Net Income Difference Compared to {selected_state}",
+    title=f"Household Net Income Difference Compared ",
     hover_data={
         "State": True,
         "Net Income Difference": ":.2f",
-        "Benefits Difference": ":.2f",
-        "Refundable Credits Difference": ":.2f",
-        "Tax Before Credits Difference": ":.2f",
     },
 )
 
