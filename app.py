@@ -93,8 +93,19 @@ def calculate_household_data():
         baseline_net_income = float(baseline.calculate("household_net_income", 2024))
         reform_net_income = float(simulation.calculate("household_net_income", 2024))
         net_income_change = reform_net_income - baseline_net_income
+
+        baseline_ctc = sum([float(baseline.calculate(var, 2024)[0]) for var in CTCS])
+        reform_ctc = sum([float(simulation.calculate(var, 2024)[0]) for var in CTCS])
+        ctc_impact = baseline_ctc - reform_ctc
+
+        baseline_eitc = sum([float(baseline.calculate(var, 2024)[0]) for var in EITCS])
+        reform_eitc = sum([float(simulation.calculate(var, 2024)[0]) for var in EITCS])
+        eitc_impact = baseline_eitc - reform_eitc
+
         return {
             "net_income_change": net_income_change,
+            "ctc_total": ctc_impact,
+            "eitc_total": eitc_impact,
         }
 
     states = [
@@ -185,23 +196,25 @@ df = pd.DataFrame(household_data).T.reset_index()
 df.columns = [
     "State",
     "Net Income Change",
+    "CTC Total",
+    "EITC Total",
 ]
-
-df["Net Income Change"] = df["Net Income Change"]
 
 fig = px.choropleth(
     df,
     locations="State",
     locationmode="USA-states",
-    color="Net Income Difference",
+    color="Net Income Change",
     scope="usa",
     color_continuous_scale=px.colors.diverging.RdBu,
     color_continuous_midpoint=0,
-    labels={"Credit Impact": "Net Income Difference ($)"},
-    title=f"Household CTC and EITC Impact Compared ",
+    labels={"Net Income Change": "Net Income Difference ($)"},
+    title="Household CTC and EITC Impact Compared",
     hover_data={
         "State": True,
-        "Net Income Difference": ":.2f",
+        "Net Income Change": ":.2f",
+        "CTC Total": ":.2f",
+        "EITC Total": ":.2f",
     },
 )
 
