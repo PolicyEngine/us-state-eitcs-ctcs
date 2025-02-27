@@ -71,9 +71,7 @@ fig = px.choropleth(
 st.plotly_chart(fig)
 
 display_df = (
-    filtered_data[["state", selected_metric]][
-        filtered_data[selected_metric] != 0
-    ]
+    filtered_data[["state", selected_metric]][filtered_data[selected_metric] != 0]
     .sort_values(selected_metric, ascending=False)
     .reset_index()
 )
@@ -84,9 +82,7 @@ display_df.drop(columns=["index"], inplace=True)
 
 st.dataframe(display_df, hide_index=True)
 
-policyengine_version = pkg_resources.get_distribution(
-    "policyengine_us"
-).version
+policyengine_version = pkg_resources.get_distribution("policyengine_us").version
 
 st.markdown(
     """

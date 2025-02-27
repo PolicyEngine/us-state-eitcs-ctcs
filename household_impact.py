@@ -135,28 +135,16 @@ def calculate_household_data():
 
         baseline = Simulation(situation=situation)
         simulation = Simulation(situation=situation, reform=reform)
-        baseline_net_income = float(
-            baseline.calculate("household_net_income", 2024)
-        )
-        reform_net_income = float(
-            simulation.calculate("household_net_income", 2024)
-        )
+        baseline_net_income = float(baseline.calculate("household_net_income", 2024))
+        reform_net_income = float(simulation.calculate("household_net_income", 2024))
         net_income_change = baseline_net_income - reform_net_income
 
-        baseline_ctc = sum(
-            [float(baseline.calculate(var, 2024)[0]) for var in CTCS]
-        )
-        reform_ctc = sum(
-            [float(simulation.calculate(var, 2024)[0]) for var in CTCS]
-        )
+        baseline_ctc = sum([float(baseline.calculate(var, 2024)[0]) for var in CTCS])
+        reform_ctc = sum([float(simulation.calculate(var, 2024)[0]) for var in CTCS])
         ctc_impact = baseline_ctc - reform_ctc
 
-        baseline_eitc = sum(
-            [float(baseline.calculate(var, 2024)[0]) for var in EITCS]
-        )
-        reform_eitc = sum(
-            [float(simulation.calculate(var, 2024)[0]) for var in EITCS]
-        )
+        baseline_eitc = sum([float(baseline.calculate(var, 2024)[0]) for var in EITCS])
+        reform_eitc = sum([float(simulation.calculate(var, 2024)[0]) for var in EITCS])
         eitc_impact = baseline_eitc - reform_eitc
 
         return {
