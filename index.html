@@ -778,15 +778,36 @@
                 });
             });
 
-            // Hover effects
+            // Track currently hovered feature for fast state updates
+            let hoveredFeatureId = null;
+
+            // Hover effects using feature-state (much faster than setFilter)
             map.on('mousemove', 'regions-fill', (e) => {
                 if (e.features.length > 0) {
                     map.getCanvas().style.cursor = 'pointer';
 
                     const feature = e.features[0];
+                    const featureId = feature.id;
                     const value = feature.properties.value;
                     const dataId = feature.properties.dataId;
                     const metricInfo = METRICS[appState.metric];
+
+                    // Only update if we're on a new feature
+                    if (hoveredFeatureId !== featureId) {
+                        // Clear previous hover state
+                        if (hoveredFeatureId !== null) {
+                            map.setFeatureState(
+                                { source: 'regions', id: hoveredFeatureId },
+                                { hover: false }
+                            );
+                        }
+                        // Set new hover state
+                        hoveredFeatureId = featureId;
+                        map.setFeatureState(
+                            { source: 'regions', id: featureId },
+                            { hover: true }
+                        );
+                    }
 
                     let name;
                     if (appState.viewType === 'state') {
@@ -806,16 +827,19 @@
                     `;
 
                     appState.popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
-
-                    // Highlight
-                    map.setFilter('regions-highlight', ['==', ['get', 'dataId'], dataId]);
                 }
             });
 
             map.on('mouseleave', 'regions-fill', () => {
                 map.getCanvas().style.cursor = '';
                 appState.popup.remove();
-                map.setFilter('regions-highlight', ['==', ['get', 'dataId'], '']);
+                if (hoveredFeatureId !== null) {
+                    map.setFeatureState(
+                        { source: 'regions', id: hoveredFeatureId },
+                        { hover: false }
+                    );
+                    hoveredFeatureId = null;
+                }
             });
 
             // Click handler
@@ -836,9 +860,6 @@
 
                     appState.selectedRegion = { id: dataId, name: regionName };
                     document.getElementById('detail-container').innerHTML = renderDetailPanel();
-
-                    // Keep highlight on selected
-                    map.setFilter('regions-highlight', ['==', ['get', 'dataId'], dataId]);
                 }
             });
         }
@@ -874,22 +895,25 @@
             const min = Math.min(...values);
             const max = Math.max(...values);
 
-            // Pre-compute colors for each feature
-            enrichedGeoData.features.forEach(feature => {
+            // Pre-compute colors for each feature and assign unique IDs
+            enrichedGeoData.features.forEach((feature, index) => {
+                // Assign unique ID for feature-state to work
+                feature.id = index;
+
                 const value = feature.properties.value;
                 if (value === null || value === undefined || isNaN(value)) {
                     feature.properties.fillColor = '#E5E7EB';
                 } else {
                     const ratio = max > min ? (value - min) / (max - min) : 0;
-                    const index = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
-                    feature.properties.fillColor = COLOR_SCALE[index];
+                    const idx = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
+                    feature.properties.fillColor = COLOR_SCALE[idx];
                 }
             });
 
             // Remove existing layers and sources
             if (appState.map.getLayer('regions-fill')) appState.map.removeLayer('regions-fill');
             if (appState.map.getLayer('regions-line')) appState.map.removeLayer('regions-line');
-            if (appState.map.getLayer('regions-highlight')) appState.map.removeLayer('regions-highlight');
+            if (appState.map.getLayer('regions-hover-line')) appState.map.removeLayer('regions-hover-line');
             if (appState.map.getLayer('us-outline')) appState.map.removeLayer('us-outline');
             if (appState.map.getSource('regions')) appState.map.removeSource('regions');
             if (appState.map.getSource('us-boundary')) appState.map.removeSource('us-boundary');
@@ -936,6 +960,23 @@
                 }
             });
 
+            // Add hover highlight layer using feature-state (faster than filter)
+            appState.map.addLayer({
+                id: 'regions-hover-line',
+                type: 'line',
+                source: 'regions',
+                paint: {
+                    'line-color': '#1D4044',
+                    'line-width': 3,
+                    'line-opacity': [
+                        'case',
+                        ['boolean', ['feature-state', 'hover'], false],
+                        1,
+                        0
+                    ]
+                }
+            });
+
             // Add US outline layer on top (subtle border around all states)
             appState.map.addLayer({
                 id: 'us-outline',
@@ -951,18 +992,6 @@
                     ],
                     'line-opacity': 0.5
                 }
-            });
-
-            // Add highlight layer (initially invisible)
-            appState.map.addLayer({
-                id: 'regions-highlight',
-                type: 'line',
-                source: 'regions',
-                paint: {
-                    'line-color': '#1D4044',
-                    'line-width': 3
-                },
-                filter: ['==', ['get', 'dataId'], '']
             });
 
             updateStats(stats, metricInfo);
