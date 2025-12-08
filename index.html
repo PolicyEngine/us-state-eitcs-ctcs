@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>State Tax Credits Impact | PolicyEngine</title>
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
     <style>
         :root {
             --primary-teal: #319795;
@@ -225,6 +226,61 @@
         #map-container {
             width: 100%;
             height: 700px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Custom Legend */
+        .map-legend {
+            position: absolute;
+            bottom: 30px;
+            right: 10px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--gray-900);
+        }
+
+        .legend-scale {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 14px;
+            border-radius: 2px;
+        }
+
+        .legend-gradient {
+            width: 20px;
+            height: 120px;
+            border-radius: 2px;
+            background: linear-gradient(to bottom, #1D4044, #2C7A7B, #38B2AC, #81E6D9, #B2F5EA, #E6FFFA);
+        }
+
+        .legend-labels {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 120px;
+            font-size: 11px;
+            color: var(--text-secondary);
         }
 
         /* Detail Panel */
@@ -343,6 +399,38 @@
             text-decoration: underline;
         }
 
+        /* MapLibre Popup Styling */
+        .maplibregl-popup-content {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .maplibregl-popup-close-button {
+            font-size: 18px;
+            padding: 4px 8px;
+        }
+
+        .popup-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .popup-value {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .popup-hint {
+            font-size: 11px;
+            color: var(--primary-teal);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
         @media (max-width: 768px) {
             .controls {
                 flex-direction: column;
@@ -385,11 +473,13 @@
     </div>
 
     <div class="footer">
-        Data source: PolicyEngine microsimulation model (2025) | Hexagonal cartogram from The Downballot |
+        Data source: PolicyEngine microsimulation model (2025) |
         <a href="https://policyengine.org" target="_blank">policyengine.org</a>
     </div>
 
     <script>
+        // Using MapLibre GL JS (free, no token required)
+
         // State codes and names
         const STATE_CODES = {
             'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
@@ -421,6 +511,22 @@
             51: 'Virginia', 53: 'Washington', 54: 'West Virginia', 55: 'Wisconsin', 56: 'Wyoming'
         };
 
+        const STATE_FIPS_TO_CODE = {
+            1: 'AL', 2: 'AK', 4: 'AZ', 5: 'AR', 6: 'CA', 8: 'CO', 9: 'CT', 10: 'DE',
+            11: 'DC', 12: 'FL', 13: 'GA', 15: 'HI', 16: 'ID', 17: 'IL', 18: 'IN', 19: 'IA',
+            20: 'KS', 21: 'KY', 22: 'LA', 23: 'ME', 24: 'MD', 25: 'MA', 26: 'MI', 27: 'MN',
+            28: 'MS', 29: 'MO', 30: 'MT', 31: 'NE', 32: 'NV', 33: 'NH', 34: 'NJ', 35: 'NM',
+            36: 'NY', 37: 'NC', 38: 'ND', 39: 'OH', 40: 'OK', 41: 'OR', 42: 'PA', 44: 'RI',
+            45: 'SC', 46: 'SD', 47: 'TN', 48: 'TX', 49: 'UT', 50: 'VT', 51: 'VA', 53: 'WA',
+            54: 'WV', 55: 'WI', 56: 'WY'
+        };
+
+        // Reverse lookup: state name to state code
+        const STATE_NAME_TO_CODE = {};
+        Object.entries(STATE_CODES).forEach(([code, name]) => {
+            STATE_NAME_TO_CODE[name] = code;
+        });
+
         const METRICS = {
             'cost': { label: 'Total Cost', format: 'currency', colorscaleReverse: false },
             'poverty_pct_cut': { label: 'Poverty Reduction', format: 'percent', colorscaleReverse: false },
@@ -429,6 +535,16 @@
             'gini_index_pct_cut': { label: 'Inequality Reduction (Gini)', format: 'percent', colorscaleReverse: false }
         };
 
+        // Teal color scale
+        const COLOR_SCALE = [
+            '#E6FFFA',  // lightest
+            '#B2F5EA',
+            '#81E6D9',
+            '#38B2AC',
+            '#2C7A7B',
+            '#1D4044'   // darkest
+        ];
+
         // App state
         let appState = {
             viewType: 'state',
@@ -436,8 +552,11 @@
             metric: 'cost',
             stateData: null,
             districtData: null,
-            geoData: null,
-            selectedRegion: null  // Track selected state/district
+            stateGeoData: null,
+            districtGeoData: null,
+            selectedRegion: null,
+            map: null,
+            popup: null
         };
 
         function parseCSV(text) {
@@ -476,18 +595,6 @@
             return value.toFixed(2);
         }
 
-        function getColorScale(reverse = false) {
-            const scale = [
-                [0, '#E6FFFA'],
-                [0.2, '#B2F5EA'],
-                [0.4, '#81E6D9'],
-                [0.6, '#38B2AC'],
-                [0.8, '#2C7A7B'],
-                [1, '#1D4044']
-            ];
-            return reverse ? scale.map(([pos, color], i, arr) => [pos, arr[arr.length - 1 - i][1]]) : scale;
-        }
-
         function filterData(data, creditType) {
             return data.filter(row => row.reform_type === creditType);
         }
@@ -499,6 +606,15 @@
             const max = Math.max(...values);
             const min = Math.min(...values);
             return { total, avg, max, min, count: values.length };
+        }
+
+        function getColorForValue(value, min, max) {
+            if (value === null || value === undefined || isNaN(value)) {
+                return '#E5E7EB'; // gray for no data
+            }
+            const ratio = max > min ? (value - min) / (max - min) : 0;
+            const index = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
+            return COLOR_SCALE[index];
         }
 
         function getRegionData(regionId) {
@@ -569,204 +685,6 @@
             `;
         }
 
-        function handleMapClick(data) {
-            if (!data.points || data.points.length === 0) return;
-
-            const point = data.points[0];
-            let regionId, regionName;
-
-            if (appState.viewType === 'state') {
-                regionId = point.location;
-                regionName = STATE_CODES[regionId] || regionId;
-            } else {
-                regionId = point.location;
-                const stateFips = Math.floor(regionId / 100);
-                const districtNum = regionId % 100;
-                const stateName = STATE_FIPS_NAMES[stateFips] || 'Unknown';
-                regionName = `${stateName} District ${districtNum}`;
-            }
-
-            appState.selectedRegion = { id: regionId, name: regionName };
-
-            // Update just the detail panel without re-rendering the whole map
-            document.getElementById('detail-container').innerHTML = renderDetailPanel();
-        }
-
-        function renderStateMap() {
-            const filteredData = filterData(appState.stateData, appState.creditType);
-            const metricInfo = METRICS[appState.metric];
-            const stats = calculateStats(filteredData, appState.metric);
-
-            const locations = [];
-            const z = [];
-            const text = [];
-
-            filteredData.forEach(row => {
-                const stateCode = row.state;
-                const stateName = STATE_CODES[stateCode] || stateCode;
-                const value = row[appState.metric];
-
-                locations.push(stateCode);
-                z.push(value);
-                text.push(
-                    `<b>${stateName}</b><br>` +
-                    `<b>${metricInfo.label}:</b> ${formatValue(value, metricInfo.format)}<br>` +
-                    `<i>Click for details</i>`
-                );
-            });
-
-            const data = [{
-                type: 'choropleth',
-                locationmode: 'USA-states',
-                locations: locations,
-                z: z,
-                text: text,
-                hovertemplate: '%{text}<extra></extra>',
-                colorscale: getColorScale(metricInfo.colorscaleReverse),
-                colorbar: {
-                    title: {
-                        text: metricInfo.label,
-                        side: 'right',
-                        font: { size: 12 }
-                    },
-                    thickness: 20,
-                    len: 0.7,
-                    outlinewidth: 0,
-                    tickfont: { size: 11 },
-                    tickformat: metricInfo.format === 'percent' ? '.1%' : '$.2s'
-                },
-                marker: {
-                    line: { color: 'white', width: 1 }
-                }
-            }];
-
-            const layout = {
-                geo: {
-                    scope: 'usa',
-                    showlakes: false,
-                    bgcolor: 'rgba(0,0,0,0)'
-                },
-                height: 700,
-                margin: { t: 10, b: 0, l: 0, r: 0 },
-                paper_bgcolor: 'white',
-                plot_bgcolor: 'white'
-            };
-
-            const config = {
-                responsive: true,
-                displayModeBar: true,
-                modeBarButtonsToRemove: ['select2d', 'lasso2d'],
-                displaylogo: false
-            };
-
-            Plotly.newPlot('map-container', data, layout, config);
-
-            // Add click handler
-            document.getElementById('map-container').on('plotly_click', handleMapClick);
-
-            updateStats(stats, metricInfo);
-        }
-
-        function renderDistrictMap() {
-            const filteredData = filterData(appState.districtData, appState.creditType);
-            const metricInfo = METRICS[appState.metric];
-            const stats = calculateStats(filteredData, appState.metric);
-
-            const dataMap = {};
-            filteredData.forEach(row => {
-                dataMap[row.congressional_district_geoid] = row;
-            });
-
-            const locations = [];
-            const z = [];
-            const text = [];
-
-            appState.geoData.features.forEach(feature => {
-                // Handle both hex (cd_id) and real (GEOID) formats
-                let cdId;
-                if (feature.properties.cd_id) {
-                    cdId = feature.properties.cd_id;
-                } else if (feature.properties.GEOID) {
-                    // Convert GEOID "0804" to number 804
-                    cdId = parseInt(feature.properties.GEOID, 10);
-                }
-
-                const rowData = dataMap[cdId];
-                const value = rowData ? rowData[appState.metric] : null;
-
-                feature.id = cdId;
-                locations.push(cdId);
-                z.push(value);
-
-                const stateFips = Math.floor(cdId / 100);
-                const stateName = rowData ? STATE_FIPS_NAMES[rowData.state_fips] : STATE_FIPS_NAMES[stateFips] || 'Unknown';
-                const districtLabel = feature.properties.CDLABEL || feature.properties.NAMELSAD || `District ${cdId % 100}`;
-
-                text.push(
-                    `<b>${stateName}</b><br>` +
-                    `${districtLabel}<br>` +
-                    `<b>${metricInfo.label}:</b> ${formatValue(value, metricInfo.format)}<br>` +
-                    `<i>Click for details</i>`
-                );
-            });
-
-            const data = [{
-                type: 'choropleth',
-                geojson: appState.geoData,
-                locations: locations,
-                z: z,
-                text: text,
-                featureidkey: 'id',
-                locationmode: 'geojson-id',
-                colorscale: getColorScale(metricInfo.colorscaleReverse),
-                colorbar: {
-                    title: {
-                        text: metricInfo.label,
-                        side: 'right',
-                        font: { size: 12 }
-                    },
-                    thickness: 20,
-                    len: 0.7,
-                    outlinewidth: 0,
-                    tickfont: { size: 11 },
-                    tickformat: metricInfo.format === 'percent' ? '.1%' : '$.2s'
-                },
-                hovertemplate: '%{text}<extra></extra>',
-                marker: {
-                    line: { color: 'white', width: 1 }
-                }
-            }];
-
-            const layout = {
-                geo: {
-                    scope: 'usa',
-                    projection: { type: 'albers usa' },
-                    showlakes: false,
-                    showland: true,
-                    landcolor: 'rgb(250, 250, 250)',
-                    bgcolor: 'rgba(0,0,0,0)'
-                },
-                height: 700,
-                margin: { t: 10, b: 0, l: 0, r: 0 },
-                paper_bgcolor: 'white',
-                plot_bgcolor: 'white'
-            };
-
-            const config = {
-                responsive: true,
-                displayModeBar: true,
-                modeBarButtonsToRemove: ['select2d', 'lasso2d'],
-                displaylogo: false
-            };
-
-            Plotly.newPlot('map-container', data, layout, config);
-
-            // Add click handler
-            document.getElementById('map-container').on('plotly_click', handleMapClick);
-
-            updateStats(stats, metricInfo);
-        }
-
         function updateStats(stats, metricInfo) {
             const statElements = {
                 'stat-total': metricInfo.format === 'currency' ? formatValue(stats.total, 'currency') : formatValue(stats.avg, metricInfo.format),
@@ -784,12 +702,269 @@
             });
         }
 
-        function renderMap() {
-            if (appState.viewType === 'state') {
-                renderStateMap();
-            } else {
-                renderDistrictMap();
+        function updateLegend(min, max, metricInfo) {
+            document.getElementById('legend-max').textContent = formatValue(max, metricInfo.format);
+            document.getElementById('legend-min').textContent = formatValue(min, metricInfo.format);
+            document.getElementById('legend-title').textContent = metricInfo.label;
+        }
+
+        function enrichGeoDataWithValues(geoData, dataMap, idField, metricKey) {
+            // Create a new GeoJSON with values added
+            return {
+                type: 'FeatureCollection',
+                features: geoData.features.map(feature => {
+                    let id;
+                    if (appState.viewType === 'state') {
+                        // State GeoJSON uses 'name' property (full state name)
+                        const stateName = feature.properties.name;
+                        id = STATE_NAME_TO_CODE[stateName];
+                    } else {
+                        if (feature.properties.GEOID) {
+                            id = parseInt(feature.properties.GEOID, 10);
+                        } else if (feature.properties.cd_id) {
+                            id = feature.properties.cd_id;
+                        }
+                    }
+
+                    const rowData = dataMap[id];
+                    const value = rowData ? rowData[metricKey] : null;
+
+                    return {
+                        ...feature,
+                        properties: {
+                            ...feature.properties,
+                            value: value,
+                            dataId: id
+                        }
+                    };
+                })
+            };
+        }
+
+        function initMap() {
+            if (appState.map) {
+                appState.map.remove();
             }
+
+            appState.map = new maplibregl.Map({
+                container: 'map-container',
+                style: {
+                    version: 8,
+                    sources: {},
+                    layers: [{
+                        id: 'background',
+                        type: 'background',
+                        paint: { 'background-color': '#ffffff' }
+                    }]
+                },
+                center: [-98, 39],
+                zoom: 3.5,
+                minZoom: 2,
+                maxZoom: 10
+            });
+
+            appState.popup = new maplibregl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            appState.map.on('load', () => {
+                renderMapLayer();
+                setupMapEventHandlers();
+            });
+        }
+
+        function setupMapEventHandlers() {
+            const map = appState.map;
+
+            // Hover effects
+            map.on('mousemove', 'regions-fill', (e) => {
+                if (e.features.length > 0) {
+                    map.getCanvas().style.cursor = 'pointer';
+
+                    const feature = e.features[0];
+                    const value = feature.properties.value;
+                    const dataId = feature.properties.dataId;
+                    const metricInfo = METRICS[appState.metric];
+
+                    let name;
+                    if (appState.viewType === 'state') {
+                        name = STATE_CODES[dataId] || feature.properties.name || dataId;
+                    } else {
+                        const stateFips = Math.floor(dataId / 100);
+                        const districtNum = dataId % 100;
+                        const stateName = STATE_FIPS_NAMES[stateFips] || 'Unknown';
+                        const districtLabel = feature.properties.NAMELSAD || `District ${districtNum}`;
+                        name = `${stateName}<br>${districtLabel}`;
+                    }
+
+                    const html = `
+                        <div class="popup-title">${name}</div>
+                        <div class="popup-value"><b>${metricInfo.label}:</b> ${formatValue(value, metricInfo.format)}</div>
+                        <div class="popup-hint">Click for details</div>
+                    `;
+
+                    appState.popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
+
+                    // Highlight
+                    map.setFilter('regions-highlight', ['==', ['get', 'dataId'], dataId]);
+                }
+            });
+
+            map.on('mouseleave', 'regions-fill', () => {
+                map.getCanvas().style.cursor = '';
+                appState.popup.remove();
+                map.setFilter('regions-highlight', ['==', ['get', 'dataId'], '']);
+            });
+
+            // Click handler
+            map.on('click', 'regions-fill', (e) => {
+                if (e.features.length > 0) {
+                    const feature = e.features[0];
+                    const dataId = feature.properties.dataId;
+
+                    let regionName;
+                    if (appState.viewType === 'state') {
+                        regionName = STATE_CODES[dataId] || feature.properties.name || dataId;
+                    } else {
+                        const stateFips = Math.floor(dataId / 100);
+                        const districtNum = dataId % 100;
+                        const stateName = STATE_FIPS_NAMES[stateFips] || 'Unknown';
+                        regionName = `${stateName} District ${districtNum}`;
+                    }
+
+                    appState.selectedRegion = { id: dataId, name: regionName };
+                    document.getElementById('detail-container').innerHTML = renderDetailPanel();
+
+                    // Keep highlight on selected
+                    map.setFilter('regions-highlight', ['==', ['get', 'dataId'], dataId]);
+                }
+            });
+        }
+
+        function renderMapLayer() {
+            const filteredData = appState.viewType === 'state'
+                ? filterData(appState.stateData, appState.creditType)
+                : filterData(appState.districtData, appState.creditType);
+
+            const metricInfo = METRICS[appState.metric];
+            const stats = calculateStats(filteredData, appState.metric);
+
+            // Create data lookup map
+            const dataMap = {};
+            if (appState.viewType === 'state') {
+                filteredData.forEach(row => {
+                    dataMap[row.state] = row;
+                });
+            } else {
+                filteredData.forEach(row => {
+                    dataMap[row.congressional_district_geoid] = row;
+                });
+            }
+
+            // Get the appropriate GeoJSON
+            const geoData = appState.viewType === 'state' ? appState.stateGeoData : appState.districtGeoData;
+
+            // Enrich GeoJSON with values
+            const enrichedGeoData = enrichGeoDataWithValues(geoData, dataMap, null, appState.metric);
+
+            // Generate color stops based on data
+            const values = filteredData.map(d => d[appState.metric]).filter(v => !isNaN(v) && v !== null);
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+
+            // Pre-compute colors for each feature
+            enrichedGeoData.features.forEach(feature => {
+                const value = feature.properties.value;
+                if (value === null || value === undefined || isNaN(value)) {
+                    feature.properties.fillColor = '#E5E7EB';
+                } else {
+                    const ratio = max > min ? (value - min) / (max - min) : 0;
+                    const index = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
+                    feature.properties.fillColor = COLOR_SCALE[index];
+                }
+            });
+
+            // Remove existing layers and sources
+            if (appState.map.getLayer('regions-fill')) appState.map.removeLayer('regions-fill');
+            if (appState.map.getLayer('regions-line')) appState.map.removeLayer('regions-line');
+            if (appState.map.getLayer('regions-highlight')) appState.map.removeLayer('regions-highlight');
+            if (appState.map.getLayer('us-outline')) appState.map.removeLayer('us-outline');
+            if (appState.map.getSource('regions')) appState.map.removeSource('regions');
+            if (appState.map.getSource('us-boundary')) appState.map.removeSource('us-boundary');
+
+            // Add US outline source (using state boundaries)
+            appState.map.addSource('us-boundary', {
+                type: 'geojson',
+                data: appState.usOutlineData,
+                tolerance: 0.5
+            });
+
+            // Add source with tolerance for smoother rendering at low zoom
+            appState.map.addSource('regions', {
+                type: 'geojson',
+                data: enrichedGeoData,
+                tolerance: 0.5  // Simplify geometry for better zoomed-out appearance
+            });
+
+            // Add fill layer with pre-computed colors
+            appState.map.addLayer({
+                id: 'regions-fill',
+                type: 'fill',
+                source: 'regions',
+                paint: {
+                    'fill-color': ['get', 'fillColor'],
+                    'fill-opacity': 0.9
+                }
+            });
+
+            // Add border layer with zoom-dependent width (white internal borders)
+            appState.map.addLayer({
+                id: 'regions-line',
+                type: 'line',
+                source: 'regions',
+                paint: {
+                    'line-color': '#ffffff',
+                    'line-width': [
+                        'interpolate', ['linear'], ['zoom'],
+                        3, 0.5,   // At zoom 3, line width 0.5
+                        5, 1,     // At zoom 5, line width 1
+                        8, 2      // At zoom 8+, line width 2
+                    ]
+                }
+            });
+
+            // Add US outline layer on top (subtle border around all states)
+            appState.map.addLayer({
+                id: 'us-outline',
+                type: 'line',
+                source: 'us-boundary',
+                paint: {
+                    'line-color': '#9CA3AF',
+                    'line-width': [
+                        'interpolate', ['linear'], ['zoom'],
+                        3, 0.5,
+                        5, 0.75,
+                        8, 1
+                    ],
+                    'line-opacity': 0.5
+                }
+            });
+
+            // Add highlight layer (initially invisible)
+            appState.map.addLayer({
+                id: 'regions-highlight',
+                type: 'line',
+                source: 'regions',
+                paint: {
+                    'line-color': '#1D4044',
+                    'line-width': 3
+                },
+                filter: ['==', ['get', 'dataId'], '']
+            });
+
+            updateStats(stats, metricInfo);
+            updateLegend(min, max, metricInfo);
         }
 
         function renderUI() {
@@ -860,9 +1035,19 @@
                     </div>
 
                     <div class="content-wrapper">
-                        <div class="map-wrapper">
+                        <div class="map-wrapper" style="position: relative;">
                             <div class="map-title">${appState.creditType} Impact: ${metricInfo.label} by ${viewLabel}</div>
                             <div id="map-container"></div>
+                            <div class="map-legend">
+                                <div class="legend-title" id="legend-title">${metricInfo.label}</div>
+                                <div style="display: flex; gap: 8px;">
+                                    <div class="legend-gradient"></div>
+                                    <div class="legend-labels">
+                                        <span id="legend-max">--</span>
+                                        <span id="legend-min">--</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div id="detail-container">
                             ${renderDetailPanel()}
@@ -872,40 +1057,52 @@
             `;
 
             document.getElementById('root').innerHTML = html;
-            renderMap();
+            initMap();
         }
 
         function setViewType(type) {
             appState.viewType = type;
-            appState.selectedRegion = null;  // Clear selection when changing view
+            appState.selectedRegion = null;
             renderUI();
         }
 
         function setCreditType(type) {
             appState.creditType = type;
-            renderUI();
+            if (appState.map && appState.map.loaded()) {
+                renderMapLayer();
+                document.getElementById('detail-container').innerHTML = renderDetailPanel();
+            }
         }
 
         function setMetric(metric) {
             appState.metric = metric;
-            renderUI();
+            if (appState.map && appState.map.loaded()) {
+                renderMapLayer();
+                document.getElementById('detail-container').innerHTML = renderDetailPanel();
+            }
         }
 
         async function loadData() {
             try {
-                const [stateResponse, districtResponse, geoResponse] = await Promise.all([
+                const [stateResponse, districtResponse, stateGeoResponse, districtGeoResponse] = await Promise.all([
                     fetch('./data/state_impacts.csv'),
                     fetch('./data/district_impacts.csv'),
+                    fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json'),
                     fetch('./data/real_congressional_districts.geojson')
                 ]);
 
                 const stateText = await stateResponse.text();
                 const districtText = await districtResponse.text();
-                const geoJson = await geoResponse.json();
+                const stateGeoJson = await stateGeoResponse.json();
+                const districtGeoJson = await districtGeoResponse.json();
 
                 appState.stateData = parseCSV(stateText);
                 appState.districtData = parseCSV(districtText);
-                appState.geoData = geoJson;
+                appState.stateGeoData = stateGeoJson;
+                appState.districtGeoData = districtGeoJson;
+
+                // Create US outline from state boundaries
+                appState.usOutlineData = stateGeoJson;
 
                 console.log(`Loaded ${appState.stateData.length} state rows, ${appState.districtData.length} district rows`);
 
