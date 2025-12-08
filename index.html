@@ -326,16 +326,37 @@
 
         .legend-gradient {
             width: 20px;
-            height: 120px;
+            height: 100px;
             border-radius: 2px;
-            background: linear-gradient(to bottom, #1D4044, #2C7A7B, #38B2AC, #81E6D9, #B2F5EA, #E6FFFA);
+            background: linear-gradient(to bottom, #1D4044, #2C7A7B, #319795, #38B2AC, #4FD1C5, #B2F5EA);
+        }
+
+        .legend-zero {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .legend-zero-color {
+            width: 20px;
+            height: 14px;
+            border-radius: 2px;
+            background-color: #E5E7EB;
+        }
+
+        .legend-zero-label {
+            font-size: 11px;
+            color: var(--text-secondary);
         }
 
         .legend-labels {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 120px;
+            height: 100px;
             font-size: 11px;
             color: var(--text-secondary);
         }
@@ -623,14 +644,18 @@
             'child_poverty_pct_cut': { label: 'Child Poverty Reduction', format: 'percent', colorscaleReverse: false }
         };
 
-        // Teal color scale
+        // Color for zero/no-impact states (clearly greyed out)
+        const ZERO_COLOR = '#E5E7EB';  // Gray
+        const NO_DATA_COLOR = '#F3F4F6';  // Lighter gray for no data
+
+        // Teal color scale with better contrast - using fewer, more distinct colors
         const COLOR_SCALE = [
-            '#E6FFFA',  // lightest
-            '#B2F5EA',
-            '#81E6D9',
-            '#38B2AC',
-            '#2C7A7B',
-            '#1D4044'   // darkest
+            '#B2F5EA',  // light teal (for low non-zero values)
+            '#4FD1C5',  // medium-light teal
+            '#38B2AC',  // medium teal
+            '#319795',  // teal
+            '#2C7A7B',  // dark teal
+            '#1D4044'   // darkest teal (for highest values)
         ];
 
         // App state
@@ -976,10 +1001,13 @@
             // Enrich GeoJSON with values
             const enrichedGeoData = enrichGeoDataWithValues(geoData, dataMap, null, appState.metric);
 
-            // Generate color stops based on data
-            const values = filteredData.map(d => d[appState.metric]).filter(v => !isNaN(v) && v !== null);
-            const min = Math.min(...values);
-            const max = Math.max(...values);
+            // Generate color stops based on data - only consider non-zero values for scaling
+            const allValues = filteredData.map(d => d[appState.metric]).filter(v => !isNaN(v) && v !== null);
+            const nonZeroValues = allValues.filter(v => Math.abs(v) > 0.0001);  // Filter out zeros
+
+            // Use non-zero values for min/max to get better color distribution
+            const min = nonZeroValues.length > 0 ? Math.min(...nonZeroValues) : 0;
+            const max = nonZeroValues.length > 0 ? Math.max(...nonZeroValues) : 1;
 
             // Pre-compute colors for each feature and assign unique IDs
             enrichedGeoData.features.forEach((feature, index) => {
@@ -988,11 +1016,25 @@
 
                 const value = feature.properties.value;
                 if (value === null || value === undefined || isNaN(value)) {
-                    feature.properties.fillColor = '#E5E7EB';
+                    // No data - light gray
+                    feature.properties.fillColor = NO_DATA_COLOR;
+                    feature.properties.isZero = false;
+                    feature.properties.hasData = false;
+                } else if (Math.abs(value) < 0.0001) {
+                    // Zero impact - clearly greyed out
+                    feature.properties.fillColor = ZERO_COLOR;
+                    feature.properties.isZero = true;
+                    feature.properties.hasData = true;
                 } else {
-                    const ratio = max > min ? (value - min) / (max - min) : 0;
+                    // Non-zero value - use color scale with better distribution
+                    // Use logarithmic-like scaling for better contrast across wide ranges
+                    let ratio = max > min ? (value - min) / (max - min) : 0;
+                    // Apply sqrt to spread out lower values more
+                    ratio = Math.sqrt(ratio);
                     const idx = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
                     feature.properties.fillColor = COLOR_SCALE[idx];
+                    feature.properties.isZero = false;
+                    feature.properties.hasData = true;
                 }
             });
 
@@ -1168,6 +1210,10 @@
                                         <span id="legend-max">--</span>
                                         <span id="legend-min">--</span>
                                     </div>
+                                </div>
+                                <div class="legend-zero">
+                                    <div class="legend-zero-color"></div>
+                                    <span class="legend-zero-label">No impact</span>
                                 </div>
                             </div>
                         </div>

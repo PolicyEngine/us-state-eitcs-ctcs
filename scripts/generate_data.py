@@ -3,6 +3,9 @@ Generate CTC/EITC impact data by state and congressional district.
 Uses state-specific datasets for efficiency.
 Memory-optimized version that processes one simulation at a time.
 Includes: cost, poverty, child poverty, poverty gap, and Gini index.
+
+Uses PolicyEngine's state_ctc and state_eitc aggregated variables
+which automatically include all relevant state credits.
 """
 
 import pandas as pd
@@ -31,23 +34,11 @@ STATE_FIPS = {
     'WY': 56
 }
 
-# State CTCs
-CTCS = [
-    "ca_yctc", "co_ctc", "co_family_affordability_credit", "dc_ctc",
-    "id_ctc", "il_ctc", "md_ctc", "mn_child_and_working_families_credits",
-    "nc_ctc", "nj_ctc", "nm_ctc", "ny_ctc", "or_ctc",
-    "ok_child_care_child_tax_credit", "vt_ctc", "ut_ctc",
-]
-
-# State EITCs
-EITCS = [
-    "ca_eitc", "co_eitc", "ct_eitc", "dc_eitc", "de_eitc", "hi_eitc",
-    "ia_eitc", "il_eitc", "in_eitc", "ks_total_eitc", "la_eitc", "ma_eitc",
-    "md_eitc", "me_eitc", "mi_eitc", "mo_wftc", "mt_eitc", "ne_eitc",
-    "nj_eitc", "nm_eitc", "ny_eitc", "oh_eitc", "ok_eitc", "or_eitc",
-    "ri_eitc", "sc_eitc", "ut_eitc", "va_eitc", "vt_eitc",
-    "wa_working_families_tax_credit", "wi_earned_income_credit",
-]
+# Use PolicyEngine's aggregated variables - these automatically include all state credits
+# state_ctc: aggregates all state child tax credits (defined in gov.states.household.state_ctcs)
+# state_eitc: aggregates all state earned income tax credits (defined in gov.states.household.state_eitcs)
+STATE_CTC_VAR = "state_ctc"
+STATE_EITC_VAR = "state_eitc"
 
 YEAR = 2025
 
@@ -211,12 +202,14 @@ def process_state(state, year=YEAR):
     gc.collect()
 
     # Run reform simulations one at a time
+    # Using aggregated state_ctc and state_eitc variables which automatically
+    # include all relevant credits for each state
     reform_results = {}
 
     for reform_name, reform_vars in [
-        ("CTCs", CTCS),
-        ("EITCs", EITCS),
-        ("CTCs and EITCs", CTCS + EITCS),
+        ("CTCs", [STATE_CTC_VAR]),
+        ("EITCs", [STATE_EITC_VAR]),
+        ("CTCs and EITCs", [STATE_CTC_VAR, STATE_EITC_VAR]),
     ]:
         print(f"    Running {reform_name} neutralized...")
         reform = create_reform(reform_vars)
