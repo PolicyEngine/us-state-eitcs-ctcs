@@ -1240,7 +1240,7 @@
                 const [stateResponse, districtResponse, stateGeoResponse, districtGeoResponse] = await Promise.all([
                     fetch('./data/state_impacts.csv'),
                     fetch('./data/district_impacts.csv'),
-                    fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json'),
+                    fetch('./data/states_from_districts.geojson'),  // State boundaries derived from district data for perfect alignment
                     fetch('./data/real_congressional_districts.geojson')
                 ]);
 
