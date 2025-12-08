@@ -686,20 +686,8 @@
         }
 
         function updateStats(stats, metricInfo) {
-            const statElements = {
-                'stat-total': metricInfo.format === 'currency' ? formatValue(stats.total, 'currency') : formatValue(stats.avg, metricInfo.format),
-                'stat-count': stats.count,
-                'stat-max': formatValue(stats.max, metricInfo.format),
-                'stat-min': formatValue(stats.min, metricInfo.format)
-            };
-
-            const totalLabel = metricInfo.format === 'currency' ? 'Total Cost' : 'Average ' + metricInfo.label;
-            document.getElementById('stat-total-label').textContent = totalLabel;
-
-            Object.entries(statElements).forEach(([id, value]) => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = value;
-            });
+            // Stats are now rendered directly in renderUI, this function updates summary stats
+            // when credit type or view changes without full re-render
         }
 
         function updateLegend(min, max, metricInfo) {
@@ -760,7 +748,9 @@
                 center: [-98, 39],
                 zoom: 3.5,
                 minZoom: 2,
-                maxZoom: 10
+                maxZoom: 10,
+                pixelRatio: window.devicePixelRatio || 1,  // Crisp rendering on high-DPI displays
+                antialias: true  // Better overall rendering quality
             });
 
             appState.popup = new maplibregl.Popup({
@@ -908,24 +898,25 @@
             appState.map.addSource('us-boundary', {
                 type: 'geojson',
                 data: appState.usOutlineData,
-                tolerance: 0.5
+                tolerance: 0.1  // Lower tolerance for sharper outline
             });
 
-            // Add source with tolerance for smoother rendering at low zoom
+            // Add source with low tolerance for sharper colors
             appState.map.addSource('regions', {
                 type: 'geojson',
                 data: enrichedGeoData,
-                tolerance: 0.5  // Simplify geometry for better zoomed-out appearance
+                tolerance: 0.1  // Low tolerance preserves more detail for sharper appearance
             });
 
-            // Add fill layer with pre-computed colors
+            // Add fill layer with pre-computed colors - full opacity and no antialias for sharper edges
             appState.map.addLayer({
                 id: 'regions-fill',
                 type: 'fill',
                 source: 'regions',
                 paint: {
                     'fill-color': ['get', 'fillColor'],
-                    'fill-opacity': 0.9
+                    'fill-opacity': 1.0,
+                    'fill-antialias': false  // Sharper edges at low zoom
                 }
             });
 
@@ -982,6 +973,17 @@
             const metricInfo = METRICS[appState.metric];
             const viewLabel = appState.viewType === 'state' ? 'States' : 'Congressional Districts';
 
+            // Calculate summary stats for all metrics
+            const filteredData = appState.viewType === 'state'
+                ? filterData(appState.stateData, appState.creditType)
+                : filterData(appState.districtData, appState.creditType);
+
+            const totalCost = filteredData.reduce((sum, d) => sum + (d.cost || 0), 0);
+            const avgPoverty = filteredData.reduce((sum, d) => sum + (d.poverty_pct_cut || 0), 0) / filteredData.length;
+            const avgChildPoverty = filteredData.reduce((sum, d) => sum + (d.child_poverty_pct_cut || 0), 0) / filteredData.length;
+            const avgPovertyGap = filteredData.reduce((sum, d) => sum + (d.poverty_gap_pct_cut || 0), 0) / filteredData.length;
+            const avgGini = filteredData.reduce((sum, d) => sum + (d.gini_index_pct_cut || 0), 0) / filteredData.length;
+
             const html = `
                 <div class="container">
                     <div class="page-header">
@@ -990,6 +992,29 @@
                             Interactive visualization showing the impact of state-level Earned Income Tax Credits (EITCs)
                             and Child Tax Credits (CTCs) on poverty, inequality, and household incomes across the United States.
                             Data calculated using the PolicyEngine microsimulation model for 2025.
+                        </div>
+                    </div>
+
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Cost</div>
+                            <div class="stat-value">${formatValue(totalCost, 'currency')}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Avg Poverty Reduction</div>
+                            <div class="stat-value">${formatValue(avgPoverty, 'percent')}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Avg Child Poverty Reduction</div>
+                            <div class="stat-value">${formatValue(avgChildPoverty, 'percent')}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Avg Poverty Gap Reduction</div>
+                            <div class="stat-value">${formatValue(avgPovertyGap, 'percent')}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Avg Inequality Reduction</div>
+                            <div class="stat-value">${formatValue(avgGini, 'percent')}</div>
                         </div>
                     </div>
 
@@ -1023,25 +1048,6 @@
                                     `<option value="${key}" ${key === appState.metric ? 'selected' : ''}>${val.label}</option>`
                                 ).join('')}
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="stats">
-                        <div class="stat-card">
-                            <div class="stat-label" id="stat-total-label">Total Cost</div>
-                            <div class="stat-value" id="stat-total">--</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">${viewLabel}</div>
-                            <div class="stat-value" id="stat-count">--</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Maximum</div>
-                            <div class="stat-value" id="stat-max">--</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Minimum</div>
-                            <div class="stat-value" id="stat-min">--</div>
                         </div>
                     </div>
 
@@ -1079,10 +1085,8 @@
 
         function setCreditType(type) {
             appState.creditType = type;
-            if (appState.map && appState.map.loaded()) {
-                renderMapLayer();
-                document.getElementById('detail-container').innerHTML = renderDetailPanel();
-            }
+            // Re-render entire UI since stats depend on credit type
+            renderUI();
         }
 
         function setMetric(metric) {
@@ -1110,12 +1114,94 @@
                 appState.stateData = parseCSV(stateText);
                 appState.districtData = parseCSV(districtText);
 
-                // Filter out Puerto Rico from state GeoJSON
+                // Transform Alaska - scale uniformly and reposition
+                function transformAlaska(coords, scale, targetLng, targetLat) {
+                    // Alaska bounding box center approximately at [-154, 64]
+                    const centerLng = -154;
+                    const centerLat = 64;
+
+                    if (typeof coords[0] === 'number') {
+                        // Scale coordinates around Alaska's center, then move to target position
+                        const scaledLng = (coords[0] - centerLng) * scale;
+                        const scaledLat = (coords[1] - centerLat) * scale;
+                        return [targetLng + scaledLng, targetLat + scaledLat];
+                    } else {
+                        return coords.map(c => transformAlaska(c, scale, targetLng, targetLat));
+                    }
+                }
+
+                function transformHawaii(coords, targetLng, targetLat) {
+                    // Hawaii center approximately at [-155.5, 20]
+                    const centerLng = -155.5;
+                    const centerLat = 20;
+
+                    if (typeof coords[0] === 'number') {
+                        const offsetLng = coords[0] - centerLng;
+                        const offsetLat = coords[1] - centerLat;
+                        return [targetLng + offsetLng, targetLat + offsetLat];
+                    } else {
+                        return coords.map(c => transformHawaii(c, targetLng, targetLat));
+                    }
+                }
+
+                // Filter out Puerto Rico and transform Alaska/Hawaii
+                const filteredFeatures = stateGeoJson.features
+                    .filter(f => f.properties.name !== 'Puerto Rico')
+                    .map(f => {
+                        if (f.properties.name === 'Alaska') {
+                            // Scale Alaska to 35% and position below western US
+                            return {
+                                ...f,
+                                geometry: {
+                                    ...f.geometry,
+                                    coordinates: transformAlaska(f.geometry.coordinates, 0.35, -125, 27)
+                                }
+                            };
+                        } else if (f.properties.name === 'Hawaii') {
+                            // Position Hawaii to the right of Alaska, below California
+                            return {
+                                ...f,
+                                geometry: {
+                                    ...f.geometry,
+                                    coordinates: transformHawaii(f.geometry.coordinates, -108, 27)
+                                }
+                            };
+                        }
+                        return f;
+                    });
+
                 appState.stateGeoData = {
                     type: 'FeatureCollection',
-                    features: stateGeoJson.features.filter(f => f.properties.name !== 'Puerto Rico')
+                    features: filteredFeatures
                 };
-                appState.districtGeoData = districtGeoJson;
+
+                // Also transform Alaska/Hawaii in district GeoJSON
+                const transformedDistrictFeatures = districtGeoJson.features.map(f => {
+                    const stateCode = f.properties.STATEFP || (f.properties.GEOID ? f.properties.GEOID.substring(0, 2) : null);
+                    if (stateCode === '02') {  // Alaska
+                        return {
+                            ...f,
+                            geometry: {
+                                ...f.geometry,
+                                coordinates: transformAlaska(f.geometry.coordinates, 0.35, -125, 27)
+                            }
+                        };
+                    } else if (stateCode === '15') {  // Hawaii
+                        return {
+                            ...f,
+                            geometry: {
+                                ...f.geometry,
+                                coordinates: transformHawaii(f.geometry.coordinates, -108, 27)
+                            }
+                        };
+                    }
+                    return f;
+                });
+
+                appState.districtGeoData = {
+                    type: 'FeatureCollection',
+                    features: transformedDistrictFeatures
+                };
 
                 // Create US outline from state boundaries (same filtered data)
                 appState.usOutlineData = appState.stateGeoData;
