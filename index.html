@@ -1109,11 +1109,16 @@
 
                 appState.stateData = parseCSV(stateText);
                 appState.districtData = parseCSV(districtText);
-                appState.stateGeoData = stateGeoJson;
+
+                // Filter out Puerto Rico from state GeoJSON
+                appState.stateGeoData = {
+                    type: 'FeatureCollection',
+                    features: stateGeoJson.features.filter(f => f.properties.name !== 'Puerto Rico')
+                };
                 appState.districtGeoData = districtGeoJson;
 
-                // Create US outline from state boundaries
-                appState.usOutlineData = stateGeoJson;
+                // Create US outline from state boundaries (same filtered data)
+                appState.usOutlineData = appState.stateGeoData;
 
                 console.log(`Loaded ${appState.stateData.length} state rows, ${appState.districtData.length} district rows`);
 
