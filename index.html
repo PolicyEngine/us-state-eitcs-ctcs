@@ -777,6 +777,17 @@
         function setupMapEventHandlers() {
             const map = appState.map;
 
+            // Double-click to reset view to full US
+            map.getCanvas().addEventListener('dblclick', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                map.flyTo({
+                    center: [-98, 39],
+                    zoom: 3.5,
+                    duration: 1000  // 1 second animation
+                });
+            });
+
             // Hover effects
             map.on('mousemove', 'regions-fill', (e) => {
                 if (e.features.length > 0) {
