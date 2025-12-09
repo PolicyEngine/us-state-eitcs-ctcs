@@ -8,29 +8,23 @@
     <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-teal: #319795;
-            --primary-teal-light: #E6FFFA;
-            --primary-teal-600: #2C7A7B;
-            --primary-teal-900: #1D4044;
-            --gray-50: #F9FAFB;
-            --gray-100: #F2F4F7;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-700: #344054;
-            --gray-900: #101828;
-            --background-secondary: #F8FAFC;
-            --text-primary: #1E293B;
-            --text-secondary: #64748B;
-            --white: #FFFFFF;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 16px;
+            --ink: #1a1a1a;
+            --ink-light: #2d2d2d;
+            --ink-muted: #6b6b6b;
+            --paper: #faf9f7;
+            --paper-warm: #f5f3ef;
+            --accent: #2563eb;
+            --accent-deep: #1e40af;
+            --accent-glow: rgba(37, 99, 235, 0.08);
+            --emerald: #059669;
+            --emerald-light: #d1fae5;
+            --coral: #dc2626;
+            --gold: #d97706;
+            --divider: #e5e2dc;
+            --divider-dark: #c9c5bc;
         }
 
         * {
@@ -40,544 +34,644 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            margin: 0;
-            background-color: var(--background-secondary);
-            color: var(--text-primary);
+            font-family: 'Source Sans 3', Georgia, serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        .header {
-            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-600) 100%);
-            color: var(--white);
-            padding: 16px 32px;
+        /* Editorial Header */
+        .masthead {
+            background: var(--ink);
+            padding: 12px 0;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .masthead-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 32px;
             display: flex;
             align-items: center;
-            box-shadow: var(--shadow-md);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            justify-content: space-between;
         }
 
-        .header-logo {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--white);
+        .masthead-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             text-decoration: none;
         }
 
-        .container {
-            max-width: 1440px;
+        .masthead-logo img {
+            height: 32px;
+            filter: brightness(0) invert(1);
+        }
+
+        .masthead-tagline {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(180deg, var(--ink) 0%, var(--ink-light) 100%);
+            color: white;
+            padding: 80px 32px 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .hero-inner {
+            max-width: 900px;
             margin: 0 auto;
-            padding: 32px 24px;
+            position: relative;
+            text-align: center;
         }
 
-        .page-header {
-            background-color: var(--white);
-            padding: 32px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            margin-bottom: 24px;
-            border: 1px solid var(--gray-100);
-        }
-
-        h1 {
-            color: var(--gray-900);
-            font-size: 28px;
-            margin-bottom: 12px;
+        .hero-label {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.6;
-            max-width: 800px;
-        }
-
-        /* Controls Section */
-        .controls {
-            background-color: var(--white);
-            padding: 20px 24px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 6px 16px;
             margin-bottom: 24px;
+            border-radius: 2px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.7);
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Stats Banner */
+        .stats-banner {
+            max-width: 1200px;
+            margin: -50px auto 0;
+            padding: 0 32px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+
+        .stat-item {
+            padding: 32px 28px;
+            text-align: center;
+            border-right: 1px solid var(--divider);
+            position: relative;
+            transition: background 0.2s ease;
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-item:hover {
+            background: var(--accent-glow);
+        }
+
+        .stat-eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--ink-muted);
+            margin-bottom: 8px;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-context {
+            font-size: 13px;
+            color: var(--ink-muted);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        /* Control Bar */
+        .control-bar {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
             flex-wrap: wrap;
-            gap: 20px;
-            align-items: flex-end;
-            border: 1px solid var(--gray-100);
+            gap: 24px;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--ink);
+            margin-bottom: 32px;
+        }
+
+        .control-section {
+            display: flex;
+            align-items: center;
+            gap: 32px;
         }
 
         .control-group {
             display: flex;
-            flex-direction: column;
-            gap: 6px;
+            align-items: center;
+            gap: 12px;
         }
 
         .control-label {
             font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Toggle Button Group */
-        .toggle-group {
-            display: flex;
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-            border: 1px solid var(--gray-200);
-            background-color: var(--gray-50);
-            padding: 3px;
-            gap: 3px;
-        }
-
-        .toggle-btn {
-            padding: 8px 16px;
-            border: none;
-            background-color: transparent;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            border-radius: 4px;
-        }
-
-        .toggle-btn:hover {
-            background-color: var(--gray-100);
-            color: var(--text-primary);
-        }
-
-        .toggle-btn.active {
-            background-color: var(--white);
-            color: var(--primary-teal);
-            box-shadow: var(--shadow-sm);
-            font-weight: 600;
-        }
-
-        /* Dropdown Select */
-        .metric-select {
-            padding: 8px 14px;
-            font-size: 13px;
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-sm);
-            background-color: var(--white);
-            color: var(--text-primary);
-            cursor: pointer;
-            font-weight: 500;
-            min-width: 220px;
-        }
-
-        .metric-select:focus {
-            outline: none;
-            border-color: var(--primary-teal);
-            box-shadow: 0 0 0 3px rgba(49, 151, 149, 0.15);
-        }
-
-        /* Statistics Cards */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        @media (max-width: 900px) {
-            .stats {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-600) 100%);
-            color: var(--white);
-            padding: 20px 24px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-md);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .stat-label {
-            font-size: 11px;
-            opacity: 0.85;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 500;
-        }
-
-        .stat-value {
-            font-size: 26px;
             font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--ink-muted);
         }
 
-        /* Map and Detail Panel Layout */
-        .content-wrapper {
+        .pill-group {
+            display: flex;
+            background: var(--paper-warm);
+            border-radius: 100px;
+            padding: 4px;
+            gap: 2px;
+        }
+
+        .pill-btn {
+            padding: 8px 18px;
+            border: none;
+            background: transparent;
+            color: var(--ink-muted);
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 100px;
+            transition: all 0.2s ease;
+        }
+
+        .pill-btn:hover {
+            color: var(--ink);
+        }
+
+        .pill-btn.active {
+            background: var(--ink);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .metric-dropdown {
+            appearance: none;
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L2 4h8z'/%3E%3C/svg%3E") no-repeat right 14px center;
+            border: 2px solid var(--divider);
+            border-radius: 4px;
+            padding: 10px 40px 10px 16px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink);
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .metric-dropdown:hover {
+            border-color: var(--divider-dark);
+        }
+
+        .metric-dropdown:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Map Section */
+        .visualization {
             display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 24px;
+            grid-template-columns: 1fr 320px;
+            gap: 32px;
         }
 
-        @media (max-width: 1200px) {
-            .content-wrapper {
+        @media (max-width: 1100px) {
+            .visualization {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* Map Container */
-        .map-wrapper {
-            background-color: var(--white);
-            padding: 24px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--gray-100);
+        .map-container {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .map-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--divider);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .map-title {
-            color: var(--gray-900);
-            font-size: 16px;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: var(--ink);
         }
 
-        .map-title::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 18px;
-            background: var(--primary-teal);
-            border-radius: 2px;
+        .map-hint {
+            font-size: 12px;
+            color: var(--ink-muted);
         }
 
         #map-container {
             width: 100%;
-            height: 600px;
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid var(--gray-100);
+            height: 580px;
         }
 
-        /* Custom Legend */
+        /* Legend */
         .map-legend {
             position: absolute;
-            bottom: 24px;
-            right: 12px;
-            background: var(--white);
-            padding: 14px 16px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-            font-size: 11px;
-            z-index: 1;
-            border: 1px solid var(--gray-100);
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 4px;
+            padding: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            min-width: 140px;
+            z-index: 10;
         }
 
         .legend-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--gray-900);
-            font-size: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--ink-muted);
+            margin-bottom: 12px;
         }
 
         .legend-scale {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
             gap: 8px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 14px;
-            border-radius: 2px;
         }
 
         .legend-gradient {
-            width: 20px;
+            width: 16px;
             height: 100px;
             border-radius: 2px;
-            background: linear-gradient(to bottom, #1D4044, #2C7A7B, #319795, #38B2AC, #4FD1C5, #B2F5EA);
-        }
-
-        .legend-zero {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid var(--gray-200);
-        }
-
-        .legend-zero-color {
-            width: 20px;
-            height: 14px;
-            border-radius: 2px;
-            background-color: #E5E7EB;
-        }
-
-        .legend-zero-label {
-            font-size: 11px;
-            color: var(--text-secondary);
+            background: linear-gradient(to bottom,
+                #1e3a5f, #2563eb, #3b82f6, #60a5fa, #93c5fd, #dbeafe);
         }
 
         .legend-labels {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ink-muted);
+        }
+
+        .legend-zero {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--divider);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-zero-swatch {
+            width: 16px;
+            height: 12px;
+            background: #d1d5db;
+            border-radius: 2px;
+        }
+
+        .legend-zero-text {
             font-size: 11px;
-            color: var(--text-secondary);
+            color: var(--ink-muted);
         }
 
         /* Detail Panel */
         .detail-panel {
-            background-color: var(--white);
-            padding: 24px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--gray-100);
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            overflow: hidden;
             position: sticky;
-            top: 80px;
+            top: 24px;
         }
 
         .detail-header {
-            border-bottom: none;
-            padding-bottom: 16px;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--primary-teal-light) 0%, #fff 100%);
-            margin: -24px -24px 20px -24px;
-            padding: 20px 24px;
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            background: var(--ink);
+            color: white;
+            padding: 24px;
         }
 
-        .detail-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gray-900);
+        .detail-region {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 24px;
+            font-weight: 600;
             margin-bottom: 4px;
-            letter-spacing: -0.3px;
         }
 
         .detail-subtitle {
             font-size: 13px;
-            color: var(--primary-teal-600);
-            font-weight: 500;
+            color: rgba(255,255,255,0.6);
         }
 
         .detail-empty {
+            padding: 60px 24px;
             text-align: center;
-            padding: 48px 24px;
-            color: var(--text-secondary);
         }
 
         .detail-empty-icon {
-            font-size: 40px;
-            margin-bottom: 12px;
-            opacity: 0.4;
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
         }
 
         .detail-empty p {
-            font-size: 14px;
-            line-height: 1.5;
+            color: var(--ink-muted);
+            font-size: 15px;
+            line-height: 1.6;
         }
 
         .detail-metrics {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
+            padding: 8px 0;
         }
 
         .detail-metric {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--gray-100);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--divider);
+            transition: background 0.15s ease;
         }
 
         .detail-metric:last-child {
             border-bottom: none;
-            padding-bottom: 0;
         }
 
-        .detail-metric:first-child {
-            padding-top: 0;
+        .detail-metric:hover {
+            background: var(--paper-warm);
         }
 
         .detail-metric-label {
-            font-size: 13px;
-            color: var(--text-secondary);
+            font-size: 14px;
+            color: var(--ink-muted);
             font-weight: 500;
         }
 
         .detail-metric-value {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--gray-900);
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--ink);
         }
 
         .detail-metric-value.positive {
-            color: #059669;
+            color: var(--emerald);
         }
 
-        .detail-metric-value.negative {
-            color: #DC2626;
-        }
-
+        /* Loading State */
         .loading {
-            text-align: center;
-            padding: 100px 40px;
-            color: var(--text-secondary);
-            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px;
+            color: var(--ink-muted);
         }
 
         .loading-spinner {
-            border: 3px solid var(--gray-100);
-            border-top: 3px solid var(--primary-teal);
-            border-radius: 50%;
             width: 40px;
             height: 40px;
+            border: 3px solid var(--divider);
+            border-top-color: var(--accent);
+            border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px;
+            margin-bottom: 20px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
+        /* Footer */
         .footer {
+            background: var(--ink);
+            color: rgba(255,255,255,0.5);
+            padding: 40px 32px;
+            margin-top: 80px;
             text-align: center;
-            padding: 32px 20px;
-            color: var(--text-secondary);
             font-size: 13px;
-            border-top: 1px solid var(--gray-100);
-            background: var(--white);
-            margin-top: 24px;
         }
 
         .footer a {
-            color: var(--primary-teal);
+            color: rgba(255,255,255,0.7);
             text-decoration: none;
-            font-weight: 500;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
         }
 
         .footer a:hover {
-            text-decoration: underline;
+            color: white;
+            border-bottom-color: white;
         }
 
-        /* MapLibre Popup Styling */
+        /* Popup Styling */
         .maplibregl-popup-content {
-            padding: 14px 18px;
-            border-radius: var(--radius-md);
-            font-family: 'Inter', sans-serif;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--gray-100);
-        }
-
-        .maplibregl-popup-close-button {
-            font-size: 16px;
-            padding: 4px 8px;
-            color: var(--text-secondary);
+            padding: 16px 20px;
+            border-radius: 4px;
+            font-family: 'Source Sans 3', sans-serif;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border: none;
         }
 
         .maplibregl-popup-tip {
-            border-top-color: var(--white) !important;
+            border-top-color: white !important;
         }
 
         .popup-title {
+            font-family: 'Playfair Display', Georgia, serif;
             font-weight: 600;
-            font-size: 14px;
-            color: var(--gray-900);
-            margin-bottom: 6px;
+            font-size: 16px;
+            color: var(--ink);
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
 
         .popup-value {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.4;
+            font-size: 14px;
+            color: var(--ink-muted);
+            line-height: 1.5;
         }
 
-        .popup-value b {
-            color: var(--text-primary);
+        .popup-value strong {
+            color: var(--ink);
+            font-weight: 600;
         }
 
         .popup-hint {
             font-size: 11px;
-            color: var(--primary-teal);
-            margin-top: 8px;
-            font-weight: 500;
-            opacity: 0.8;
+            color: var(--accent);
+            margin-top: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
+        /* Responsive */
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
 
-            .toggle-group {
+            .stat-item {
+                border-right: none;
+                border-bottom: 1px solid var(--divider);
+            }
+
+            .stat-item:last-child {
+                border-bottom: none;
+            }
+
+            .control-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .control-section {
                 flex-wrap: wrap;
             }
 
-            .toggle-btn {
-                flex: 1;
-                min-width: 80px;
+            .hero {
+                padding: 60px 24px 80px;
             }
 
-            h1 {
-                font-size: 22px;
+            .hero h1 {
+                font-size: 32px;
             }
+        }
 
-            .stat-value {
-                font-size: 24px;
+        /* Animation on load */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stats-grid {
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .control-bar {
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+
+        .visualization {
+            animation: fadeInUp 0.6s ease-out 0.4s both;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <a href="https://policyengine.org" class="header-logo">
-            <img src="policyengine-logo.svg" alt="PolicyEngine" style="height: 40px; vertical-align: middle;" />
-        </a>
-    </div>
+    <header class="masthead">
+        <div class="masthead-inner">
+            <a href="https://policyengine.org" class="masthead-logo">
+                <img src="policyengine-logo.svg" alt="PolicyEngine" />
+            </a>
+            <span class="masthead-tagline">Data & Analysis</span>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <span class="hero-label">Interactive Analysis</span>
+            <h1>The Impact of State Tax Credits on American Families</h1>
+            <p class="hero-subtitle">
+                Explore how state-level Earned Income Tax Credits and Child Tax Credits
+                reduce poverty across communities. Data powered by PolicyEngine microsimulation.
+            </p>
+        </div>
+    </section>
 
     <div id="root">
-        <div class="container">
-            <div class="loading">
-                <div class="loading-spinner"></div>
-                Loading data...
+        <div class="stats-banner">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="loading-spinner"></div>
+                    <div class="stat-context">Loading data...</div>
+                </div>
+                <div class="stat-item">
+                    <div class="loading-spinner"></div>
+                    <div class="stat-context">Loading data...</div>
+                </div>
+                <div class="stat-item">
+                    <div class="loading-spinner"></div>
+                    <div class="stat-context">Loading data...</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="footer">
-        Data source: PolicyEngine microsimulation model (2025) |
+    <footer class="footer">
+        Data calculated using PolicyEngine microsimulation model for 2025 &nbsp;|&nbsp;
         <a href="https://policyengine.org" target="_blank">policyengine.org</a>
-    </div>
+    </footer>
 
     <script>
-        // Using MapLibre GL JS (free, no token required)
-
         // State codes and names
         const STATE_CODES = {
             'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
@@ -619,7 +713,6 @@
             54: 'WV', 55: 'WI', 56: 'WY'
         };
 
-        // Reverse lookup: state name to state code
         const STATE_NAME_TO_CODE = {};
         Object.entries(STATE_CODES).forEach(([code, name]) => {
             STATE_NAME_TO_CODE[name] = code;
@@ -631,21 +724,18 @@
             'child_poverty_pct_cut': { label: 'Child Poverty Reduction', format: 'percent', colorscaleReverse: false }
         };
 
-        // Color for zero/no-impact states (clearly greyed out)
-        const ZERO_COLOR = '#E5E7EB';  // Gray
-        const NO_DATA_COLOR = '#F3F4F6';  // Lighter gray for no data
-
-        // Teal color scale with better contrast - using fewer, more distinct colors
+        // Editorial blue color scale
+        const ZERO_COLOR = '#d1d5db';
+        const NO_DATA_COLOR = '#e5e7eb';
         const COLOR_SCALE = [
-            '#B2F5EA',  // light teal (for low non-zero values)
-            '#4FD1C5',  // medium-light teal
-            '#38B2AC',  // medium teal
-            '#319795',  // teal
-            '#2C7A7B',  // dark teal
-            '#1D4044'   // darkest teal (for highest values)
+            '#dbeafe',  // lightest blue
+            '#93c5fd',
+            '#60a5fa',
+            '#3b82f6',
+            '#2563eb',
+            '#1e3a5f'   // darkest navy
         ];
 
-        // App state
         let appState = {
             viewType: 'state',
             creditType: 'CTCs and EITCs',
@@ -663,7 +753,6 @@
             const lines = text.trim().split('\n');
             const headers = lines[0].split(',');
             const data = [];
-
             for (let i = 1; i < lines.length; i++) {
                 const values = lines[i].split(',');
                 const row = {};
@@ -678,16 +767,11 @@
 
         function formatValue(value, format) {
             if (value === null || value === undefined || isNaN(value)) return 'N/A';
-
             if (format === 'currency') {
                 const absValue = Math.abs(value);
-                if (absValue >= 1e9) {
-                    return '$' + (value / 1e9).toFixed(2) + 'B';
-                } else if (absValue >= 1e6) {
-                    return '$' + (value / 1e6).toFixed(1) + 'M';
-                } else if (absValue >= 1e3) {
-                    return '$' + (value / 1e3).toFixed(1) + 'K';
-                }
+                if (absValue >= 1e9) return '$' + (value / 1e9).toFixed(2) + 'B';
+                if (absValue >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M';
+                if (absValue >= 1e3) return '$' + (value / 1e3).toFixed(1) + 'K';
                 return '$' + value.toFixed(0);
             } else if (format === 'percent') {
                 return (value * 100).toFixed(2) + '%';
@@ -708,20 +792,10 @@
             return { total, avg, max, min, count: values.length };
         }
 
-        function getColorForValue(value, min, max) {
-            if (value === null || value === undefined || isNaN(value)) {
-                return '#E5E7EB'; // gray for no data
-            }
-            const ratio = max > min ? (value - min) / (max - min) : 0;
-            const index = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
-            return COLOR_SCALE[index];
-        }
-
         function getRegionData(regionId) {
             const filteredData = appState.viewType === 'state'
                 ? filterData(appState.stateData, appState.creditType)
                 : filterData(appState.districtData, appState.creditType);
-
             if (appState.viewType === 'state') {
                 return filteredData.find(d => d.state === regionId);
             } else {
@@ -731,18 +805,16 @@
 
         function renderDetailPanel() {
             const region = appState.selectedRegion;
-
             if (!region) {
                 return `
                     <div class="detail-panel">
                         <div class="detail-empty">
-                            <div class="detail-empty-icon">&#128205;</div>
-                            <p>Click on a ${appState.viewType === 'state' ? 'state' : 'district'} to see detailed impact metrics</p>
+                            <div class="detail-empty-icon">📍</div>
+                            <p>Select a ${appState.viewType === 'state' ? 'state' : 'district'} on the map to explore detailed impact metrics</p>
                         </div>
                     </div>
                 `;
             }
-
             const data = getRegionData(region.id);
             if (!data) {
                 return `
@@ -753,18 +825,16 @@
                     </div>
                 `;
             }
-
             const metrics = [
                 { key: 'cost', label: 'Total Cost', format: 'currency' },
                 { key: 'poverty_pct_cut', label: 'Poverty Reduction', format: 'percent' },
                 { key: 'child_poverty_pct_cut', label: 'Child Poverty Reduction', format: 'percent' }
             ];
-
             return `
                 <div class="detail-panel">
                     <div class="detail-header">
-                        <div class="detail-title">${region.name}</div>
-                        <div class="detail-subtitle">${appState.creditType} Impact</div>
+                        <div class="detail-region">${region.name}</div>
+                        <div class="detail-subtitle">${appState.creditType} Impact Analysis</div>
                     </div>
                     <div class="detail-metrics">
                         ${metrics.map(m => {
@@ -783,25 +853,21 @@
             `;
         }
 
-        function updateStats(stats, metricInfo) {
-            // Stats are now rendered directly in renderUI, this function updates summary stats
-            // when credit type or view changes without full re-render
-        }
-
         function updateLegend(min, max, metricInfo) {
-            document.getElementById('legend-max').textContent = formatValue(max, metricInfo.format);
-            document.getElementById('legend-min').textContent = formatValue(min, metricInfo.format);
-            document.getElementById('legend-title').textContent = metricInfo.label;
+            const maxEl = document.getElementById('legend-max');
+            const minEl = document.getElementById('legend-min');
+            const titleEl = document.getElementById('legend-title');
+            if (maxEl) maxEl.textContent = formatValue(max, metricInfo.format);
+            if (minEl) minEl.textContent = formatValue(min, metricInfo.format);
+            if (titleEl) titleEl.textContent = metricInfo.label;
         }
 
         function enrichGeoDataWithValues(geoData, dataMap, idField, metricKey) {
-            // Create a new GeoJSON with values added
             return {
                 type: 'FeatureCollection',
                 features: geoData.features.map(feature => {
                     let id;
                     if (appState.viewType === 'state') {
-                        // State GeoJSON uses 'name' property (full state name)
                         const stateName = feature.properties.name;
                         id = STATE_NAME_TO_CODE[stateName];
                     } else {
@@ -811,10 +877,8 @@
                             id = feature.properties.cd_id;
                         }
                     }
-
                     const rowData = dataMap[id];
                     const value = rowData ? rowData[metricKey] : null;
-
                     return {
                         ...feature,
                         properties: {
@@ -831,7 +895,6 @@
             if (appState.map) {
                 appState.map.remove();
             }
-
             appState.map = new maplibregl.Map({
                 container: 'map-container',
                 style: {
@@ -840,22 +903,20 @@
                     layers: [{
                         id: 'background',
                         type: 'background',
-                        paint: { 'background-color': '#ffffff' }
+                        paint: { 'background-color': '#faf9f7' }
                     }]
                 },
                 center: [-98, 39],
                 zoom: 3.5,
                 minZoom: 2,
                 maxZoom: 10,
-                pixelRatio: window.devicePixelRatio || 1,  // Crisp rendering on high-DPI displays
-                antialias: true  // Better overall rendering quality
+                pixelRatio: window.devicePixelRatio || 1,
+                antialias: true
             });
-
             appState.popup = new maplibregl.Popup({
                 closeButton: false,
                 closeOnClick: false
             });
-
             appState.map.on('load', () => {
                 renderMapLayer();
                 setupMapEventHandlers();
@@ -864,49 +925,27 @@
 
         function setupMapEventHandlers() {
             const map = appState.map;
-
-            // Double-click to reset view to full US
             map.getCanvas().addEventListener('dblclick', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                map.flyTo({
-                    center: [-98, 39],
-                    zoom: 3.5,
-                    duration: 1000  // 1 second animation
-                });
+                map.flyTo({ center: [-98, 39], zoom: 3.5, duration: 1000 });
             });
-
-            // Track currently hovered feature for fast state updates
             let hoveredFeatureId = null;
-
-            // Hover effects using feature-state (much faster than setFilter)
             map.on('mousemove', 'regions-fill', (e) => {
                 if (e.features.length > 0) {
                     map.getCanvas().style.cursor = 'pointer';
-
                     const feature = e.features[0];
                     const featureId = feature.id;
                     const value = feature.properties.value;
                     const dataId = feature.properties.dataId;
                     const metricInfo = METRICS[appState.metric];
-
-                    // Only update if we're on a new feature
                     if (hoveredFeatureId !== featureId) {
-                        // Clear previous hover state
                         if (hoveredFeatureId !== null) {
-                            map.setFeatureState(
-                                { source: 'regions', id: hoveredFeatureId },
-                                { hover: false }
-                            );
+                            map.setFeatureState({ source: 'regions', id: hoveredFeatureId }, { hover: false });
                         }
-                        // Set new hover state
                         hoveredFeatureId = featureId;
-                        map.setFeatureState(
-                            { source: 'regions', id: featureId },
-                            { hover: true }
-                        );
+                        map.setFeatureState({ source: 'regions', id: featureId }, { hover: true });
                     }
-
                     let name;
                     if (appState.viewType === 'state') {
                         name = STATE_CODES[dataId] || feature.properties.name || dataId;
@@ -917,35 +956,26 @@
                         const districtLabel = feature.properties.NAMELSAD || `District ${districtNum}`;
                         name = `${stateName}<br>${districtLabel}`;
                     }
-
                     const html = `
                         <div class="popup-title">${name}</div>
-                        <div class="popup-value"><b>${metricInfo.label}:</b> ${formatValue(value, metricInfo.format)}</div>
-                        <div class="popup-hint">Click for details</div>
+                        <div class="popup-value"><strong>${metricInfo.label}:</strong> ${formatValue(value, metricInfo.format)}</div>
+                        <div class="popup-hint">Click to explore →</div>
                     `;
-
                     appState.popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
                 }
             });
-
             map.on('mouseleave', 'regions-fill', () => {
                 map.getCanvas().style.cursor = '';
                 appState.popup.remove();
                 if (hoveredFeatureId !== null) {
-                    map.setFeatureState(
-                        { source: 'regions', id: hoveredFeatureId },
-                        { hover: false }
-                    );
+                    map.setFeatureState({ source: 'regions', id: hoveredFeatureId }, { hover: false });
                     hoveredFeatureId = null;
                 }
             });
-
-            // Click handler
             map.on('click', 'regions-fill', (e) => {
                 if (e.features.length > 0) {
                     const feature = e.features[0];
                     const dataId = feature.properties.dataId;
-
                     let regionName;
                     if (appState.viewType === 'state') {
                         regionName = STATE_CODES[dataId] || feature.properties.name || dataId;
@@ -955,7 +985,6 @@
                         const stateName = STATE_FIPS_NAMES[stateFips] || 'Unknown';
                         regionName = `${stateName} District ${districtNum}`;
                     }
-
                     appState.selectedRegion = { id: dataId, name: regionName };
                     document.getElementById('detail-container').innerHTML = renderDetailPanel();
                 }
@@ -966,88 +995,42 @@
             const filteredData = appState.viewType === 'state'
                 ? filterData(appState.stateData, appState.creditType)
                 : filterData(appState.districtData, appState.creditType);
-
             const metricInfo = METRICS[appState.metric];
-            const stats = calculateStats(filteredData, appState.metric);
-
-            // Create data lookup map
             const dataMap = {};
             if (appState.viewType === 'state') {
-                filteredData.forEach(row => {
-                    dataMap[row.state] = row;
-                });
+                filteredData.forEach(row => { dataMap[row.state] = row; });
             } else {
-                filteredData.forEach(row => {
-                    dataMap[row.congressional_district_geoid] = row;
-                });
+                filteredData.forEach(row => { dataMap[row.congressional_district_geoid] = row; });
             }
-
-            // Get the appropriate GeoJSON
             const geoData = appState.viewType === 'state' ? appState.stateGeoData : appState.districtGeoData;
-
-            // Enrich GeoJSON with values
             const enrichedGeoData = enrichGeoDataWithValues(geoData, dataMap, null, appState.metric);
-
-            // Generate color stops based on data - only consider non-zero values for scaling
             const allValues = filteredData.map(d => d[appState.metric]).filter(v => !isNaN(v) && v !== null);
-            const nonZeroValues = allValues.filter(v => Math.abs(v) > 0.0001);  // Filter out zeros
-
-            // Use non-zero values for min/max to get better color distribution
+            const nonZeroValues = allValues.filter(v => Math.abs(v) > 0.0001);
             const min = nonZeroValues.length > 0 ? Math.min(...nonZeroValues) : 0;
             const max = nonZeroValues.length > 0 ? Math.max(...nonZeroValues) : 1;
-
-            // Pre-compute colors for each feature and assign unique IDs
             enrichedGeoData.features.forEach((feature, index) => {
-                // Assign unique ID for feature-state to work
                 feature.id = index;
-
                 const value = feature.properties.value;
                 if (value === null || value === undefined || isNaN(value)) {
-                    // No data - light gray
                     feature.properties.fillColor = NO_DATA_COLOR;
-                    feature.properties.isZero = false;
-                    feature.properties.hasData = false;
                 } else if (Math.abs(value) < 0.0001) {
-                    // Zero impact - clearly greyed out
                     feature.properties.fillColor = ZERO_COLOR;
-                    feature.properties.isZero = true;
-                    feature.properties.hasData = true;
                 } else {
-                    // Non-zero value - use color scale with better distribution
-                    // Use logarithmic-like scaling for better contrast across wide ranges
                     let ratio = max > min ? (value - min) / (max - min) : 0;
-                    // Apply sqrt to spread out lower values more
                     ratio = Math.sqrt(ratio);
                     const idx = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
                     feature.properties.fillColor = COLOR_SCALE[idx];
-                    feature.properties.isZero = false;
-                    feature.properties.hasData = true;
                 }
             });
-
-            // Remove existing layers and sources
             if (appState.map.getLayer('regions-fill')) appState.map.removeLayer('regions-fill');
             if (appState.map.getLayer('regions-line')) appState.map.removeLayer('regions-line');
             if (appState.map.getLayer('regions-hover-line')) appState.map.removeLayer('regions-hover-line');
-            if (appState.map.getLayer('us-outline')) appState.map.removeLayer('us-outline');
             if (appState.map.getSource('regions')) appState.map.removeSource('regions');
-            if (appState.map.getSource('us-boundary')) appState.map.removeSource('us-boundary');
-
-            // Add US outline source (using state boundaries)
-            appState.map.addSource('us-boundary', {
-                type: 'geojson',
-                data: appState.usOutlineData,
-                tolerance: 0.1  // Lower tolerance for sharper outline
-            });
-
-            // Add source with low tolerance for sharper colors
             appState.map.addSource('regions', {
                 type: 'geojson',
                 data: enrichedGeoData,
-                tolerance: 0.1  // Low tolerance preserves more detail for sharper appearance
+                tolerance: 0.1
             });
-
-            // Add fill layer with pre-computed colors - full opacity and no antialias for sharper edges
             appState.map.addLayer({
                 id: 'regions-fill',
                 type: 'fill',
@@ -1055,129 +1038,84 @@
                 paint: {
                     'fill-color': ['get', 'fillColor'],
                     'fill-opacity': 1.0,
-                    'fill-antialias': false  // Sharper edges at low zoom
+                    'fill-antialias': false
                 }
             });
-
-            // Add border layer with zoom-dependent width (white internal borders)
             appState.map.addLayer({
                 id: 'regions-line',
                 type: 'line',
                 source: 'regions',
                 paint: {
                     'line-color': '#ffffff',
-                    'line-width': [
-                        'interpolate', ['linear'], ['zoom'],
-                        3, 0.5,   // At zoom 3, line width 0.5
-                        5, 1,     // At zoom 5, line width 1
-                        8, 2      // At zoom 8+, line width 2
-                    ]
+                    'line-width': ['interpolate', ['linear'], ['zoom'], 3, 0.5, 5, 1, 8, 2]
                 }
             });
-
-            // Add hover highlight layer using feature-state (faster than filter)
             appState.map.addLayer({
                 id: 'regions-hover-line',
                 type: 'line',
                 source: 'regions',
                 paint: {
-                    'line-color': '#1D4044',
+                    'line-color': '#1e3a5f',
                     'line-width': 3,
-                    'line-opacity': [
-                        'case',
-                        ['boolean', ['feature-state', 'hover'], false],
-                        1,
-                        0
-                    ]
+                    'line-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 1, 0]
                 }
             });
-
-            // Add US outline layer on top (subtle border around all states)
-            appState.map.addLayer({
-                id: 'us-outline',
-                type: 'line',
-                source: 'us-boundary',
-                paint: {
-                    'line-color': '#9CA3AF',
-                    'line-width': [
-                        'interpolate', ['linear'], ['zoom'],
-                        3, 0.5,
-                        5, 0.75,
-                        8, 1
-                    ],
-                    'line-opacity': 0.5
-                }
-            });
-
-            updateStats(stats, metricInfo);
             updateLegend(min, max, metricInfo);
         }
 
         function renderUI() {
             const metricInfo = METRICS[appState.metric];
             const viewLabel = appState.viewType === 'state' ? 'States' : 'Congressional Districts';
-
-            // Calculate summary stats for all metrics
             const filteredData = appState.viewType === 'state'
                 ? filterData(appState.stateData, appState.creditType)
                 : filterData(appState.districtData, appState.creditType);
-
             const totalCost = filteredData.reduce((sum, d) => sum + (d.cost || 0), 0);
             const avgPoverty = filteredData.reduce((sum, d) => sum + (d.poverty_pct_cut || 0), 0) / filteredData.length;
             const avgChildPoverty = filteredData.reduce((sum, d) => sum + (d.child_poverty_pct_cut || 0), 0) / filteredData.length;
 
             const html = `
-                <div class="container">
-                    <div class="page-header">
-                        <h1>State Tax Credits Impact Map</h1>
-                        <div class="subtitle">
-                            Interactive visualization showing the impact of state-level Earned Income Tax Credits (EITCs)
-                            and Child Tax Credits (CTCs) on poverty and household incomes across the United States.
-                            Data calculated using the PolicyEngine microsimulation model for 2025.
+                <div class="stats-banner">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-eyebrow">Total Investment</div>
+                            <div class="stat-number">${formatValue(totalCost, 'currency')}</div>
+                            <div class="stat-context">across all ${viewLabel.toLowerCase()}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-eyebrow">Poverty Reduction</div>
+                            <div class="stat-number">${formatValue(avgPoverty, 'percent')}</div>
+                            <div class="stat-context">average decrease</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-eyebrow">Child Poverty Reduction</div>
+                            <div class="stat-number">${formatValue(avgChildPoverty, 'percent')}</div>
+                            <div class="stat-context">average decrease</div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="stats">
-                        <div class="stat-card">
-                            <div class="stat-label">Total Cost</div>
-                            <div class="stat-value">${formatValue(totalCost, 'currency')}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Avg Poverty Reduction</div>
-                            <div class="stat-value">${formatValue(avgPoverty, 'percent')}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Avg Child Poverty Reduction</div>
-                            <div class="stat-value">${formatValue(avgChildPoverty, 'percent')}</div>
-                        </div>
-                    </div>
-
-                    <div class="controls">
-                        <div class="control-group">
-                            <div class="control-label">View</div>
-                            <div class="toggle-group">
-                                <button class="toggle-btn ${appState.viewType === 'state' ? 'active' : ''}"
-                                        onclick="setViewType('state')">States</button>
-                                <button class="toggle-btn ${appState.viewType === 'district' ? 'active' : ''}"
-                                        onclick="setViewType('district')">Districts</button>
+                <main class="main-content">
+                    <div class="control-bar">
+                        <div class="control-section">
+                            <div class="control-group">
+                                <span class="control-label">View</span>
+                                <div class="pill-group">
+                                    <button class="pill-btn ${appState.viewType === 'state' ? 'active' : ''}" onclick="setViewType('state')">States</button>
+                                    <button class="pill-btn ${appState.viewType === 'district' ? 'active' : ''}" onclick="setViewType('district')">Districts</button>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <span class="control-label">Credit Type</span>
+                                <div class="pill-group">
+                                    <button class="pill-btn ${appState.creditType === 'CTCs' ? 'active' : ''}" onclick="setCreditType('CTCs')">CTC</button>
+                                    <button class="pill-btn ${appState.creditType === 'EITCs' ? 'active' : ''}" onclick="setCreditType('EITCs')">EITC</button>
+                                    <button class="pill-btn ${appState.creditType === 'CTCs and EITCs' ? 'active' : ''}" onclick="setCreditType('CTCs and EITCs')">Both</button>
+                                </div>
                             </div>
                         </div>
-
                         <div class="control-group">
-                            <div class="control-label">Tax Credit</div>
-                            <div class="toggle-group">
-                                <button class="toggle-btn ${appState.creditType === 'CTCs' ? 'active' : ''}"
-                                        onclick="setCreditType('CTCs')">CTC</button>
-                                <button class="toggle-btn ${appState.creditType === 'EITCs' ? 'active' : ''}"
-                                        onclick="setCreditType('EITCs')">EITC</button>
-                                <button class="toggle-btn ${appState.creditType === 'CTCs and EITCs' ? 'active' : ''}"
-                                        onclick="setCreditType('CTCs and EITCs')">Both</button>
-                            </div>
-                        </div>
-
-                        <div class="control-group">
-                            <div class="control-label">Metric</div>
-                            <select class="metric-select" onchange="setMetric(this.value)">
+                            <span class="control-label">Metric</span>
+                            <select class="metric-dropdown" onchange="setMetric(this.value)">
                                 ${Object.entries(METRICS).map(([key, val]) =>
                                     `<option value="${key}" ${key === appState.metric ? 'selected' : ''}>${val.label}</option>`
                                 ).join('')}
@@ -1185,13 +1123,16 @@
                         </div>
                     </div>
 
-                    <div class="content-wrapper">
-                        <div class="map-wrapper" style="position: relative;">
-                            <div class="map-title">${appState.creditType} Impact: ${metricInfo.label} by ${viewLabel}</div>
+                    <div class="visualization">
+                        <div class="map-container">
+                            <div class="map-header">
+                                <span class="map-title">${metricInfo.label} by ${viewLabel}</span>
+                                <span class="map-hint">Double-click to reset view</span>
+                            </div>
                             <div id="map-container"></div>
                             <div class="map-legend">
                                 <div class="legend-title" id="legend-title">${metricInfo.label}</div>
-                                <div style="display: flex; gap: 8px;">
+                                <div class="legend-scale">
                                     <div class="legend-gradient"></div>
                                     <div class="legend-labels">
                                         <span id="legend-max">--</span>
@@ -1199,8 +1140,8 @@
                                     </div>
                                 </div>
                                 <div class="legend-zero">
-                                    <div class="legend-zero-color"></div>
-                                    <span class="legend-zero-label">No impact</span>
+                                    <div class="legend-zero-swatch"></div>
+                                    <span class="legend-zero-text">No program</span>
                                 </div>
                             </div>
                         </div>
@@ -1208,9 +1149,8 @@
                             ${renderDetailPanel()}
                         </div>
                     </div>
-                </div>
+                </main>
             `;
-
             document.getElementById('root').innerHTML = html;
             initMap();
         }
@@ -1223,7 +1163,6 @@
 
         function setCreditType(type) {
             appState.creditType = type;
-            // Re-render entire UI since stats depend on credit type
             renderUI();
         }
 
@@ -1240,125 +1179,67 @@
                 const [stateResponse, districtResponse, stateGeoResponse, districtGeoResponse] = await Promise.all([
                     fetch('./data/state_impacts.csv'),
                     fetch('./data/district_impacts.csv'),
-                    fetch('./data/states_from_districts.geojson'),  // State boundaries derived from district data for perfect alignment
+                    fetch('./data/states_from_districts.geojson'),
                     fetch('./data/real_congressional_districts.geojson')
                 ]);
-
                 const stateText = await stateResponse.text();
                 const districtText = await districtResponse.text();
                 const stateGeoJson = await stateGeoResponse.json();
                 const districtGeoJson = await districtGeoResponse.json();
-
                 appState.stateData = parseCSV(stateText);
                 appState.districtData = parseCSV(districtText);
 
-                // Transform Alaska - scale uniformly and reposition
                 function transformAlaska(coords, scale, targetLng, targetLat) {
-                    // Alaska bounding box center approximately at [-154, 64]
-                    const centerLng = -154;
-                    const centerLat = 64;
-
+                    const centerLng = -154, centerLat = 64;
                     if (typeof coords[0] === 'number') {
-                        // Scale coordinates around Alaska's center, then move to target position
-                        const scaledLng = (coords[0] - centerLng) * scale;
-                        const scaledLat = (coords[1] - centerLat) * scale;
-                        return [targetLng + scaledLng, targetLat + scaledLat];
-                    } else {
-                        return coords.map(c => transformAlaska(c, scale, targetLng, targetLat));
+                        return [targetLng + (coords[0] - centerLng) * scale, targetLat + (coords[1] - centerLat) * scale];
                     }
+                    return coords.map(c => transformAlaska(c, scale, targetLng, targetLat));
                 }
 
                 function transformHawaii(coords, targetLng, targetLat) {
-                    // Hawaii center approximately at [-155.5, 20]
-                    const centerLng = -155.5;
-                    const centerLat = 20;
-
+                    const centerLng = -155.5, centerLat = 20;
                     if (typeof coords[0] === 'number') {
-                        const offsetLng = coords[0] - centerLng;
-                        const offsetLat = coords[1] - centerLat;
-                        return [targetLng + offsetLng, targetLat + offsetLat];
-                    } else {
-                        return coords.map(c => transformHawaii(c, targetLng, targetLat));
+                        return [targetLng + coords[0] - centerLng, targetLat + coords[1] - centerLat];
                     }
+                    return coords.map(c => transformHawaii(c, targetLng, targetLat));
                 }
 
-                // Filter out Puerto Rico and transform Alaska/Hawaii
                 const filteredFeatures = stateGeoJson.features
                     .filter(f => f.properties.name !== 'Puerto Rico')
                     .map(f => {
                         if (f.properties.name === 'Alaska') {
-                            // Scale Alaska to 35% and position below western US
-                            return {
-                                ...f,
-                                geometry: {
-                                    ...f.geometry,
-                                    coordinates: transformAlaska(f.geometry.coordinates, 0.35, -125, 27)
-                                }
-                            };
+                            return { ...f, geometry: { ...f.geometry, coordinates: transformAlaska(f.geometry.coordinates, 0.35, -125, 27) }};
                         } else if (f.properties.name === 'Hawaii') {
-                            // Position Hawaii to the right of Alaska, below California
-                            return {
-                                ...f,
-                                geometry: {
-                                    ...f.geometry,
-                                    coordinates: transformHawaii(f.geometry.coordinates, -108, 27)
-                                }
-                            };
+                            return { ...f, geometry: { ...f.geometry, coordinates: transformHawaii(f.geometry.coordinates, -108, 27) }};
                         }
                         return f;
                     });
 
-                appState.stateGeoData = {
-                    type: 'FeatureCollection',
-                    features: filteredFeatures
-                };
+                appState.stateGeoData = { type: 'FeatureCollection', features: filteredFeatures };
 
-                // Also transform Alaska/Hawaii in district GeoJSON
                 const transformedDistrictFeatures = districtGeoJson.features.map(f => {
                     const stateCode = f.properties.STATEFP || (f.properties.GEOID ? f.properties.GEOID.substring(0, 2) : null);
-                    if (stateCode === '02') {  // Alaska
-                        return {
-                            ...f,
-                            geometry: {
-                                ...f.geometry,
-                                coordinates: transformAlaska(f.geometry.coordinates, 0.35, -125, 27)
-                            }
-                        };
-                    } else if (stateCode === '15') {  // Hawaii
-                        return {
-                            ...f,
-                            geometry: {
-                                ...f.geometry,
-                                coordinates: transformHawaii(f.geometry.coordinates, -108, 27)
-                            }
-                        };
+                    if (stateCode === '02') {
+                        return { ...f, geometry: { ...f.geometry, coordinates: transformAlaska(f.geometry.coordinates, 0.35, -125, 27) }};
+                    } else if (stateCode === '15') {
+                        return { ...f, geometry: { ...f.geometry, coordinates: transformHawaii(f.geometry.coordinates, -108, 27) }};
                     }
                     return f;
                 });
 
-                appState.districtGeoData = {
-                    type: 'FeatureCollection',
-                    features: transformedDistrictFeatures
-                };
-
-                // Create US outline from state boundaries (same filtered data)
+                appState.districtGeoData = { type: 'FeatureCollection', features: transformedDistrictFeatures };
                 appState.usOutlineData = appState.stateGeoData;
 
                 console.log(`Loaded ${appState.stateData.length} state rows, ${appState.districtData.length} district rows`);
-
                 renderUI();
             } catch (err) {
                 console.error('Error loading data:', err);
                 document.getElementById('root').innerHTML = `
-                    <div class="container">
+                    <div class="main-content">
                         <div class="loading">
-                            <p>Error loading data: ${err.message}</p>
-                            <p style="margin-top: 20px; font-size: 14px;">
-                                Make sure you have generated the data files by running:<br>
-                                <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px;">
-                                    python scripts/generate_data.py
-                                </code>
-                            </p>
+                            <p style="color: #dc2626; font-weight: 600;">Error loading data: ${err.message}</p>
+                            <p style="margin-top: 16px;">Run <code style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px;">python scripts/generate_data.py</code> to generate data files.</p>
                         </div>
                     </div>
                 `;
