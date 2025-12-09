@@ -1066,10 +1066,11 @@
             }
             const geoData = appState.viewType === 'state' ? appState.stateGeoData : appState.districtGeoData;
             const enrichedGeoData = enrichGeoDataWithValues(geoData, dataMap, null, appState.metric);
-            const allValues = filteredData.map(d => d[appState.metric]).filter(v => !isNaN(v) && v !== null);
-            const nonZeroValues = allValues.filter(v => Math.abs(v) > 0.0001);
-            const min = nonZeroValues.length > 0 ? Math.min(...nonZeroValues) : 0;
-            const max = nonZeroValues.length > 0 ? Math.max(...nonZeroValues) : 1;
+            // Get all values for states that have a program (cost > 0)
+            const statesWithProgram = filteredData.filter(d => Math.abs(d.cost || 0) >= 0.01);
+            const allValues = statesWithProgram.map(d => d[appState.metric]).filter(v => !isNaN(v) && v !== null);
+            const min = allValues.length > 0 ? Math.min(...allValues) : 0;
+            const max = allValues.length > 0 ? Math.max(...allValues) : 1;
             enrichedGeoData.features.forEach((feature, index) => {
                 feature.id = index;
                 const value = feature.properties.value;
@@ -1087,9 +1088,14 @@
                     feature.properties.fillColor = ZERO_COLOR;
                     feature.properties.isNA = true;
                 } else {
-                    let ratio = max > min ? (value - min) / (max - min) : 0;
-                    ratio = Math.sqrt(ratio);
-                    const idx = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
+                    // For states with a program, map the metric value to the color scale
+                    // Values at min get the lightest color (index 0), values at max get darkest
+                    let ratio = 0;
+                    if (max > min) {
+                        ratio = Math.max(0, (value - min) / (max - min));
+                        ratio = Math.sqrt(ratio);  // Apply sqrt for better distribution
+                    }
+                    const idx = Math.max(0, Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1));
                     feature.properties.fillColor = COLOR_SCALE[idx];
                     feature.properties.isNA = false;
                 }
