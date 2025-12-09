@@ -1,0 +1,1756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>State Tax Credits Impact | PolicyEngine</title>
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    <link
+      href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* PolicyEngine Teal Palette */
+        --teal-900: #134e4a;
+        --teal-800: #115e59;
+        --teal-700: #0f766e;
+        --teal-600: #0d9488;
+        --teal-500: #14b8a6;
+        --teal-400: #2dd4bf;
+        --teal-300: #5eead4;
+        --teal-200: #99f6e4;
+        --teal-100: #ccfbf1;
+        --teal-50: #f0fdfa;
+
+        /* Neutrals */
+        --slate-900: #0f172a;
+        --slate-800: #1e293b;
+        --slate-700: #334155;
+        --slate-600: #475569;
+        --slate-500: #64748b;
+        --slate-400: #94a3b8;
+        --slate-300: #cbd5e1;
+        --slate-200: #e2e8f0;
+        --slate-100: #f1f5f9;
+        --slate-50: #f8fafc;
+        --white: #ffffff;
+
+        /* Semantic */
+        --success: #059669;
+        --error: #dc2626;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: var(--slate-50);
+        color: var(--slate-800);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* PolicyEngine Header */
+      .masthead {
+        background: var(--teal-800);
+        padding: 14px 0;
+        border-bottom: 3px solid var(--teal-400);
+      }
+
+      .masthead-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .masthead-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .masthead-logo img {
+        height: 32px;
+        filter: brightness(0) invert(1);
+      }
+
+      .masthead-tagline {
+        font-family: "Inter", sans-serif;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--teal-800) 0%,
+          var(--teal-900) 100%
+        );
+        color: white;
+        padding: 72px 32px 96px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          var(--teal-600) 0%,
+          transparent 70%
+        );
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          var(--teal-500) 0%,
+          transparent 70%
+        );
+        opacity: 0.1;
+        pointer-events: none;
+      }
+
+      .hero-inner {
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        text-align: center;
+      }
+
+      .hero-label {
+        display: inline-block;
+        background: var(--teal-500);
+        color: var(--teal-900);
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 6px 16px;
+        margin-bottom: 24px;
+        border-radius: 100px;
+      }
+
+      .hero h1 {
+        font-family: "Inter", sans-serif;
+        font-size: clamp(32px, 5vw, 56px);
+        font-weight: 600;
+        line-height: 1.15;
+        margin-bottom: 20px;
+        letter-spacing: -0.5px;
+      }
+
+      .hero-subtitle {
+        font-size: 18px;
+        font-weight: 300;
+        color: var(--teal-100);
+        max-width: 620px;
+        margin: 0 auto;
+        line-height: 1.7;
+      }
+
+      /* Stats Banner */
+      .stats-banner {
+        max-width: 1200px;
+        margin: -48px auto 0;
+        padding: 0 32px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow:
+          0 4px 24px rgba(0, 0, 0, 0.06),
+          0 1px 3px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+      }
+
+      .stat-item {
+        padding: 28px 24px;
+        text-align: center;
+        border-right: 1px solid var(--slate-100);
+        position: relative;
+        transition: background 0.2s ease;
+      }
+
+      .stat-item:last-child {
+        border-right: none;
+      }
+
+      .stat-item:hover {
+        background: var(--teal-50);
+      }
+
+      .stat-eyebrow {
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--teal-700);
+        margin-bottom: 8px;
+      }
+
+      .stat-number {
+        font-family: "Inter", sans-serif;
+        font-size: 38px;
+        font-weight: 600;
+        color: var(--slate-900);
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+
+      .stat-context {
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        color: var(--slate-500);
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 48px 32px;
+      }
+
+      /* Control Bar */
+      .control-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 24px;
+        padding: 20px 24px;
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        margin-bottom: 24px;
+      }
+
+      .control-section {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+
+      .control-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .control-label {
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--slate-500);
+      }
+
+      .pill-group {
+        display: flex;
+        background: var(--slate-100);
+        border-radius: 8px;
+        padding: 4px;
+        gap: 2px;
+      }
+
+      .pill-btn {
+        padding: 8px 16px;
+        border: none;
+        background: transparent;
+        color: var(--slate-600);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .pill-btn:hover {
+        color: var(--slate-800);
+        background: var(--slate-200);
+      }
+
+      .pill-btn.active {
+        background: var(--teal-600);
+        color: white;
+        box-shadow: 0 2px 4px rgba(13, 148, 136, 0.3);
+      }
+
+      .metric-dropdown {
+        appearance: none;
+        background: var(--slate-50)
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L2 4h8z'/%3E%3C/svg%3E")
+          no-repeat right 14px center;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 10px 40px 10px 16px;
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--slate-700);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .metric-dropdown:hover {
+        border-color: var(--slate-300);
+        background-color: var(--white);
+      }
+
+      .metric-dropdown:focus {
+        outline: none;
+        border-color: var(--teal-500);
+        box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+      }
+
+      /* Map Section */
+      .visualization {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 24px;
+      }
+
+      @media (max-width: 1100px) {
+        .visualization {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .map-container {
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .map-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--slate-100);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .map-title {
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--slate-800);
+      }
+
+      .map-hint {
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        color: var(--slate-400);
+      }
+
+      #map-container {
+        width: 100%;
+        height: 560px;
+      }
+
+      /* Legend */
+      .map-legend {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        background: var(--white);
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        min-width: 130px;
+        z-index: 10;
+      }
+
+      .legend-title {
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--slate-500);
+        margin-bottom: 12px;
+      }
+
+      .legend-scale {
+        display: flex;
+        gap: 10px;
+      }
+
+      .legend-gradient {
+        width: 14px;
+        height: 90px;
+        border-radius: 4px;
+        background: linear-gradient(
+          to bottom,
+          var(--teal-900),
+          var(--teal-700),
+          var(--teal-500),
+          var(--teal-400),
+          var(--teal-200),
+          var(--teal-50)
+        );
+      }
+
+      .legend-labels {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--slate-600);
+      }
+
+      .legend-zero {
+        margin-top: 12px;
+        padding-top: 10px;
+        border-top: 1px solid var(--slate-100);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .legend-zero-swatch {
+        width: 14px;
+        height: 10px;
+        background: var(--slate-300);
+        border-radius: 3px;
+      }
+
+      .legend-zero-text {
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        color: var(--slate-500);
+      }
+
+      /* Detail Panel */
+      .detail-panel {
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+        position: sticky;
+        top: 24px;
+      }
+
+      .detail-header {
+        background: linear-gradient(
+          135deg,
+          var(--teal-700) 0%,
+          var(--teal-800) 100%
+        );
+        color: white;
+        padding: 24px;
+      }
+
+      .detail-region {
+        font-family: "Inter", sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .detail-subtitle {
+        font-size: 13px;
+        color: var(--teal-200);
+      }
+
+      .detail-empty {
+        padding: 60px 24px;
+        text-align: center;
+      }
+
+      .detail-empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.4;
+      }
+
+      .detail-empty p {
+        color: var(--slate-500);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .detail-metrics {
+        padding: 8px 0;
+      }
+
+      .detail-metric {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--slate-100);
+        transition: background 0.15s ease;
+      }
+
+      .detail-metric:last-child {
+        border-bottom: none;
+      }
+
+      .detail-metric:hover {
+        background: var(--slate-50);
+      }
+
+      .detail-metric-label {
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        color: var(--slate-500);
+        font-weight: 500;
+      }
+
+      .detail-metric-value {
+        font-family: "Inter", sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--slate-800);
+      }
+
+      .detail-metric-value.positive {
+        color: var(--success);
+      }
+
+      /* Loading State */
+      .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 120px 40px;
+        color: var(--slate-500);
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--slate-200);
+        border-top-color: var(--teal-500);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 20px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--teal-900);
+        color: var(--teal-300);
+        padding: 40px 32px;
+        margin-top: 64px;
+        text-align: center;
+        font-size: 13px;
+      }
+
+      .footer a {
+        color: var(--teal-200);
+        text-decoration: none;
+        border-bottom: 1px solid var(--teal-700);
+        transition: all 0.2s ease;
+      }
+
+      .footer a:hover {
+        color: white;
+        border-bottom-color: var(--teal-400);
+      }
+
+      /* Popup Styling */
+      .maplibregl-popup-content {
+        padding: 14px 18px;
+        border-radius: 10px;
+        font-family: "Inter", sans-serif;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        border: none;
+      }
+
+      .maplibregl-popup-tip {
+        border-top-color: white !important;
+      }
+
+      .popup-title {
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        color: var(--slate-800);
+        margin-bottom: 6px;
+        line-height: 1.3;
+      }
+
+      .popup-value {
+        font-size: 13px;
+        color: var(--slate-500);
+        line-height: 1.5;
+      }
+
+      .popup-value strong {
+        color: var(--slate-700);
+        font-weight: 600;
+      }
+
+      .popup-hint {
+        font-size: 11px;
+        color: var(--teal-600);
+        margin-top: 8px;
+        font-weight: 600;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stat-item {
+          border-right: none;
+          border-bottom: 1px solid var(--slate-100);
+        }
+
+        .stat-item:last-child {
+          border-bottom: none;
+        }
+
+        .control-bar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .control-section {
+          flex-wrap: wrap;
+        }
+
+        .hero {
+          padding: 56px 24px 72px;
+        }
+
+        .hero h1 {
+          font-size: 28px;
+        }
+      }
+
+      /* Animation on load */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .stats-grid {
+        animation: fadeInUp 0.5s ease-out 0.1s both;
+      }
+
+      .control-bar {
+        animation: fadeInUp 0.5s ease-out 0.2s both;
+      }
+
+      .visualization {
+        animation: fadeInUp 0.5s ease-out 0.3s both;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="masthead-inner">
+        <a href="https://policyengine.org" class="masthead-logo">
+          <img src="policyengine-logo.svg" alt="PolicyEngine" />
+        </a>
+        <span class="masthead-tagline">Data & Analysis</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="hero-label">Interactive Analysis</span>
+        <h1>The Impact of State Tax Credits on American Families</h1>
+        <p class="hero-subtitle">
+          Explore how state-level Earned Income Tax Credits and Child Tax
+          Credits reduce poverty across communities. Data powered by
+          PolicyEngine microsimulation.
+        </p>
+      </div>
+    </section>
+
+    <div id="root">
+      <div class="stats-banner">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="loading-spinner"></div>
+            <div class="stat-context">Loading data...</div>
+          </div>
+          <div class="stat-item">
+            <div class="loading-spinner"></div>
+            <div class="stat-context">Loading data...</div>
+          </div>
+          <div class="stat-item">
+            <div class="loading-spinner"></div>
+            <div class="stat-context">Loading data...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      Data calculated using PolicyEngine microsimulation model for 2025
+      &nbsp;|&nbsp;
+      <a href="https://policyengine.org" target="_blank">policyengine.org</a>
+    </footer>
+
+    <script>
+      // State codes and names
+      const STATE_CODES = {
+        AL: "Alabama",
+        AK: "Alaska",
+        AZ: "Arizona",
+        AR: "Arkansas",
+        CA: "California",
+        CO: "Colorado",
+        CT: "Connecticut",
+        DE: "Delaware",
+        DC: "District of Columbia",
+        FL: "Florida",
+        GA: "Georgia",
+        HI: "Hawaii",
+        ID: "Idaho",
+        IL: "Illinois",
+        IN: "Indiana",
+        IA: "Iowa",
+        KS: "Kansas",
+        KY: "Kentucky",
+        LA: "Louisiana",
+        ME: "Maine",
+        MD: "Maryland",
+        MA: "Massachusetts",
+        MI: "Michigan",
+        MN: "Minnesota",
+        MS: "Mississippi",
+        MO: "Missouri",
+        MT: "Montana",
+        NE: "Nebraska",
+        NV: "Nevada",
+        NH: "New Hampshire",
+        NJ: "New Jersey",
+        NM: "New Mexico",
+        NY: "New York",
+        NC: "North Carolina",
+        ND: "North Dakota",
+        OH: "Ohio",
+        OK: "Oklahoma",
+        OR: "Oregon",
+        PA: "Pennsylvania",
+        RI: "Rhode Island",
+        SC: "South Carolina",
+        SD: "South Dakota",
+        TN: "Tennessee",
+        TX: "Texas",
+        UT: "Utah",
+        VT: "Vermont",
+        VA: "Virginia",
+        WA: "Washington",
+        WV: "West Virginia",
+        WI: "Wisconsin",
+        WY: "Wyoming",
+      };
+
+      const STATE_FIPS_NAMES = {
+        1: "Alabama",
+        2: "Alaska",
+        4: "Arizona",
+        5: "Arkansas",
+        6: "California",
+        8: "Colorado",
+        9: "Connecticut",
+        10: "Delaware",
+        11: "District of Columbia",
+        12: "Florida",
+        13: "Georgia",
+        15: "Hawaii",
+        16: "Idaho",
+        17: "Illinois",
+        18: "Indiana",
+        19: "Iowa",
+        20: "Kansas",
+        21: "Kentucky",
+        22: "Louisiana",
+        23: "Maine",
+        24: "Maryland",
+        25: "Massachusetts",
+        26: "Michigan",
+        27: "Minnesota",
+        28: "Mississippi",
+        29: "Missouri",
+        30: "Montana",
+        31: "Nebraska",
+        32: "Nevada",
+        33: "New Hampshire",
+        34: "New Jersey",
+        35: "New Mexico",
+        36: "New York",
+        37: "North Carolina",
+        38: "North Dakota",
+        39: "Ohio",
+        40: "Oklahoma",
+        41: "Oregon",
+        42: "Pennsylvania",
+        44: "Rhode Island",
+        45: "South Carolina",
+        46: "South Dakota",
+        47: "Tennessee",
+        48: "Texas",
+        49: "Utah",
+        50: "Vermont",
+        51: "Virginia",
+        53: "Washington",
+        54: "West Virginia",
+        55: "Wisconsin",
+        56: "Wyoming",
+      };
+
+      const STATE_FIPS_TO_CODE = {
+        1: "AL",
+        2: "AK",
+        4: "AZ",
+        5: "AR",
+        6: "CA",
+        8: "CO",
+        9: "CT",
+        10: "DE",
+        11: "DC",
+        12: "FL",
+        13: "GA",
+        15: "HI",
+        16: "ID",
+        17: "IL",
+        18: "IN",
+        19: "IA",
+        20: "KS",
+        21: "KY",
+        22: "LA",
+        23: "ME",
+        24: "MD",
+        25: "MA",
+        26: "MI",
+        27: "MN",
+        28: "MS",
+        29: "MO",
+        30: "MT",
+        31: "NE",
+        32: "NV",
+        33: "NH",
+        34: "NJ",
+        35: "NM",
+        36: "NY",
+        37: "NC",
+        38: "ND",
+        39: "OH",
+        40: "OK",
+        41: "OR",
+        42: "PA",
+        44: "RI",
+        45: "SC",
+        46: "SD",
+        47: "TN",
+        48: "TX",
+        49: "UT",
+        50: "VT",
+        51: "VA",
+        53: "WA",
+        54: "WV",
+        55: "WI",
+        56: "WY",
+      };
+
+      const STATE_NAME_TO_CODE = {};
+      Object.entries(STATE_CODES).forEach(([code, name]) => {
+        STATE_NAME_TO_CODE[name] = code;
+      });
+
+      const METRICS = {
+        cost: {
+          label: "Total Cost",
+          format: "currency",
+          colorscaleReverse: false,
+        },
+        poverty_pct_cut: {
+          label: "Poverty Reduction",
+          format: "percent",
+          colorscaleReverse: false,
+        },
+        child_poverty_pct_cut: {
+          label: "Child Poverty Reduction",
+          format: "percent",
+          colorscaleReverse: false,
+        },
+      };
+
+      // PolicyEngine teal color scale
+      const ZERO_COLOR = "#CBD5E1"; // slate-300 for states with no program
+      const NO_DATA_COLOR = "#CBD5E1"; // same as ZERO_COLOR for consistency
+      const COLOR_SCALE = [
+        "#F0FDFA", // teal-50
+        "#CCFBF1", // teal-100
+        "#5EEAD4", // teal-300
+        "#14B8A6", // teal-500
+        "#0F766E", // teal-700
+        "#134E4A", // teal-900
+      ];
+
+      let appState = {
+        viewType: "state",
+        creditType: "CTCs and EITCs",
+        metric: "cost",
+        stateData: null,
+        districtData: null,
+        stateGeoData: null,
+        districtGeoData: null,
+        selectedRegion: null,
+        map: null,
+        popup: null,
+      };
+
+      function parseCSV(text) {
+        const lines = text.trim().split("\n");
+        const headers = lines[0].split(",");
+        const data = [];
+        for (let i = 1; i < lines.length; i++) {
+          const values = lines[i].split(",");
+          const row = {};
+          headers.forEach((header, idx) => {
+            const val = values[idx];
+            row[header] = isNaN(val) ? val : parseFloat(val);
+          });
+          data.push(row);
+        }
+        return data;
+      }
+
+      function formatValue(value, format) {
+        if (value === null || value === undefined || isNaN(value)) return "N/A";
+        if (format === "currency") {
+          const absValue = Math.abs(value);
+          if (absValue >= 1e9) return "$" + (value / 1e9).toFixed(2) + "B";
+          if (absValue >= 1e6) return "$" + (value / 1e6).toFixed(1) + "M";
+          if (absValue >= 1e3) return "$" + (value / 1e3).toFixed(1) + "K";
+          return "$" + value.toFixed(0);
+        } else if (format === "percent") {
+          return (value * 100).toFixed(2) + "%";
+        }
+        return value.toFixed(2);
+      }
+
+      function filterData(data, creditType) {
+        return data.filter((row) => row.reform_type === creditType);
+      }
+
+      function calculateStats(data, metric) {
+        const values = data
+          .map((d) => d[metric])
+          .filter((v) => !isNaN(v) && v !== null);
+        const total = values.reduce((a, b) => a + b, 0);
+        const avg = total / values.length;
+        const max = Math.max(...values);
+        const min = Math.min(...values);
+        return { total, avg, max, min, count: values.length };
+      }
+
+      function getRegionData(regionId) {
+        const filteredData =
+          appState.viewType === "state"
+            ? filterData(appState.stateData, appState.creditType)
+            : filterData(appState.districtData, appState.creditType);
+        if (appState.viewType === "state") {
+          return filteredData.find((d) => d.state === regionId);
+        } else {
+          return filteredData.find(
+            (d) => d.congressional_district_geoid === regionId,
+          );
+        }
+      }
+
+      function renderDetailPanel() {
+        const region = appState.selectedRegion;
+        if (!region) {
+          return `
+                    <div class="detail-panel">
+                        <div class="detail-empty">
+                            <div class="detail-empty-icon">📍</div>
+                            <p>Select a ${appState.viewType === "state" ? "state" : "district"} on the map to explore detailed impact metrics</p>
+                        </div>
+                    </div>
+                `;
+        }
+        const data = getRegionData(region.id);
+        if (!data) {
+          return `
+                    <div class="detail-panel">
+                        <div class="detail-empty">
+                            <p>No data available for this region</p>
+                        </div>
+                    </div>
+                `;
+        }
+
+        // Check if this region has no program (cost is 0 or near 0)
+        const hasNoProgram = Math.abs(data.cost || 0) < 0.01;
+
+        if (hasNoProgram) {
+          return `
+                    <div class="detail-panel">
+                        <div class="detail-header">
+                            <div class="detail-region">${region.name}</div>
+                            <div class="detail-subtitle">${appState.creditType} Impact Analysis</div>
+                        </div>
+                        <div class="detail-empty" style="padding: 40px 24px;">
+                            <p style="color: var(--slate-500); font-size: 15px;">
+                                <strong>N/A</strong><br><br>
+                                This ${appState.viewType === "state" ? "state" : "district"} does not have a ${appState.creditType === "CTCs" ? "state Child Tax Credit" : appState.creditType === "EITCs" ? "state Earned Income Tax Credit" : "state CTC or EITC"} program.
+                            </p>
+                        </div>
+                    </div>
+                `;
+        }
+
+        const metrics = [
+          { key: "cost", label: "Total Cost", format: "currency" },
+          {
+            key: "poverty_pct_cut",
+            label: "Poverty Reduction",
+            format: "percent",
+          },
+          {
+            key: "child_poverty_pct_cut",
+            label: "Child Poverty Reduction",
+            format: "percent",
+          },
+        ];
+        return `
+                <div class="detail-panel">
+                    <div class="detail-header">
+                        <div class="detail-region">${region.name}</div>
+                        <div class="detail-subtitle">${appState.creditType} Impact Analysis</div>
+                    </div>
+                    <div class="detail-metrics">
+                        ${metrics
+                          .map((m) => {
+                            const value = data[m.key];
+                            const formattedValue = formatValue(value, m.format);
+                            const valueClass =
+                              m.format === "percent" && value > 0
+                                ? "positive"
+                                : "";
+                            return `
+                                <div class="detail-metric">
+                                    <span class="detail-metric-label">${m.label}</span>
+                                    <span class="detail-metric-value ${valueClass}">${formattedValue}</span>
+                                </div>
+                            `;
+                          })
+                          .join("")}
+                    </div>
+                </div>
+            `;
+      }
+
+      function updateLegend(min, max, metricInfo) {
+        const maxEl = document.getElementById("legend-max");
+        const minEl = document.getElementById("legend-min");
+        const titleEl = document.getElementById("legend-title");
+        if (maxEl) maxEl.textContent = formatValue(max, metricInfo.format);
+        if (minEl) minEl.textContent = formatValue(min, metricInfo.format);
+        if (titleEl) titleEl.textContent = metricInfo.label;
+      }
+
+      function enrichGeoDataWithValues(geoData, dataMap, idField, metricKey) {
+        return {
+          type: "FeatureCollection",
+          features: geoData.features.map((feature) => {
+            let id;
+            if (appState.viewType === "state") {
+              const stateName = feature.properties.name;
+              id = STATE_NAME_TO_CODE[stateName];
+            } else {
+              if (feature.properties.GEOID) {
+                id = parseInt(feature.properties.GEOID, 10);
+              } else if (feature.properties.cd_id) {
+                id = feature.properties.cd_id;
+              }
+            }
+            const rowData = dataMap[id];
+            const value = rowData ? rowData[metricKey] : null;
+            return {
+              ...feature,
+              properties: {
+                ...feature.properties,
+                value: value,
+                dataId: id,
+              },
+            };
+          }),
+        };
+      }
+
+      function initMap() {
+        if (appState.map) {
+          appState.map.remove();
+        }
+        appState.map = new maplibregl.Map({
+          container: "map-container",
+          style: {
+            version: 8,
+            sources: {},
+            layers: [
+              {
+                id: "background",
+                type: "background",
+                paint: { "background-color": "#FFFFFF" },
+              },
+            ],
+          },
+          center: [-98, 39],
+          zoom: 3.5,
+          minZoom: 2,
+          maxZoom: 10,
+          pixelRatio: window.devicePixelRatio || 1,
+          antialias: true,
+        });
+        appState.popup = new maplibregl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+        });
+        appState.map.on("load", () => {
+          renderMapLayer();
+          setupMapEventHandlers();
+        });
+      }
+
+      function setupMapEventHandlers() {
+        const map = appState.map;
+        map.getCanvas().addEventListener("dblclick", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          map.flyTo({ center: [-98, 39], zoom: 3.5, duration: 1000 });
+        });
+        let hoveredFeatureId = null;
+        map.on("mousemove", "regions-fill", (e) => {
+          if (e.features.length > 0) {
+            map.getCanvas().style.cursor = "pointer";
+            const feature = e.features[0];
+            const featureId = feature.id;
+            const value = feature.properties.value;
+            const dataId = feature.properties.dataId;
+            const isNA = feature.properties.isNA;
+            const metricInfo = METRICS[appState.metric];
+            if (hoveredFeatureId !== featureId) {
+              if (hoveredFeatureId !== null) {
+                map.setFeatureState(
+                  { source: "regions", id: hoveredFeatureId },
+                  { hover: false },
+                );
+              }
+              hoveredFeatureId = featureId;
+              map.setFeatureState(
+                { source: "regions", id: featureId },
+                { hover: true },
+              );
+            }
+            let name;
+            if (appState.viewType === "state") {
+              name = STATE_CODES[dataId] || feature.properties.name || dataId;
+            } else {
+              const stateFips = Math.floor(dataId / 100);
+              const districtNum = dataId % 100;
+              const stateName = STATE_FIPS_NAMES[stateFips] || "Unknown";
+              const districtLabel =
+                feature.properties.NAMELSAD || `District ${districtNum}`;
+              name = `${stateName}<br>${districtLabel}`;
+            }
+            const displayValue = isNA
+              ? "N/A - No program"
+              : formatValue(value, metricInfo.format);
+            const html = `
+                        <div class="popup-title">${name}</div>
+                        <div class="popup-value"><strong>${metricInfo.label}:</strong> ${displayValue}</div>
+                        ${!isNA ? '<div class="popup-hint">Click to explore →</div>' : ""}
+                    `;
+            appState.popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
+          }
+        });
+        map.on("mouseleave", "regions-fill", () => {
+          map.getCanvas().style.cursor = "";
+          appState.popup.remove();
+          if (hoveredFeatureId !== null) {
+            map.setFeatureState(
+              { source: "regions", id: hoveredFeatureId },
+              { hover: false },
+            );
+            hoveredFeatureId = null;
+          }
+        });
+        map.on("click", "regions-fill", (e) => {
+          if (e.features.length > 0) {
+            const feature = e.features[0];
+            const dataId = feature.properties.dataId;
+            let regionName;
+            if (appState.viewType === "state") {
+              regionName =
+                STATE_CODES[dataId] || feature.properties.name || dataId;
+            } else {
+              const stateFips = Math.floor(dataId / 100);
+              const districtNum = dataId % 100;
+              const stateName = STATE_FIPS_NAMES[stateFips] || "Unknown";
+              regionName = `${stateName} District ${districtNum}`;
+            }
+            appState.selectedRegion = { id: dataId, name: regionName };
+            document.getElementById("detail-container").innerHTML =
+              renderDetailPanel();
+          }
+        });
+      }
+
+      function renderMapLayer() {
+        const filteredData =
+          appState.viewType === "state"
+            ? filterData(appState.stateData, appState.creditType)
+            : filterData(appState.districtData, appState.creditType);
+        const metricInfo = METRICS[appState.metric];
+        const dataMap = {};
+        if (appState.viewType === "state") {
+          filteredData.forEach((row) => {
+            dataMap[row.state] = row;
+          });
+        } else {
+          filteredData.forEach((row) => {
+            dataMap[row.congressional_district_geoid] = row;
+          });
+        }
+        const geoData =
+          appState.viewType === "state"
+            ? appState.stateGeoData
+            : appState.districtGeoData;
+        const enrichedGeoData = enrichGeoDataWithValues(
+          geoData,
+          dataMap,
+          null,
+          appState.metric,
+        );
+        // Get all values for states that have a program (cost > 0)
+        const statesWithProgram = filteredData.filter(
+          (d) => Math.abs(d.cost || 0) >= 0.01,
+        );
+        const allValues = statesWithProgram
+          .map((d) => d[appState.metric])
+          .filter((v) => !isNaN(v) && v !== null);
+        const min = allValues.length > 0 ? Math.min(...allValues) : 0;
+        const max = allValues.length > 0 ? Math.max(...allValues) : 1;
+        enrichedGeoData.features.forEach((feature, index) => {
+          feature.id = index;
+          const value = feature.properties.value;
+          const dataId = feature.properties.dataId;
+          const rowData = dataMap[dataId];
+
+          // Check if this region has no program (cost is 0 or near 0)
+          const hasNoProgram = !rowData || Math.abs(rowData.cost || 0) < 0.01;
+
+          if (value === null || value === undefined || isNaN(value)) {
+            feature.properties.fillColor = NO_DATA_COLOR;
+            feature.properties.isNA = true;
+          } else if (hasNoProgram) {
+            // State/district has no program for this credit type
+            feature.properties.fillColor = ZERO_COLOR;
+            feature.properties.isNA = true;
+          } else {
+            // For states with a program, map the metric value to the color scale
+            // Values at min get the lightest color (index 0), values at max get darkest
+            let ratio = 0;
+            if (max > min) {
+              ratio = Math.max(0, (value - min) / (max - min));
+              ratio = Math.sqrt(ratio); // Apply sqrt for better distribution
+            }
+            const idx = Math.max(
+              0,
+              Math.min(
+                Math.floor(ratio * (COLOR_SCALE.length - 1)),
+                COLOR_SCALE.length - 1,
+              ),
+            );
+            feature.properties.fillColor = COLOR_SCALE[idx];
+            feature.properties.isNA = false;
+          }
+        });
+        if (appState.map.getLayer("regions-fill"))
+          appState.map.removeLayer("regions-fill");
+        if (appState.map.getLayer("regions-line"))
+          appState.map.removeLayer("regions-line");
+        if (appState.map.getLayer("regions-hover-line"))
+          appState.map.removeLayer("regions-hover-line");
+        if (appState.map.getSource("regions"))
+          appState.map.removeSource("regions");
+        appState.map.addSource("regions", {
+          type: "geojson",
+          data: enrichedGeoData,
+          tolerance: 0.1,
+        });
+        appState.map.addLayer({
+          id: "regions-fill",
+          type: "fill",
+          source: "regions",
+          paint: {
+            "fill-color": ["get", "fillColor"],
+            "fill-opacity": 1.0,
+            "fill-antialias": false,
+          },
+        });
+        appState.map.addLayer({
+          id: "regions-line",
+          type: "line",
+          source: "regions",
+          paint: {
+            "line-color": "#94A3B8", // slate-400 for visible borders
+            "line-width": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              3,
+              0.8,
+              5,
+              1.2,
+              8,
+              2,
+            ],
+          },
+        });
+        appState.map.addLayer({
+          id: "regions-hover-line",
+          type: "line",
+          source: "regions",
+          paint: {
+            "line-color": "#134E4A", // teal-900
+            "line-width": 3,
+            "line-opacity": [
+              "case",
+              ["boolean", ["feature-state", "hover"], false],
+              1,
+              0,
+            ],
+          },
+        });
+        updateLegend(min, max, metricInfo);
+      }
+
+      function renderUI() {
+        const metricInfo = METRICS[appState.metric];
+        const viewLabel =
+          appState.viewType === "state" ? "States" : "Congressional Districts";
+        const filteredData =
+          appState.viewType === "state"
+            ? filterData(appState.stateData, appState.creditType)
+            : filterData(appState.districtData, appState.creditType);
+        const totalCost = filteredData.reduce(
+          (sum, d) => sum + (d.cost || 0),
+          0,
+        );
+        const avgPoverty =
+          filteredData.reduce((sum, d) => sum + (d.poverty_pct_cut || 0), 0) /
+          filteredData.length;
+        const avgChildPoverty =
+          filteredData.reduce(
+            (sum, d) => sum + (d.child_poverty_pct_cut || 0),
+            0,
+          ) / filteredData.length;
+
+        const html = `
+                <div class="stats-banner">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-eyebrow">Total Investment</div>
+                            <div class="stat-number">${formatValue(totalCost, "currency")}</div>
+                            <div class="stat-context">across all ${viewLabel.toLowerCase()}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-eyebrow">Poverty Reduction</div>
+                            <div class="stat-number">${formatValue(avgPoverty, "percent")}</div>
+                            <div class="stat-context">average decrease</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-eyebrow">Child Poverty Reduction</div>
+                            <div class="stat-number">${formatValue(avgChildPoverty, "percent")}</div>
+                            <div class="stat-context">average decrease</div>
+                        </div>
+                    </div>
+                </div>
+
+                <main class="main-content">
+                    <div class="control-bar">
+                        <div class="control-section">
+                            <div class="control-group">
+                                <span class="control-label">View</span>
+                                <div class="pill-group">
+                                    <button class="pill-btn ${appState.viewType === "state" ? "active" : ""}" onclick="setViewType('state')">States</button>
+                                    <button class="pill-btn ${appState.viewType === "district" ? "active" : ""}" onclick="setViewType('district')">Districts</button>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <span class="control-label">Credit Type</span>
+                                <div class="pill-group">
+                                    <button class="pill-btn ${appState.creditType === "CTCs" ? "active" : ""}" onclick="setCreditType('CTCs')">CTC</button>
+                                    <button class="pill-btn ${appState.creditType === "EITCs" ? "active" : ""}" onclick="setCreditType('EITCs')">EITC</button>
+                                    <button class="pill-btn ${appState.creditType === "CTCs and EITCs" ? "active" : ""}" onclick="setCreditType('CTCs and EITCs')">Both</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <span class="control-label">Metric</span>
+                            <select class="metric-dropdown" onchange="setMetric(this.value)">
+                                ${Object.entries(METRICS)
+                                  .map(
+                                    ([key, val]) =>
+                                      `<option value="${key}" ${key === appState.metric ? "selected" : ""}>${val.label}</option>`,
+                                  )
+                                  .join("")}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="visualization">
+                        <div class="map-container">
+                            <div class="map-header">
+                                <span class="map-title">${metricInfo.label} by ${viewLabel}</span>
+                            </div>
+                            <div id="map-container"></div>
+                            <div class="map-legend">
+                                <div class="legend-title" id="legend-title">${metricInfo.label}</div>
+                                <div class="legend-scale">
+                                    <div class="legend-gradient"></div>
+                                    <div class="legend-labels">
+                                        <span id="legend-max">--</span>
+                                        <span id="legend-min">--</span>
+                                    </div>
+                                </div>
+                                <div class="legend-zero">
+                                    <div class="legend-zero-swatch"></div>
+                                    <span class="legend-zero-text">No program</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="detail-container">
+                            ${renderDetailPanel()}
+                        </div>
+                    </div>
+                </main>
+            `;
+        document.getElementById("root").innerHTML = html;
+        initMap();
+      }
+
+      function updateStats() {
+        const filteredData =
+          appState.viewType === "state"
+            ? filterData(appState.stateData, appState.creditType)
+            : filterData(appState.districtData, appState.creditType);
+        const viewLabel =
+          appState.viewType === "state" ? "states" : "congressional districts";
+
+        const totalCost = filteredData.reduce(
+          (sum, d) => sum + (d.cost || 0),
+          0,
+        );
+        const avgPoverty =
+          filteredData.reduce((sum, d) => sum + (d.poverty_pct_cut || 0), 0) /
+          filteredData.length;
+        const avgChildPoverty =
+          filteredData.reduce(
+            (sum, d) => sum + (d.child_poverty_pct_cut || 0),
+            0,
+          ) / filteredData.length;
+
+        // Update stat values
+        const statItems = document.querySelectorAll(".stat-item");
+        if (statItems.length >= 3) {
+          statItems[0].querySelector(".stat-number").textContent = formatValue(
+            totalCost,
+            "currency",
+          );
+          statItems[0].querySelector(".stat-context").textContent =
+            `across all ${viewLabel}`;
+          statItems[1].querySelector(".stat-number").textContent = formatValue(
+            avgPoverty,
+            "percent",
+          );
+          statItems[2].querySelector(".stat-number").textContent = formatValue(
+            avgChildPoverty,
+            "percent",
+          );
+        }
+      }
+
+      function updateToggleButtons() {
+        // Update view type buttons
+        document.querySelectorAll(".control-group").forEach((group, idx) => {
+          if (idx === 0) {
+            group.querySelectorAll(".pill-btn").forEach((btn) => {
+              btn.classList.toggle(
+                "active",
+                btn.textContent ===
+                  (appState.viewType === "state" ? "States" : "Districts"),
+              );
+            });
+          } else if (idx === 1) {
+            group.querySelectorAll(".pill-btn").forEach((btn) => {
+              const btnType =
+                btn.textContent === "CTC"
+                  ? "CTCs"
+                  : btn.textContent === "EITC"
+                    ? "EITCs"
+                    : "CTCs and EITCs";
+              btn.classList.toggle("active", btnType === appState.creditType);
+            });
+          }
+        });
+
+        // Update map title
+        const mapTitle = document.querySelector(".map-title");
+        if (mapTitle) {
+          const metricInfo = METRICS[appState.metric];
+          const viewLabel =
+            appState.viewType === "state"
+              ? "States"
+              : "Congressional Districts";
+          mapTitle.textContent = `${metricInfo.label} by ${viewLabel}`;
+        }
+      }
+
+      function setViewType(type) {
+        appState.viewType = type;
+        appState.selectedRegion = null;
+        updateToggleButtons();
+        updateStats();
+        if (appState.map && appState.map.loaded()) {
+          renderMapLayer();
+          document.getElementById("detail-container").innerHTML =
+            renderDetailPanel();
+        }
+      }
+
+      function setCreditType(type) {
+        appState.creditType = type;
+        updateToggleButtons();
+        updateStats();
+        if (appState.map && appState.map.loaded()) {
+          renderMapLayer();
+          document.getElementById("detail-container").innerHTML =
+            renderDetailPanel();
+        }
+      }
+
+      function setMetric(metric) {
+        appState.metric = metric;
+        updateToggleButtons();
+        if (appState.map && appState.map.loaded()) {
+          renderMapLayer();
+          document.getElementById("detail-container").innerHTML =
+            renderDetailPanel();
+        }
+      }
+
+      async function loadData() {
+        try {
+          const [
+            stateResponse,
+            districtResponse,
+            stateGeoResponse,
+            districtGeoResponse,
+          ] = await Promise.all([
+            fetch("./data/state_impacts.csv"),
+            fetch("./data/district_impacts.csv"),
+            fetch("./data/states_from_districts.geojson"),
+            fetch("./data/real_congressional_districts.geojson"),
+          ]);
+          const stateText = await stateResponse.text();
+          const districtText = await districtResponse.text();
+          const stateGeoJson = await stateGeoResponse.json();
+          const districtGeoJson = await districtGeoResponse.json();
+          appState.stateData = parseCSV(stateText);
+          appState.districtData = parseCSV(districtText);
+
+          function transformAlaska(coords, scale, targetLng, targetLat) {
+            const centerLng = -154,
+              centerLat = 64;
+            if (typeof coords[0] === "number") {
+              return [
+                targetLng + (coords[0] - centerLng) * scale,
+                targetLat + (coords[1] - centerLat) * scale,
+              ];
+            }
+            return coords.map((c) =>
+              transformAlaska(c, scale, targetLng, targetLat),
+            );
+          }
+
+          function transformHawaii(coords, targetLng, targetLat) {
+            const centerLng = -155.5,
+              centerLat = 20;
+            if (typeof coords[0] === "number") {
+              return [
+                targetLng + coords[0] - centerLng,
+                targetLat + coords[1] - centerLat,
+              ];
+            }
+            return coords.map((c) => transformHawaii(c, targetLng, targetLat));
+          }
+
+          const filteredFeatures = stateGeoJson.features
+            .filter((f) => f.properties.name !== "Puerto Rico")
+            .map((f) => {
+              if (f.properties.name === "Alaska") {
+                return {
+                  ...f,
+                  geometry: {
+                    ...f.geometry,
+                    coordinates: transformAlaska(
+                      f.geometry.coordinates,
+                      0.35,
+                      -125,
+                      27,
+                    ),
+                  },
+                };
+              } else if (f.properties.name === "Hawaii") {
+                return {
+                  ...f,
+                  geometry: {
+                    ...f.geometry,
+                    coordinates: transformHawaii(
+                      f.geometry.coordinates,
+                      -108,
+                      27,
+                    ),
+                  },
+                };
+              }
+              return f;
+            });
+
+          appState.stateGeoData = {
+            type: "FeatureCollection",
+            features: filteredFeatures,
+          };
+
+          const transformedDistrictFeatures = districtGeoJson.features.map(
+            (f) => {
+              const stateCode =
+                f.properties.STATEFP ||
+                (f.properties.GEOID
+                  ? f.properties.GEOID.substring(0, 2)
+                  : null);
+              if (stateCode === "02") {
+                return {
+                  ...f,
+                  geometry: {
+                    ...f.geometry,
+                    coordinates: transformAlaska(
+                      f.geometry.coordinates,
+                      0.35,
+                      -125,
+                      27,
+                    ),
+                  },
+                };
+              } else if (stateCode === "15") {
+                return {
+                  ...f,
+                  geometry: {
+                    ...f.geometry,
+                    coordinates: transformHawaii(
+                      f.geometry.coordinates,
+                      -108,
+                      27,
+                    ),
+                  },
+                };
+              }
+              return f;
+            },
+          );
+
+          appState.districtGeoData = {
+            type: "FeatureCollection",
+            features: transformedDistrictFeatures,
+          };
+          appState.usOutlineData = appState.stateGeoData;
+
+          console.log(
+            `Loaded ${appState.stateData.length} state rows, ${appState.districtData.length} district rows`,
+          );
+          renderUI();
+        } catch (err) {
+          console.error("Error loading data:", err);
+          document.getElementById("root").innerHTML = `
+                    <div class="main-content">
+                        <div class="loading">
+                            <p style="color: #dc2626; font-weight: 600;">Error loading data: ${err.message}</p>
+                            <p style="margin-top: 16px;">Run <code style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px;">python scripts/generate_data.py</code> to generate data files.</p>
+                        </div>
+                    </div>
+                `;
+        }
+      }
+
+      loadData();
+    </script>
+  </body>
+</html>
