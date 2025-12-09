@@ -8,23 +8,37 @@
     <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink: #1a1a1a;
-            --ink-light: #2d2d2d;
-            --ink-muted: #6b6b6b;
-            --paper: #faf9f7;
-            --paper-warm: #f5f3ef;
-            --accent: #2563eb;
-            --accent-deep: #1e40af;
-            --accent-glow: rgba(37, 99, 235, 0.08);
-            --emerald: #059669;
-            --emerald-light: #d1fae5;
-            --coral: #dc2626;
-            --gold: #d97706;
-            --divider: #e5e2dc;
-            --divider-dark: #c9c5bc;
+            /* PolicyEngine Teal Palette */
+            --teal-900: #134E4A;
+            --teal-800: #115E59;
+            --teal-700: #0F766E;
+            --teal-600: #0D9488;
+            --teal-500: #14B8A6;
+            --teal-400: #2DD4BF;
+            --teal-300: #5EEAD4;
+            --teal-200: #99F6E4;
+            --teal-100: #CCFBF1;
+            --teal-50: #F0FDFA;
+
+            /* Neutrals */
+            --slate-900: #0F172A;
+            --slate-800: #1E293B;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748B;
+            --slate-400: #94A3B8;
+            --slate-300: #CBD5E1;
+            --slate-200: #E2E8F0;
+            --slate-100: #F1F5F9;
+            --slate-50: #F8FAFC;
+            --white: #FFFFFF;
+
+            /* Semantic */
+            --success: #059669;
+            --error: #DC2626;
         }
 
         * {
@@ -34,18 +48,18 @@
         }
 
         body {
-            font-family: 'Source Sans 3', Georgia, serif;
-            background: var(--paper);
-            color: var(--ink);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--slate-50);
+            color: var(--slate-800);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Editorial Header */
+        /* PolicyEngine Header */
         .masthead {
-            background: var(--ink);
-            padding: 12px 0;
-            border-bottom: 3px solid var(--accent);
+            background: var(--teal-800);
+            padding: 14px 0;
+            border-bottom: 3px solid var(--teal-400);
         }
 
         .masthead-inner {
@@ -70,6 +84,7 @@
         }
 
         .masthead-tagline {
+            font-family: 'Inter', sans-serif;
             color: rgba(255,255,255,0.5);
             font-size: 11px;
             text-transform: uppercase;
@@ -79,9 +94,9 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(180deg, var(--ink) 0%, var(--ink-light) 100%);
+            background: linear-gradient(135deg, var(--teal-800) 0%, var(--teal-900) 100%);
             color: white;
-            padding: 80px 32px 100px;
+            padding: 72px 32px 96px;
             position: relative;
             overflow: hidden;
         }
@@ -89,12 +104,24 @@
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.03;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--teal-600) 0%, transparent 70%);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--teal-500) 0%, transparent 70%);
+            opacity: 0.1;
             pointer-events: none;
         }
 
@@ -107,31 +134,32 @@
 
         .hero-label {
             display: inline-block;
-            background: var(--accent);
-            color: white;
+            background: var(--teal-500);
+            color: var(--teal-900);
+            font-family: 'Inter', sans-serif;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
             padding: 6px 16px;
             margin-bottom: 24px;
-            border-radius: 2px;
+            border-radius: 100px;
         }
 
         .hero h1 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(36px, 6vw, 64px);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            letter-spacing: -1px;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 600;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
         }
 
         .hero-subtitle {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 300;
-            color: rgba(255,255,255,0.7);
-            max-width: 650px;
+            color: var(--teal-100);
+            max-width: 620px;
             margin: 0 auto;
             line-height: 1.7;
         }
@@ -139,7 +167,7 @@
         /* Stats Banner */
         .stats-banner {
             max-width: 1200px;
-            margin: -50px auto 0;
+            margin: -48px auto 0;
             padding: 0 32px;
             position: relative;
             z-index: 10;
@@ -148,16 +176,16 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
             overflow: hidden;
         }
 
         .stat-item {
-            padding: 32px 28px;
+            padding: 28px 24px;
             text-align: center;
-            border-right: 1px solid var(--divider);
+            border-right: 1px solid var(--slate-100);
             position: relative;
             transition: background 0.2s ease;
         }
@@ -167,30 +195,32 @@
         }
 
         .stat-item:hover {
-            background: var(--accent-glow);
+            background: var(--teal-50);
         }
 
         .stat-eyebrow {
+            font-family: 'Inter', sans-serif;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--ink-muted);
+            letter-spacing: 1px;
+            color: var(--teal-700);
             margin-bottom: 8px;
         }
 
         .stat-number {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            font-size: 38px;
+            font-weight: 600;
+            color: var(--slate-900);
             line-height: 1;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .stat-context {
+            font-family: 'Inter', sans-serif;
             font-size: 13px;
-            color: var(--ink-muted);
+            color: var(--slate-500);
         }
 
         /* Main Content */
@@ -207,15 +237,17 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 24px;
-            padding: 20px 0;
-            border-bottom: 2px solid var(--ink);
-            margin-bottom: 32px;
+            padding: 20px 24px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
         }
 
         .control-section {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 28px;
         }
 
         .control-group {
@@ -225,72 +257,76 @@
         }
 
         .control-label {
+            font-family: 'Inter', sans-serif;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--ink-muted);
+            letter-spacing: 0.5px;
+            color: var(--slate-500);
         }
 
         .pill-group {
             display: flex;
-            background: var(--paper-warm);
-            border-radius: 100px;
+            background: var(--slate-100);
+            border-radius: 8px;
             padding: 4px;
             gap: 2px;
         }
 
         .pill-btn {
-            padding: 8px 18px;
+            padding: 8px 16px;
             border: none;
             background: transparent;
-            color: var(--ink-muted);
-            font-family: 'Source Sans 3', sans-serif;
+            color: var(--slate-600);
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            border-radius: 100px;
+            border-radius: 6px;
             transition: all 0.2s ease;
         }
 
         .pill-btn:hover {
-            color: var(--ink);
+            color: var(--slate-800);
+            background: var(--slate-200);
         }
 
         .pill-btn.active {
-            background: var(--ink);
+            background: var(--teal-600);
             color: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 4px rgba(13, 148, 136, 0.3);
         }
 
         .metric-dropdown {
             appearance: none;
-            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L2 4h8z'/%3E%3C/svg%3E") no-repeat right 14px center;
-            border: 2px solid var(--divider);
-            border-radius: 4px;
+            background: var(--slate-50) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L2 4h8z'/%3E%3C/svg%3E") no-repeat right 14px center;
+            border: 1px solid var(--slate-200);
+            border-radius: 8px;
             padding: 10px 40px 10px 16px;
-            font-family: 'Source Sans 3', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
-            font-weight: 600;
-            color: var(--ink);
+            font-weight: 500;
+            color: var(--slate-700);
             cursor: pointer;
-            transition: border-color 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .metric-dropdown:hover {
-            border-color: var(--divider-dark);
+            border-color: var(--slate-300);
+            background-color: var(--white);
         }
 
         .metric-dropdown:focus {
             outline: none;
-            border-color: var(--accent);
+            border-color: var(--teal-500);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
 
         /* Map Section */
         .visualization {
             display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 32px;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
         }
 
         @media (max-width: 1100px) {
@@ -300,129 +336,133 @@
         }
 
         .map-container {
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             overflow: hidden;
             position: relative;
         }
 
         .map-header {
             padding: 16px 20px;
-            border-bottom: 1px solid var(--divider);
+            border-bottom: 1px solid var(--slate-100);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .map-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
             font-weight: 600;
-            color: var(--ink);
+            color: var(--slate-800);
         }
 
         .map-hint {
+            font-family: 'Inter', sans-serif;
             font-size: 12px;
-            color: var(--ink-muted);
+            color: var(--slate-400);
         }
 
         #map-container {
             width: 100%;
-            height: 580px;
+            height: 560px;
         }
 
         /* Legend */
         .map-legend {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 4px;
-            padding: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-            min-width: 140px;
+            bottom: 16px;
+            right: 16px;
+            background: var(--white);
+            border-radius: 10px;
+            padding: 14px 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            min-width: 130px;
             z-index: 10;
         }
 
         .legend-title {
+            font-family: 'Inter', sans-serif;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--ink-muted);
+            letter-spacing: 0.5px;
+            color: var(--slate-500);
             margin-bottom: 12px;
         }
 
         .legend-scale {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .legend-gradient {
-            width: 16px;
-            height: 100px;
-            border-radius: 2px;
+            width: 14px;
+            height: 90px;
+            border-radius: 4px;
             background: linear-gradient(to bottom,
-                #1e3a5f, #2563eb, #3b82f6, #60a5fa, #93c5fd, #dbeafe);
+                var(--teal-900), var(--teal-700), var(--teal-500), var(--teal-400), var(--teal-200), var(--teal-50));
         }
 
         .legend-labels {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--ink-muted);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--slate-600);
         }
 
         .legend-zero {
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid var(--divider);
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--slate-100);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .legend-zero-swatch {
-            width: 16px;
-            height: 12px;
-            background: #d1d5db;
-            border-radius: 2px;
+            width: 14px;
+            height: 10px;
+            background: var(--slate-300);
+            border-radius: 3px;
         }
 
         .legend-zero-text {
+            font-family: 'Inter', sans-serif;
             font-size: 11px;
-            color: var(--ink-muted);
+            color: var(--slate-500);
         }
 
         /* Detail Panel */
         .detail-panel {
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             overflow: hidden;
             position: sticky;
             top: 24px;
         }
 
         .detail-header {
-            background: var(--ink);
+            background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-800) 100%);
             color: white;
             padding: 24px;
         }
 
         .detail-region {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 22px;
             font-weight: 600;
             margin-bottom: 4px;
         }
 
         .detail-subtitle {
             font-size: 13px;
-            color: rgba(255,255,255,0.6);
+            color: var(--teal-200);
         }
 
         .detail-empty {
@@ -433,12 +473,12 @@
         .detail-empty-icon {
             font-size: 48px;
             margin-bottom: 16px;
-            opacity: 0.3;
+            opacity: 0.4;
         }
 
         .detail-empty p {
-            color: var(--ink-muted);
-            font-size: 15px;
+            color: var(--slate-500);
+            font-size: 14px;
             line-height: 1.6;
         }
 
@@ -451,7 +491,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 16px 24px;
-            border-bottom: 1px solid var(--divider);
+            border-bottom: 1px solid var(--slate-100);
             transition: background 0.15s ease;
         }
 
@@ -460,24 +500,25 @@
         }
 
         .detail-metric:hover {
-            background: var(--paper-warm);
+            background: var(--slate-50);
         }
 
         .detail-metric-label {
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
-            color: var(--ink-muted);
+            color: var(--slate-500);
             font-weight: 500;
         }
 
         .detail-metric-value {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
             font-weight: 600;
-            color: var(--ink);
+            color: var(--slate-800);
         }
 
         .detail-metric-value.positive {
-            color: var(--emerald);
+            color: var(--success);
         }
 
         /* Loading State */
@@ -487,14 +528,14 @@
             align-items: center;
             justify-content: center;
             padding: 120px 40px;
-            color: var(--ink-muted);
+            color: var(--slate-500);
         }
 
         .loading-spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid var(--divider);
-            border-top-color: var(--accent);
+            border: 3px solid var(--slate-200);
+            border-top-color: var(--teal-500);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin-bottom: 20px;
@@ -506,32 +547,32 @@
 
         /* Footer */
         .footer {
-            background: var(--ink);
-            color: rgba(255,255,255,0.5);
+            background: var(--teal-900);
+            color: var(--teal-300);
             padding: 40px 32px;
-            margin-top: 80px;
+            margin-top: 64px;
             text-align: center;
             font-size: 13px;
         }
 
         .footer a {
-            color: rgba(255,255,255,0.7);
+            color: var(--teal-200);
             text-decoration: none;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid var(--teal-700);
             transition: all 0.2s ease;
         }
 
         .footer a:hover {
             color: white;
-            border-bottom-color: white;
+            border-bottom-color: var(--teal-400);
         }
 
         /* Popup Styling */
         .maplibregl-popup-content {
-            padding: 16px 20px;
-            border-radius: 4px;
-            font-family: 'Source Sans 3', sans-serif;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
             border: none;
         }
 
@@ -540,32 +581,30 @@
         }
 
         .popup-title {
-            font-family: 'Playfair Display', Georgia, serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
-            font-size: 16px;
-            color: var(--ink);
-            margin-bottom: 8px;
+            font-size: 15px;
+            color: var(--slate-800);
+            margin-bottom: 6px;
             line-height: 1.3;
         }
 
         .popup-value {
-            font-size: 14px;
-            color: var(--ink-muted);
+            font-size: 13px;
+            color: var(--slate-500);
             line-height: 1.5;
         }
 
         .popup-value strong {
-            color: var(--ink);
+            color: var(--slate-700);
             font-weight: 600;
         }
 
         .popup-hint {
             font-size: 11px;
-            color: var(--accent);
-            margin-top: 10px;
+            color: var(--teal-600);
+            margin-top: 8px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         /* Responsive */
@@ -576,7 +615,7 @@
 
             .stat-item {
                 border-right: none;
-                border-bottom: 1px solid var(--divider);
+                border-bottom: 1px solid var(--slate-100);
             }
 
             .stat-item:last-child {
@@ -585,7 +624,7 @@
 
             .control-bar {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
             }
 
             .control-section {
@@ -593,11 +632,11 @@
             }
 
             .hero {
-                padding: 60px 24px 80px;
+                padding: 56px 24px 72px;
             }
 
             .hero h1 {
-                font-size: 32px;
+                font-size: 28px;
             }
         }
 
@@ -605,7 +644,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(16px);
             }
             to {
                 opacity: 1;
@@ -614,15 +653,15 @@
         }
 
         .stats-grid {
-            animation: fadeInUp 0.6s ease-out 0.2s both;
+            animation: fadeInUp 0.5s ease-out 0.1s both;
         }
 
         .control-bar {
-            animation: fadeInUp 0.6s ease-out 0.3s both;
+            animation: fadeInUp 0.5s ease-out 0.2s both;
         }
 
         .visualization {
-            animation: fadeInUp 0.6s ease-out 0.4s both;
+            animation: fadeInUp 0.5s ease-out 0.3s both;
         }
     </style>
 </head>
@@ -724,16 +763,16 @@
             'child_poverty_pct_cut': { label: 'Child Poverty Reduction', format: 'percent', colorscaleReverse: false }
         };
 
-        // Editorial blue color scale
-        const ZERO_COLOR = '#d1d5db';
-        const NO_DATA_COLOR = '#e5e7eb';
+        // PolicyEngine teal color scale
+        const ZERO_COLOR = '#CBD5E1';  // slate-300 for states with no program
+        const NO_DATA_COLOR = '#CBD5E1';  // same as ZERO_COLOR for consistency
         const COLOR_SCALE = [
-            '#dbeafe',  // lightest blue
-            '#93c5fd',
-            '#60a5fa',
-            '#3b82f6',
-            '#2563eb',
-            '#1e3a5f'   // darkest navy
+            '#F0FDFA',  // teal-50
+            '#CCFBF1',  // teal-100
+            '#5EEAD4',  // teal-300
+            '#14B8A6',  // teal-500
+            '#0F766E',  // teal-700
+            '#134E4A'   // teal-900
         ];
 
         let appState = {
@@ -825,6 +864,27 @@
                     </div>
                 `;
             }
+
+            // Check if this region has no program (cost is 0 or near 0)
+            const hasNoProgram = Math.abs(data.cost || 0) < 0.01;
+
+            if (hasNoProgram) {
+                return `
+                    <div class="detail-panel">
+                        <div class="detail-header">
+                            <div class="detail-region">${region.name}</div>
+                            <div class="detail-subtitle">${appState.creditType} Impact Analysis</div>
+                        </div>
+                        <div class="detail-empty" style="padding: 40px 24px;">
+                            <p style="color: var(--slate-500); font-size: 15px;">
+                                <strong>N/A</strong><br><br>
+                                This ${appState.viewType === 'state' ? 'state' : 'district'} does not have a ${appState.creditType === 'CTCs' ? 'state Child Tax Credit' : appState.creditType === 'EITCs' ? 'state Earned Income Tax Credit' : 'state CTC or EITC'} program.
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }
+
             const metrics = [
                 { key: 'cost', label: 'Total Cost', format: 'currency' },
                 { key: 'poverty_pct_cut', label: 'Poverty Reduction', format: 'percent' },
@@ -903,7 +963,7 @@
                     layers: [{
                         id: 'background',
                         type: 'background',
-                        paint: { 'background-color': '#faf9f7' }
+                        paint: { 'background-color': '#FFFFFF' }
                     }]
                 },
                 center: [-98, 39],
@@ -938,6 +998,7 @@
                     const featureId = feature.id;
                     const value = feature.properties.value;
                     const dataId = feature.properties.dataId;
+                    const isNA = feature.properties.isNA;
                     const metricInfo = METRICS[appState.metric];
                     if (hoveredFeatureId !== featureId) {
                         if (hoveredFeatureId !== null) {
@@ -956,10 +1017,11 @@
                         const districtLabel = feature.properties.NAMELSAD || `District ${districtNum}`;
                         name = `${stateName}<br>${districtLabel}`;
                     }
+                    const displayValue = isNA ? 'N/A - No program' : formatValue(value, metricInfo.format);
                     const html = `
                         <div class="popup-title">${name}</div>
-                        <div class="popup-value"><strong>${metricInfo.label}:</strong> ${formatValue(value, metricInfo.format)}</div>
-                        <div class="popup-hint">Click to explore →</div>
+                        <div class="popup-value"><strong>${metricInfo.label}:</strong> ${displayValue}</div>
+                        ${!isNA ? '<div class="popup-hint">Click to explore →</div>' : ''}
                     `;
                     appState.popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
                 }
@@ -1011,15 +1073,25 @@
             enrichedGeoData.features.forEach((feature, index) => {
                 feature.id = index;
                 const value = feature.properties.value;
+                const dataId = feature.properties.dataId;
+                const rowData = dataMap[dataId];
+
+                // Check if this region has no program (cost is 0 or near 0)
+                const hasNoProgram = !rowData || Math.abs(rowData.cost || 0) < 0.01;
+
                 if (value === null || value === undefined || isNaN(value)) {
                     feature.properties.fillColor = NO_DATA_COLOR;
-                } else if (Math.abs(value) < 0.0001) {
+                    feature.properties.isNA = true;
+                } else if (hasNoProgram) {
+                    // State/district has no program for this credit type
                     feature.properties.fillColor = ZERO_COLOR;
+                    feature.properties.isNA = true;
                 } else {
                     let ratio = max > min ? (value - min) / (max - min) : 0;
                     ratio = Math.sqrt(ratio);
                     const idx = Math.min(Math.floor(ratio * (COLOR_SCALE.length - 1)), COLOR_SCALE.length - 1);
                     feature.properties.fillColor = COLOR_SCALE[idx];
+                    feature.properties.isNA = false;
                 }
             });
             if (appState.map.getLayer('regions-fill')) appState.map.removeLayer('regions-fill');
@@ -1046,8 +1118,8 @@
                 type: 'line',
                 source: 'regions',
                 paint: {
-                    'line-color': '#ffffff',
-                    'line-width': ['interpolate', ['linear'], ['zoom'], 3, 0.5, 5, 1, 8, 2]
+                    'line-color': '#94A3B8',  // slate-400 for visible borders
+                    'line-width': ['interpolate', ['linear'], ['zoom'], 3, 0.8, 5, 1.2, 8, 2]
                 }
             });
             appState.map.addLayer({
@@ -1055,7 +1127,7 @@
                 type: 'line',
                 source: 'regions',
                 paint: {
-                    'line-color': '#1e3a5f',
+                    'line-color': '#134E4A',  // teal-900
                     'line-width': 3,
                     'line-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 1, 0]
                 }
@@ -1127,7 +1199,6 @@
                         <div class="map-container">
                             <div class="map-header">
                                 <span class="map-title">${metricInfo.label} by ${viewLabel}</span>
-                                <span class="map-hint">Double-click to reset view</span>
                             </div>
                             <div id="map-container"></div>
                             <div class="map-legend">
@@ -1155,19 +1226,74 @@
             initMap();
         }
 
+        function updateStats() {
+            const filteredData = appState.viewType === 'state'
+                ? filterData(appState.stateData, appState.creditType)
+                : filterData(appState.districtData, appState.creditType);
+            const viewLabel = appState.viewType === 'state' ? 'states' : 'congressional districts';
+
+            const totalCost = filteredData.reduce((sum, d) => sum + (d.cost || 0), 0);
+            const avgPoverty = filteredData.reduce((sum, d) => sum + (d.poverty_pct_cut || 0), 0) / filteredData.length;
+            const avgChildPoverty = filteredData.reduce((sum, d) => sum + (d.child_poverty_pct_cut || 0), 0) / filteredData.length;
+
+            // Update stat values
+            const statItems = document.querySelectorAll('.stat-item');
+            if (statItems.length >= 3) {
+                statItems[0].querySelector('.stat-number').textContent = formatValue(totalCost, 'currency');
+                statItems[0].querySelector('.stat-context').textContent = `across all ${viewLabel}`;
+                statItems[1].querySelector('.stat-number').textContent = formatValue(avgPoverty, 'percent');
+                statItems[2].querySelector('.stat-number').textContent = formatValue(avgChildPoverty, 'percent');
+            }
+        }
+
+        function updateToggleButtons() {
+            // Update view type buttons
+            document.querySelectorAll('.control-group').forEach((group, idx) => {
+                if (idx === 0) {
+                    group.querySelectorAll('.pill-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.textContent === (appState.viewType === 'state' ? 'States' : 'Districts'));
+                    });
+                } else if (idx === 1) {
+                    group.querySelectorAll('.pill-btn').forEach(btn => {
+                        const btnType = btn.textContent === 'CTC' ? 'CTCs' : btn.textContent === 'EITC' ? 'EITCs' : 'CTCs and EITCs';
+                        btn.classList.toggle('active', btnType === appState.creditType);
+                    });
+                }
+            });
+
+            // Update map title
+            const mapTitle = document.querySelector('.map-title');
+            if (mapTitle) {
+                const metricInfo = METRICS[appState.metric];
+                const viewLabel = appState.viewType === 'state' ? 'States' : 'Congressional Districts';
+                mapTitle.textContent = `${metricInfo.label} by ${viewLabel}`;
+            }
+        }
+
         function setViewType(type) {
             appState.viewType = type;
             appState.selectedRegion = null;
-            renderUI();
+            updateToggleButtons();
+            updateStats();
+            if (appState.map && appState.map.loaded()) {
+                renderMapLayer();
+                document.getElementById('detail-container').innerHTML = renderDetailPanel();
+            }
         }
 
         function setCreditType(type) {
             appState.creditType = type;
-            renderUI();
+            updateToggleButtons();
+            updateStats();
+            if (appState.map && appState.map.loaded()) {
+                renderMapLayer();
+                document.getElementById('detail-container').innerHTML = renderDetailPanel();
+            }
         }
 
         function setMetric(metric) {
             appState.metric = metric;
+            updateToggleButtons();
             if (appState.map && appState.map.loaded()) {
                 renderMapLayer();
                 document.getElementById('detail-container').innerHTML = renderDetailPanel();
