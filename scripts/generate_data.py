@@ -6,8 +6,19 @@ Includes: cost, poverty, child poverty, poverty gap, and Gini index.
 
 Uses PolicyEngine's state_ctc and state_eitc aggregated variables
 which automatically include all relevant state credits.
+
+Usage:
+    python scripts/generate_data.py [year]
+
+    year: 2025 or 2026 (default: 2025)
+
+Examples:
+    python scripts/generate_data.py        # Generate 2025 data
+    python scripts/generate_data.py 2025   # Generate 2025 data
+    python scripts/generate_data.py 2026   # Generate 2026 data
 """
 
+import sys
 import pandas as pd
 import numpy as np
 import gc
@@ -123,13 +134,31 @@ STATE_FIPS = {
     "WY": 56,
 }
 
-# Use PolicyEngine's aggregated variables - these automatically include all state credits
-# state_ctc: aggregates all state child tax credits (defined in gov.states.household.state_ctcs)
-# state_eitc: aggregates all state earned income tax credits (defined in gov.states.household.state_eitcs)
-STATE_CTC_VAR = "state_ctc"
-STATE_EITC_VAR = "state_eitc"
+# Get individual state credit variables from PolicyEngine parameters
+# These are the actual variables that affect household_net_income
+def get_state_credit_variables():
+    """Get lists of individual state CTC and EITC variables from parameters."""
+    from policyengine_us import Microsimulation
 
-YEAR = 2025
+    sim = Microsimulation()
+    params = sim.tax_benefit_system.parameters
+
+    # Extract variable names from parameter lists
+    ctc_params = params.gov.states.household.state_ctcs.values_list
+    eitc_params = params.gov.states.household.state_eitcs.values_list
+
+    # Get the list using .value
+    ctc_vars = ctc_params[0].value
+    eitc_vars = eitc_params[0].value
+
+    return ctc_vars, eitc_vars
+
+
+# Load variable lists at module level
+STATE_CTC_VARS, STATE_EITC_VARS = get_state_credit_variables()
+
+SUPPORTED_YEARS = [2025, 2026]
+DEFAULT_YEAR = 2025
 
 
 def create_reform(neutralized_variables):
@@ -183,7 +212,7 @@ def calculate_gini(incomes, weights):
     return max(0, min(1, gini))  # Clamp between 0 and 1
 
 
-def run_simulation(dataset, reform=None, year=YEAR):
+def run_simulation(dataset, reform=None, year=DEFAULT_YEAR):
     """Run a single simulation and extract needed data, then clean up."""
     if reform:
         sim = Microsimulation(reform=reform, dataset=dataset)
@@ -226,72 +255,57 @@ def run_simulation(dataset, reform=None, year=YEAR):
 
 
 def calculate_district_metrics(hh_data, person_data, districts):
-    """Calculate metrics for each district from simulation data."""
+    """Calculate metrics for each district using microdf weighted groupby."""
     results = {}
 
+    # Add district to person data by mapping from household
+    hh_to_district = dict(
+        zip(
+            hh_data["household_id"].values,
+            hh_data["congressional_district_geoid"].values,
+        )
+    )
+    person_data["district"] = person_data["person_household_id"].map(hh_to_district)
+
+    # Group by district for household-level metrics
+    hh_grouped = hh_data.groupby("congressional_district_geoid")
+
+    # Calculate household-level aggregates
+    net_income_by_district = hh_grouped["household_net_income"].sum()
+    poverty_gap_by_district = hh_grouped["poverty_gap"].sum()
+    gini_by_district = hh_grouped["equiv_household_net_income"].gini()
+
+    # Group by district for person-level metrics
+    person_grouped = person_data.groupby("district")
+    poverty_by_district = person_grouped["in_poverty"].mean()
+
+    # Child poverty: filter to children first, then group
+    children = person_data[person_data["is_child"].values == True]
+    if len(children) > 0:
+        child_grouped = children.groupby("district")
+        child_poverty_by_district = child_grouped["in_poverty"].mean()
+    else:
+        child_poverty_by_district = pd.Series(dtype=float)
+
+    # Build results dict
     for district in districts:
         if pd.isna(district) or district == 0:
             continue
 
         district = int(district)
 
-        # Filter household data
-        mask_hh = hh_data["congressional_district_geoid"] == district
-        hh_ids = set(hh_data.loc[mask_hh, "household_id"].values)
-
-        # Filter person data
-        mask_person = person_data["person_household_id"].isin(hh_ids)
-
-        # Household subset
-        hh_subset = hh_data.loc[mask_hh]
-
-        # Calculate weighted net income
-        net_income = (
-            hh_subset["household_net_income"] * hh_subset["household_weight"]
-        ).sum()
-
-        # Calculate weighted poverty gap
-        poverty_gap = (hh_subset["poverty_gap"] * hh_subset["household_weight"]).sum()
-
-        # Calculate Gini index (weighted by household size)
-        equiv_incomes = hh_subset["equiv_household_net_income"].values
-        gini_weights = (
-            hh_subset["household_weight"] * hh_subset["household_count_people"]
-        ).values
-        gini_index = calculate_gini(equiv_incomes, gini_weights)
-
-        # Calculate weighted poverty rate
-        person_subset = person_data.loc[mask_person]
-        total_person_weight = person_subset["person_weight"].sum()
-        if total_person_weight > 0:
-            poverty = (
-                person_subset["in_poverty"] * person_subset["person_weight"]
-            ).sum() / total_person_weight
-        else:
-            poverty = 0
-
-        # Calculate child poverty rate
-        children = person_subset[person_subset["is_child"] == True]
-        total_child_weight = children["person_weight"].sum()
-        if total_child_weight > 0:
-            child_poverty = (
-                children["in_poverty"] * children["person_weight"]
-            ).sum() / total_child_weight
-        else:
-            child_poverty = 0
-
         results[district] = {
-            "net_income": net_income,
-            "poverty": poverty,
-            "child_poverty": child_poverty,
-            "poverty_gap": poverty_gap,
-            "gini_index": gini_index,
+            "net_income": net_income_by_district.get(district, 0),
+            "poverty": poverty_by_district.get(district, 0),
+            "child_poverty": child_poverty_by_district.get(district, 0),
+            "poverty_gap": poverty_gap_by_district.get(district, 0),
+            "gini_index": gini_by_district.get(district, 0),
         }
 
     return results
 
 
-def process_state(state, year=YEAR):
+def process_state(state, year=DEFAULT_YEAR):
     """Process a single state and return district-level impacts."""
     print(f"  Processing {state}...")
 
@@ -316,9 +330,9 @@ def process_state(state, year=YEAR):
     reform_results = {}
 
     for reform_name, reform_vars in [
-        ("CTCs", [STATE_CTC_VAR]),
-        ("EITCs", [STATE_EITC_VAR]),
-        ("CTCs and EITCs", [STATE_CTC_VAR, STATE_EITC_VAR]),
+        ("CTCs", STATE_CTC_VARS),
+        ("EITCs", STATE_EITC_VARS),
+        ("CTCs and EITCs", STATE_CTC_VARS + STATE_EITC_VARS),
     ]:
         print(f"    Running {reform_name} neutralized...")
         reform = create_reform(reform_vars)
@@ -374,22 +388,34 @@ def process_state(state, year=YEAR):
     return results
 
 
-def generate_all_data():
-    """Generate impact data for all states."""
+def generate_all_data(year=DEFAULT_YEAR):
+    """Generate impact data for all states for a given year."""
     print("=" * 60)
-    print("Generating CTC/EITC Impact Data for 2025")
+    print(f"Generating CTC/EITC Impact Data for {year}")
     print("Using state-specific datasets (memory optimized)")
     print("Metrics: cost, poverty, child poverty, poverty gap, Gini")
+    print("Saving incrementally after each state")
     print("=" * 60)
 
+    district_file = f"data/district_impacts_{year}.csv"
     all_results = []
+    first_state = True
 
     for i, state in enumerate(STATES):
         print(f"\n[{i+1}/{len(STATES)}] {state}")
         try:
-            state_results = process_state(state)
+            state_results = process_state(state, year=year)
             all_results.extend(state_results)
             print(f"    -> {len(state_results)} district-reform combinations")
+
+            # Save incrementally after each state
+            state_df = pd.DataFrame(state_results)
+            if first_state:
+                state_df.to_csv(district_file, index=False, mode="w")
+                first_state = False
+            else:
+                state_df.to_csv(district_file, index=False, mode="a", header=False)
+            print(f"    -> Saved to {district_file}")
 
             # Force garbage collection between states
             gc.collect()
@@ -404,13 +430,13 @@ def generate_all_data():
         print("ERROR: No results generated!")
         return None, None
 
-    # Create district-level dataframe
-    district_df = pd.DataFrame(all_results)
+    # Re-read and sort the district data
+    district_df = pd.read_csv(district_file)
     district_df = district_df.sort_values(
         ["state_fips", "congressional_district_geoid", "reform_type"]
     )
-    district_df.to_csv("data/district_impacts.csv", index=False)
-    print(f"\nSaved district data: {len(district_df)} rows")
+    district_df.to_csv(district_file, index=False)
+    print(f"\nSaved district data: {len(district_df)} rows to {district_file}")
 
     # Aggregate to state level
     state_results = []
@@ -438,15 +464,28 @@ def generate_all_data():
             )
 
     state_df = pd.DataFrame(state_results)
-    state_df.to_csv("data/state_impacts.csv", index=False)
-    print(f"Saved state data: {len(state_df)} rows")
+    state_file = f"data/state_impacts_{year}.csv"
+    state_df.to_csv(state_file, index=False)
+    print(f"Saved state data: {len(state_df)} rows to {state_file}")
 
     print("\n" + "=" * 60)
-    print("Data generation complete!")
+    print(f"Data generation complete for {year}!")
     print("=" * 60)
 
     return district_df, state_df
 
 
 if __name__ == "__main__":
-    generate_all_data()
+    # Parse command line argument for year
+    year = DEFAULT_YEAR
+    if len(sys.argv) > 1:
+        try:
+            year = int(sys.argv[1])
+            if year not in SUPPORTED_YEARS:
+                print(f"Error: Year must be one of {SUPPORTED_YEARS}")
+                sys.exit(1)
+        except ValueError:
+            print(f"Error: Invalid year '{sys.argv[1]}'. Must be an integer.")
+            sys.exit(1)
+
+    generate_all_data(year=year)

@@ -746,7 +746,7 @@
     </div>
 
     <footer class="footer">
-      Data calculated using PolicyEngine microsimulation model for 2025
+      Data calculated using PolicyEngine microsimulation model
       &nbsp;|&nbsp;
       <a href="https://policyengine.org" target="_blank">policyengine.org</a>
     </footer>
@@ -950,18 +950,34 @@
         "#134E4A", // teal-900
       ];
 
+      const SUPPORTED_YEARS = ["2025", "2026"];
+
       let appState = {
+        year: "2025",
         viewType: "state",
         creditType: "CTCs and EITCs",
         metric: "cost",
-        stateData: null,
-        districtData: null,
+        // Data stored per year
+        dataByYear: {
+          "2025": { stateData: null, districtData: null },
+          "2026": { stateData: null, districtData: null },
+        },
         stateGeoData: null,
         districtGeoData: null,
         selectedRegion: null,
         map: null,
         popup: null,
+        availableYears: [], // Years that have data loaded
       };
+
+      // Convenience getters for current year's data
+      function getStateData() {
+        return appState.dataByYear[appState.year]?.stateData || [];
+      }
+
+      function getDistrictData() {
+        return appState.dataByYear[appState.year]?.districtData || [];
+      }
 
       function parseCSV(text) {
         const lines = text.trim().split("\n");
@@ -1011,8 +1027,8 @@
       function getRegionData(regionId) {
         const filteredData =
           appState.viewType === "state"
-            ? filterData(appState.stateData, appState.creditType)
-            : filterData(appState.districtData, appState.creditType);
+            ? filterData(getStateData(), appState.creditType)
+            : filterData(getDistrictData(), appState.creditType);
         if (appState.viewType === "state") {
           return filteredData.find((d) => d.state === regionId);
         } else {
@@ -1111,7 +1127,9 @@
         const minEl = document.getElementById("legend-min");
         const titleEl = document.getElementById("legend-title");
         if (maxEl) maxEl.textContent = formatValue(max, metricInfo.format);
-        if (minEl) minEl.textContent = formatValue(min, metricInfo.format);
+        // Show 0 as min for cost metrics, actual min for others
+        const displayMin = metricInfo.format === "currency" ? 0 : min;
+        if (minEl) minEl.textContent = formatValue(displayMin, metricInfo.format);
         if (titleEl) titleEl.textContent = metricInfo.label;
       }
 
@@ -1265,8 +1283,8 @@
       function renderMapLayer() {
         const filteredData =
           appState.viewType === "state"
-            ? filterData(appState.stateData, appState.creditType)
-            : filterData(appState.districtData, appState.creditType);
+            ? filterData(getStateData(), appState.creditType)
+            : filterData(getDistrictData(), appState.creditType);
         const metricInfo = METRICS[appState.metric];
         const dataMap = {};
         if (appState.viewType === "state") {
@@ -1398,8 +1416,8 @@
           appState.viewType === "state" ? "States" : "Congressional Districts";
         const filteredData =
           appState.viewType === "state"
-            ? filterData(appState.stateData, appState.creditType)
-            : filterData(appState.districtData, appState.creditType);
+            ? filterData(getStateData(), appState.creditType)
+            : filterData(getDistrictData(), appState.creditType);
         const totalCost = filteredData.reduce(
           (sum, d) => sum + (d.cost || 0),
           0,
@@ -1437,6 +1455,19 @@
                 <main class="main-content">
                     <div class="control-bar">
                         <div class="control-section">
+                            <div class="control-group">
+                                <span class="control-label">Year</span>
+                                <div class="pill-group">
+                                    ${SUPPORTED_YEARS.map((y) => {
+                                      const isAvailable = appState.availableYears.includes(y);
+                                      const isActive = appState.year === y;
+                                      return `<button class="pill-btn ${isActive ? "active" : ""}"
+                                        onclick="setYear('${y}')"
+                                        ${!isAvailable ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : ""}
+                                        title="${isAvailable ? "" : "Data not available - run: python scripts/generate_data.py " + y}">${y}</button>`;
+                                    }).join("")}
+                                </div>
+                            </div>
                             <div class="control-group">
                                 <span class="control-label">View</span>
                                 <div class="pill-group">
@@ -1500,8 +1531,8 @@
       function updateStats() {
         const filteredData =
           appState.viewType === "state"
-            ? filterData(appState.stateData, appState.creditType)
-            : filterData(appState.districtData, appState.creditType);
+            ? filterData(getStateData(), appState.creditType)
+            : filterData(getDistrictData(), appState.creditType);
         const viewLabel =
           appState.viewType === "state" ? "states" : "congressional districts";
 
@@ -1539,9 +1570,14 @@
       }
 
       function updateToggleButtons() {
-        // Update view type buttons
-        document.querySelectorAll(".control-group").forEach((group, idx) => {
-          if (idx === 0) {
+        // Update toggle buttons by control group
+        document.querySelectorAll(".control-group").forEach((group) => {
+          const label = group.querySelector(".control-label")?.textContent;
+          if (label === "Year") {
+            group.querySelectorAll(".pill-btn").forEach((btn) => {
+              btn.classList.toggle("active", btn.textContent === appState.year);
+            });
+          } else if (label === "View") {
             group.querySelectorAll(".pill-btn").forEach((btn) => {
               btn.classList.toggle(
                 "active",
@@ -1549,7 +1585,7 @@
                   (appState.viewType === "state" ? "States" : "Districts"),
               );
             });
-          } else if (idx === 1) {
+          } else if (label === "Credit Type") {
             group.querySelectorAll(".pill-btn").forEach((btn) => {
               const btnType =
                 btn.textContent === "CTC"
@@ -1607,25 +1643,62 @@
         }
       }
 
+      function setYear(year) {
+        if (appState.year === year) return;
+        appState.year = year;
+        appState.selectedRegion = null;
+        updateToggleButtons();
+        updateStats();
+        if (appState.map && appState.map.loaded()) {
+          renderMapLayer();
+          document.getElementById("detail-container").innerHTML =
+            renderDetailPanel();
+        }
+      }
+
       async function loadData() {
         try {
-          const [
-            stateResponse,
-            districtResponse,
-            stateGeoResponse,
-            districtGeoResponse,
-          ] = await Promise.all([
-            fetch("./data/state_impacts.csv"),
-            fetch("./data/district_impacts.csv"),
+          // Load geo data (shared across years)
+          const [stateGeoResponse, districtGeoResponse] = await Promise.all([
             fetch("./data/states_from_districts.geojson"),
             fetch("./data/real_congressional_districts.geojson"),
           ]);
-          const stateText = await stateResponse.text();
-          const districtText = await districtResponse.text();
           const stateGeoJson = await stateGeoResponse.json();
           const districtGeoJson = await districtGeoResponse.json();
-          appState.stateData = parseCSV(stateText);
-          appState.districtData = parseCSV(districtText);
+
+          // Load data for all supported years
+          for (const year of SUPPORTED_YEARS) {
+            try {
+              const [stateResponse, districtResponse] = await Promise.all([
+                fetch(`./data/state_impacts_${year}.csv`),
+                fetch(`./data/district_impacts_${year}.csv`),
+              ]);
+
+              if (stateResponse.ok && districtResponse.ok) {
+                const stateText = await stateResponse.text();
+                const districtText = await districtResponse.text();
+                appState.dataByYear[year] = {
+                  stateData: parseCSV(stateText),
+                  districtData: parseCSV(districtText),
+                };
+                appState.availableYears.push(year);
+                console.log(`Loaded data for ${year}`);
+              } else {
+                console.log(`Data not available for ${year}`);
+              }
+            } catch (err) {
+              console.log(`Could not load data for ${year}: ${err.message}`);
+            }
+          }
+
+          if (appState.availableYears.length === 0) {
+            throw new Error("No data files found for any year");
+          }
+
+          // Default to first available year
+          if (!appState.availableYears.includes(appState.year)) {
+            appState.year = appState.availableYears[0];
+          }
 
           function transformAlaska(coords, scale, targetLng, targetLat) {
             const centerLng = -154,
@@ -1734,7 +1807,7 @@
           appState.usOutlineData = appState.stateGeoData;
 
           console.log(
-            `Loaded ${appState.stateData.length} state rows, ${appState.districtData.length} district rows`,
+            `Loaded data for years: ${appState.availableYears.join(", ")}`,
           );
           renderUI();
         } catch (err) {
@@ -1743,7 +1816,7 @@
                     <div class="main-content">
                         <div class="loading">
                             <p style="color: #dc2626; font-weight: 600;">Error loading data: ${err.message}</p>
-                            <p style="margin-top: 16px;">Run <code style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px;">python scripts/generate_data.py</code> to generate data files.</p>
+                            <p style="margin-top: 16px;">Run <code style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px;">python scripts/generate_data.py ${appState.year}</code> to generate data files.</p>
                         </div>
                     </div>
                 `;
