@@ -1,0 +1,6 @@
+*.py
+*.ipynb
+requirements.txt
+results.csv
+__pycache__/
+.git/
