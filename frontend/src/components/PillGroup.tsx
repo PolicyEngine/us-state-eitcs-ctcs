@@ -4,6 +4,7 @@ interface PillGroupProps {
   options: { label: string; value: string }[];
   value: string;
   onChange: (value: string) => void;
+  ariaLabel?: string;
 }
 
 const styles: Record<string, CSSProperties> = {
@@ -41,13 +42,15 @@ const styles: Record<string, CSSProperties> = {
   },
 };
 
-export default function PillGroup({ options, value, onChange }: PillGroupProps) {
+export default function PillGroup({ options, value, onChange, ariaLabel }: PillGroupProps) {
   return (
-    <div style={styles.group}>
+    <div style={styles.group} role="radiogroup" aria-label={ariaLabel}>
       {options.map((opt) => (
         <button
           key={opt.value}
           style={opt.value === value ? styles.btnActive : styles.btn}
+          role="radio"
+          aria-checked={opt.value === value}
           onClick={() => onChange(opt.value)}
         >
           {opt.label}

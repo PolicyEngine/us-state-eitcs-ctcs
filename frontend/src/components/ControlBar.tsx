@@ -85,6 +85,7 @@ export default function ControlBar({
             }))}
             value={String(year)}
             onChange={(v) => onYearChange(Number(v) as SupportedYear)}
+            ariaLabel="Year"
           />
         </div>
         <div style={styles.group}>
@@ -96,6 +97,7 @@ export default function ControlBar({
             ]}
             value={viewType}
             onChange={(v) => onViewTypeChange(v as ViewType)}
+            ariaLabel="View type"
           />
         </div>
         <div style={styles.group}>
@@ -108,6 +110,7 @@ export default function ControlBar({
             ]}
             value={creditType}
             onChange={onCreditTypeChange}
+            ariaLabel="Credit type"
           />
         </div>
       </div>
@@ -117,6 +120,7 @@ export default function ControlBar({
           style={styles.dropdown}
           value={metric}
           onChange={(e) => onMetricChange(e.target.value as MetricKey)}
+          aria-label="Metric"
         >
           {METRICS.map((m) => (
             <option key={m.key} value={m.key}>

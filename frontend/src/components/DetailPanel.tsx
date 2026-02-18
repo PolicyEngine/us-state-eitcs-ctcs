@@ -135,7 +135,7 @@ export default function DetailPanel({
     return (
       <div style={styles.panel}>
         <div style={styles.header}>
-          <div style={styles.region}>{selectedRegion.name}</div>
+          <h2 style={styles.region}>{selectedRegion.name}</h2>
           <div style={styles.subtitle}>{creditType} Impact Analysis</div>
         </div>
         <div style={{ padding: "40px 24px", textAlign: "center" }}>
@@ -154,7 +154,7 @@ export default function DetailPanel({
   return (
     <div style={styles.panel}>
       <div style={styles.header}>
-        <div style={styles.region}>{selectedRegion.name}</div>
+        <h2 style={styles.region}>{selectedRegion.name}</h2>
         <div style={styles.subtitle}>{creditType} Impact Analysis</div>
       </div>
       <div style={styles.metrics}>

@@ -1,13 +1,14 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, lazy, Suspense } from "react";
 import type { CSSProperties } from "react";
 import { useData } from "./data/useData";
 import Masthead from "./components/Masthead";
 import Hero from "./components/Hero";
 import StatsBanner from "./components/StatsBanner";
 import ControlBar from "./components/ControlBar";
-import Visualization from "./components/Visualization";
 import Footer from "./components/Footer";
 import type { MetricKey, ViewType, SupportedYear } from "./types";
+
+const Visualization = lazy(() => import("./components/Visualization"));
 
 const styles: Record<string, CSSProperties> = {
   mainContent: {
@@ -132,7 +133,7 @@ export default function App() {
       <>
         <Masthead />
         <Hero />
-        <div style={styles.loading}>
+        <div style={styles.loading} role="status" aria-live="polite">
           <div style={styles.spinner} />
           <p>Loading data...</p>
         </div>
@@ -174,17 +175,26 @@ export default function App() {
           onMetricChange={setMetric}
         />
         {stateGeoData && districtGeoData && (
-          <Visualization
-            stateGeoData={stateGeoData}
-            districtGeoData={districtGeoData}
-            filteredData={filteredData as unknown as Record<string, unknown>[]}
-            viewType={viewType}
-            metric={metric}
-            creditType={creditType}
-            selectedRegion={selectedRegion}
-            regionData={regionData}
-            onRegionClick={handleRegionClick}
-          />
+          <Suspense
+            fallback={
+              <div style={styles.loading} role="status" aria-live="polite">
+                <div style={styles.spinner} />
+                <p>Loading map...</p>
+              </div>
+            }
+          >
+            <Visualization
+              stateGeoData={stateGeoData}
+              districtGeoData={districtGeoData}
+              filteredData={filteredData as unknown as Record<string, unknown>[]}
+              viewType={viewType}
+              metric={metric}
+              creditType={creditType}
+              selectedRegion={selectedRegion}
+              regionData={regionData}
+              onRegionClick={handleRegionClick}
+            />
+          </Suspense>
         )}
       </main>
       <Footer year={year} />

@@ -87,7 +87,8 @@ export default function StatsBanner({
   ];
 
   return (
-    <div style={styles.banner}>
+    <section style={styles.banner} aria-label="National statistics">
+      <h2 className="sr-only">National Statistics</h2>
       <div style={styles.grid} className="stats-grid">
         {stats.map((s, i) => (
           <div
@@ -101,6 +102,6 @@ export default function StatsBanner({
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

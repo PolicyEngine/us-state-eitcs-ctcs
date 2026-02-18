@@ -423,7 +423,12 @@ export default function MapView({
           {metricInfo.label} by {viewLabel}
         </span>
       </div>
-      <div ref={mapContainerRef} style={containerStyles.mapEl} />
+      <div
+        ref={mapContainerRef}
+        style={containerStyles.mapEl}
+        role="application"
+        aria-label={`Interactive map showing ${metricInfo.label} by ${viewLabel}`}
+      />
       <MapLegend
         title={legendValues.title}
         maxLabel={legendValues.max}

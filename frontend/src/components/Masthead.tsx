@@ -43,6 +43,7 @@ export default function Masthead() {
           style={styles.logo}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Visit PolicyEngine"
         >
           <img
             src="/policyengine-logo.svg"
