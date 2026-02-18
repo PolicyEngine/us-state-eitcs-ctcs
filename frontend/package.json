@@ -12,15 +12,12 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@mantine/core": "^8.3.14",
-    "@mantine/hooks": "^8.3.14",
-    "@tabler/icons-react": "^3.36.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "jsdom": "^28.1.0",
+    "jsdom": "^25.0.1",
+    "maplibre-gl": "^5.18.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "recharts": "^3.7.0",
     "vitest": "^4.0.18"
   },
   "devDependencies": {
