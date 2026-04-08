@@ -3,3 +3,7 @@ dist/
 __pycache__/
 *.pyc
 .env
+
+# Modal
+.modal/
+temp_modal_results/
