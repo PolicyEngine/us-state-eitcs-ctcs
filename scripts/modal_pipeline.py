@@ -48,9 +48,64 @@ STATE_FIPS = {
     "WI": 55, "WY": 56,
 }
 
-# Variables to neutralize for each reform type
-STATE_CTC_VAR = "state_ctc"
-STATE_EITC_VAR = "state_eitc"
+# State-specific EITC variables (must neutralize individual state credits, not aggregates)
+# The state_eitc aggregation variable doesn't propagate neutralization to individual credits
+STATE_EITC_VARS = {
+    "CA": ["ca_eitc"],
+    "CO": ["co_eitc"],
+    "CT": ["ct_eitc"],
+    "DC": ["dc_eitc"],
+    "DE": ["de_eitc"],
+    "HI": ["hi_eitc"],
+    "IA": ["ia_eitc"],
+    "IL": ["il_eitc"],
+    "IN": ["in_eitc"],
+    "KS": ["ks_total_eitc"],  # Kansas uses combined refundable + non-refundable
+    "LA": ["la_eitc"],
+    "MA": ["ma_eitc"],
+    "MD": ["md_eitc"],
+    "ME": ["me_eitc"],
+    "MI": ["mi_eitc"],
+    # Note: Missouri does not have a state EITC variable in policyengine-us
+    "MT": ["mt_eitc"],
+    "NE": ["ne_eitc"],
+    "NJ": ["nj_eitc"],
+    "NM": ["nm_eitc"],
+    "NY": ["ny_eitc", "ny_supplemental_eitc"],  # NY has two EITC components
+    "OH": ["oh_eitc"],
+    "OK": ["ok_eitc"],
+    "OR": ["or_eitc"],
+    "PA": ["pa_eitc"],
+    "RI": ["ri_eitc"],
+    "SC": ["sc_eitc"],
+    "UT": ["ut_eitc"],
+    "VA": ["va_eitc"],
+    "VT": ["vt_eitc"],
+    "WA": ["wa_working_families_tax_credit"],  # Washington uses different name
+    "WI": ["wi_earned_income_credit"],  # Wisconsin uses different name
+}
+
+# State-specific CTC variables
+STATE_CTC_VARS = {
+    "CA": ["ca_yctc"],  # California Young Child Tax Credit
+    "CO": ["co_ctc"],
+    "DC": ["dc_ctc"],
+    "GA": ["ga_ctc"],
+    "ID": ["id_ctc"],
+    "IL": ["il_ctc"],
+    "MD": ["md_ctc"],
+    "MN": ["mn_child_and_working_families_credits"],  # Minnesota combined CTC
+    "NC": ["nc_ctc"],
+    "NE": ["ne_refundable_ctc"],
+    "NJ": ["nj_ctc"],
+    "NM": ["nm_ctc"],
+    "NY": ["ny_ctc"],
+    "OK": ["ok_child_care_child_tax_credit"],
+    "OR": ["or_ctc"],
+    "UT": ["ut_ctc"],
+    "VT": ["vt_ctc"],
+    "WV": ["wv_sctc"],
+}
 
 YEAR = 2025
 
@@ -227,16 +282,35 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
     del hh_baseline, person_baseline
     gc.collect()
 
-    # Run reform simulations
+    # Get state-specific credit variables to neutralize
+    state_eitc_vars = STATE_EITC_VARS.get(state, [])
+    state_ctc_vars = STATE_CTC_VARS.get(state, [])
+
+    print(f"  State credit variables: EITC={state_eitc_vars}, CTC={state_ctc_vars}")
+
+    # Run reform simulations using state-specific variables
     reform_results = {}
 
-    for reform_name, reform_vars in [
-        ("CTCs", [STATE_CTC_VAR]),
-        ("EITCs", [STATE_EITC_VAR]),
-        ("CTCs and EITCs", [STATE_CTC_VAR, STATE_EITC_VAR]),
-    ]:
-        print(f"  Running {reform_name} neutralized (vars: {reform_vars})...")
-        reform = create_reform(reform_vars)
+    # Define reforms with state-specific variables
+    reforms_to_run = [
+        ("CTCs", state_ctc_vars),
+        ("EITCs", state_eitc_vars),
+        ("CTCs and EITCs", state_ctc_vars + state_eitc_vars),
+    ]
+
+    for reform_name, reform_vars in reforms_to_run:
+        # Filter out empty variable lists - if no credits exist, skip neutralization
+        valid_vars = [v for v in reform_vars if v]
+
+        if not valid_vars:
+            # No credits to neutralize for this state/reform type
+            # Use baseline metrics (no change)
+            print(f"  Skipping {reform_name} neutralization (no applicable credits)")
+            reform_results[reform_name] = baseline_metrics
+            continue
+
+        print(f"  Running {reform_name} neutralized (vars: {valid_vars})...")
+        reform = create_reform(valid_vars)
         hh_reform, person_reform = run_simulation(dataset, reform=reform, year=year)
         reform_results[reform_name] = calculate_district_metrics(
             hh_reform, person_reform, districts
