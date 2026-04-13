@@ -21,8 +21,8 @@ from pathlib import Path
 app = modal.App("state-eitc-ctc-impacts")
 
 # Define the image with required dependencies
-image = modal.Image.debian_slim(python_version="3.10").pip_install(
-    "policyengine-us>=1.500.0",  # Use recent version with state_ctc/state_eitc aggregations
+image = modal.Image.debian_slim(python_version="3.11").pip_install(
+    "policyengine-us==1.633.2",  # Pin to specific version for reproducibility
     "pandas>=2.0.0",
     "numpy>=1.24.0",
 )
@@ -63,10 +63,10 @@ STATE_EITC_VARS = {
     "KS": ["ks_total_eitc"],  # Kansas uses combined refundable + non-refundable
     "LA": ["la_eitc"],
     "MA": ["ma_eitc"],
-    "MD": ["md_eitc"],
+    "MD": ["md_refundable_eitc", "md_non_refundable_eitc"],  # MD has split EITC
     "ME": ["me_eitc"],
     "MI": ["mi_eitc"],
-    # Note: Missouri does not have a state EITC variable in policyengine-us
+    "MO": ["mo_wftc"],  # Missouri Working Families Tax Credit
     "MT": ["mt_eitc"],
     "NE": ["ne_eitc"],
     "NJ": ["nj_eitc"],
@@ -75,11 +75,11 @@ STATE_EITC_VARS = {
     "OH": ["oh_eitc"],
     "OK": ["ok_eitc"],
     "OR": ["or_eitc"],
-    "PA": ["pa_eitc"],
+    "PA": ["pa_eitc"],  # NEW in 2025
     "RI": ["ri_eitc"],
     "SC": ["sc_eitc"],
     "UT": ["ut_eitc"],
-    "VA": ["va_eitc"],
+    "VA": ["va_non_refundable_eitc", "va_refundable_eitc"],  # VA has split EITC
     "VT": ["vt_eitc"],
     "WA": ["wa_working_families_tax_credit"],  # Washington uses different name
     "WI": ["wi_earned_income_credit"],  # Wisconsin uses different name
@@ -87,24 +87,38 @@ STATE_EITC_VARS = {
 
 # State-specific CTC variables
 STATE_CTC_VARS = {
+    "AZ": ["az_dependent_tax_credit"],
     "CA": ["ca_yctc"],  # California Young Child Tax Credit
-    "CO": ["co_ctc"],
-    "DC": ["dc_ctc"],
-    "GA": ["ga_ctc"],
-    "ID": ["id_ctc"],
+    "CO": ["co_ctc", "co_family_affordability_credit"],
+    "CT": ["ct_child_tax_rebate"],
+    "DC": ["dc_ctc"],  # NEW in 2026
+    "GA": ["ga_ctc"],  # NEW in 2026
+    "ID": ["id_ctc"],  # EXPIRES in 2026
     "IL": ["il_ctc"],
+    "MA": ["ma_child_and_family_credit_or_dependent_care_credit"],
     "MD": ["md_ctc"],
+    "ME": ["me_dependent_exemption_credit"],
     "MN": ["mn_child_and_working_families_credits"],  # Minnesota combined CTC
-    "NC": ["nc_ctc"],
     "NE": ["ne_refundable_ctc"],
     "NJ": ["nj_ctc"],
     "NM": ["nm_ctc"],
     "NY": ["ny_ctc"],
     "OK": ["ok_child_care_child_tax_credit"],
     "OR": ["or_ctc"],
+    "RI": ["ri_child_tax_rebate"],
     "UT": ["ut_ctc"],
     "VT": ["vt_ctc"],
-    "WV": ["wv_sctc"],
+}
+
+# Year-specific exclusions - some programs don't exist in certain years
+EITC_YEAR_EXCLUSIONS = {
+    2024: ["PA"],  # PA EITC doesn't exist in 2024
+}
+
+CTC_YEAR_EXCLUSIONS = {
+    2024: ["DC", "GA"],  # DC and GA CTC don't exist in 2024
+    2025: ["DC", "GA"],  # DC and GA CTC don't exist in 2025
+    2026: ["ID"],  # ID CTC expires in 2026
 }
 
 YEAR = 2025
@@ -115,8 +129,8 @@ volume = modal.Volume.from_name("state-eitc-ctc-results", create_if_missing=True
 
 @app.function(
     image=image,
-    timeout=1800,  # 30 minutes per state
-    memory=8192,   # 8GB RAM
+    timeout=3600,  # 60 minutes per state (CA and NE need more time)
+    memory=16384,  # 16GB RAM for larger states
     cpu=2.0,
 )
 def process_single_state(state: str, year: int = YEAR) -> list[dict]:
@@ -162,7 +176,7 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
         cum_weights_norm = cum_weights / total_weight
         cum_income_norm = cum_income / total_income
 
-        area_under = np.trapz(cum_income_norm, cum_weights_norm)
+        area_under = np.trapezoid(cum_income_norm, cum_weights_norm)
         gini = 1 - 2 * area_under
 
         return max(0, min(1, gini))
@@ -282,9 +296,16 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
     del hh_baseline, person_baseline
     gc.collect()
 
-    # Get state-specific credit variables to neutralize
-    state_eitc_vars = STATE_EITC_VARS.get(state, [])
-    state_ctc_vars = STATE_CTC_VARS.get(state, [])
+    # Get state-specific credit variables to neutralize (respecting year exclusions)
+    if state in EITC_YEAR_EXCLUSIONS.get(year, []):
+        state_eitc_vars = []
+    else:
+        state_eitc_vars = STATE_EITC_VARS.get(state, [])
+
+    if state in CTC_YEAR_EXCLUSIONS.get(year, []):
+        state_ctc_vars = []
+    else:
+        state_ctc_vars = STATE_CTC_VARS.get(state, [])
 
     print(f"  State credit variables: EITC={state_eitc_vars}, CTC={state_ctc_vars}")
 
@@ -352,15 +373,15 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
 
             results.append(
                 {
-                    "congressional_district_geoid": district,
+                    "congressional_district_geoid": int(district),
                     "state_fips": state_fips,
                     "state": state,
                     "reform_type": reform_type,
-                    "cost": cost,
-                    "poverty_pct_cut": poverty_pct_cut,
-                    "child_poverty_pct_cut": child_poverty_pct_cut,
-                    "poverty_gap_pct_cut": poverty_gap_pct_cut,
-                    "gini_index_pct_cut": gini_index_pct_cut,
+                    "cost": float(cost),
+                    "poverty_pct_cut": float(poverty_pct_cut),
+                    "child_poverty_pct_cut": float(child_poverty_pct_cut),
+                    "poverty_gap_pct_cut": float(poverty_gap_pct_cut),
+                    "gini_index_pct_cut": float(gini_index_pct_cut),
                 }
             )
 
@@ -494,23 +515,16 @@ def scheduled_update():
 
 
 @app.local_entrypoint()
-def main():
+def main(year: int = 2025, get_results: bool = False):
     """Local entrypoint for running the pipeline."""
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Generate state EITC/CTC impact data")
-    parser.add_argument("--year", type=int, default=YEAR, help="Tax year to simulate")
-    parser.add_argument("--get-results", action="store_true", help="Get latest results only")
-    args = parser.parse_args()
-
-    if args.get_results:
+    if get_results:
         results = get_latest_results.remote()
         if "error" in results:
             print(results["error"])
         else:
             print(json.dumps(results["state_impacts"], indent=2))
     else:
-        results = generate_all_state_impacts.remote(year=args.year)
+        results = generate_all_state_impacts.remote(year=year)
         print(f"\nGenerated {len(results['state_impacts'])} state impact records")
         print(f"Timestamp: {results['timestamp']}")
 

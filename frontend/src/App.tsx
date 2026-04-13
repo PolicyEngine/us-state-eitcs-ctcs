@@ -15,7 +15,7 @@ import "@mantine/core/styles.css";
 import { useResults } from "./data/useResults";
 import USMap from "./components/USMap";
 import StateTable from "./components/StateTable";
-import { METRICS, REFORM_TYPES } from "./types";
+import { METRICS, REFORM_TYPES, YEARS } from "./types";
 import type { MetricKey } from "./types";
 import { colors, fonts } from "./designTokens";
 
@@ -25,13 +25,18 @@ export default function App() {
   const [selectedMetric, setSelectedMetric] = useState<MetricKey>(
     METRICS[0].key,
   );
+  const [selectedYear, setSelectedYear] = useState(YEARS[1]); // Default to 2025
 
   const metricLabel =
     METRICS.find((m) => m.key === selectedMetric)?.label ?? "";
 
   const filteredData = useMemo(
-    () => data.filter((row) => row.reform_type === selectedPolicy),
-    [data, selectedPolicy],
+    () =>
+      data.filter(
+        (row) =>
+          row.reform_type === selectedPolicy && row.year === selectedYear,
+      ),
+    [data, selectedPolicy, selectedYear],
   );
 
   if (loading) {
@@ -81,6 +86,13 @@ export default function App() {
 
           <Group grow>
             <Select
+              label="Year"
+              data={YEARS.map((y) => ({ value: String(y), label: String(y) }))}
+              value={String(selectedYear)}
+              onChange={(v) => v && setSelectedYear(Number(v))}
+              allowDeselect={false}
+            />
+            <Select
               label="Policy"
               data={REFORM_TYPES}
               value={selectedPolicy}
@@ -98,7 +110,7 @@ export default function App() {
 
           <Title order={3} style={{ color: colors.text }}>
             Impact of state {selectedPolicy.toLowerCase()} on{" "}
-            {metricLabel.toLowerCase()}
+            {metricLabel.toLowerCase()} ({selectedYear})
           </Title>
 
           <USMap

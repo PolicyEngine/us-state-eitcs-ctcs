@@ -13,6 +13,7 @@ const mockData: StateResult[] = [
     child_poverty_pct_cut: 0.0097,
     poverty_gap_pct_cut: 0.006,
     gini_index_pct_cut: 0.0009,
+    year: 2025,
   },
   {
     state: "CO",
@@ -22,6 +23,7 @@ const mockData: StateResult[] = [
     child_poverty_pct_cut: 0.3316,
     poverty_gap_pct_cut: 0.0358,
     gini_index_pct_cut: 0.0004,
+    year: 2025,
   },
   {
     state: "AL",
@@ -31,6 +33,7 @@ const mockData: StateResult[] = [
     child_poverty_pct_cut: 0,
     poverty_gap_pct_cut: 0,
     gini_index_pct_cut: 0,
+    year: 2025,
   },
 ];
 
@@ -70,6 +73,7 @@ describe("StateTable", () => {
         child_poverty_pct_cut: 0,
         poverty_gap_pct_cut: 0,
         gini_index_pct_cut: 0,
+        year: 2025,
       },
     ];
     renderWithMantine(

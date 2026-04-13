@@ -6,7 +6,10 @@ export interface StateResult {
   child_poverty_pct_cut: number;
   poverty_gap_pct_cut: number;
   gini_index_pct_cut: number;
+  year: number;
 }
+
+export const YEARS = [2024, 2025, 2026];
 
 export type MetricKey =
   | "cost"

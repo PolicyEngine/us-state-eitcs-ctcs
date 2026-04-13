@@ -13,6 +13,7 @@ const mockData: StateResult[] = [
     child_poverty_pct_cut: 0.0097,
     poverty_gap_pct_cut: 0.006,
     gini_index_pct_cut: 0.0009,
+    year: 2025,
   },
   {
     state: "NY",
@@ -22,6 +23,7 @@ const mockData: StateResult[] = [
     child_poverty_pct_cut: 0.0409,
     poverty_gap_pct_cut: 0.0083,
     gini_index_pct_cut: 0.0025,
+    year: 2025,
   },
 ];
 

@@ -1,39 +1,13 @@
 [
   {
-    "state": "AL",
-    "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "AL",
-    "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "AL",
-    "reform_type": "CTCs and EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
     "state": "AK",
     "reform_type": "CTCs",
     "cost": 0.0,
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "AK",
@@ -42,7 +16,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "AK",
@@ -51,34 +26,38 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
-    "state": "AZ",
+    "state": "AL",
     "reform_type": "CTCs",
     "cost": 0.0,
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
-    "state": "AZ",
+    "state": "AL",
     "reform_type": "EITCs",
     "cost": 0.0,
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
-    "state": "AZ",
+    "state": "AL",
     "reform_type": "CTCs and EITCs",
     "cost": 0.0,
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "AR",
@@ -87,7 +66,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "AR",
@@ -96,7 +76,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "AR",
@@ -105,61 +86,98 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "AZ",
+    "reform_type": "CTCs",
+    "cost": 90179584.0,
+    "poverty_pct_cut": 0.0014111386257253697,
+    "child_poverty_pct_cut": 0.001986921067125675,
+    "poverty_gap_pct_cut": 4.091762711513159e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "AZ",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "AZ",
+    "reform_type": "CTCs and EITCs",
+    "cost": 90179584.0,
+    "poverty_pct_cut": 0.0014111386257253697,
+    "child_poverty_pct_cut": 0.001986921067125675,
+    "poverty_gap_pct_cut": 4.091762711513159e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CA",
     "reform_type": "CTCs",
-    "cost": 577163260.0,
-    "poverty_pct_cut": 0.0021940577,
-    "child_poverty_pct_cut": 0.005989464,
-    "poverty_gap_pct_cut": 0.0010004962978758,
-    "gini_index_pct_cut": 0.0001652440355979
+    "cost": 725016576.0,
+    "poverty_pct_cut": 0.004314259242523104,
+    "child_poverty_pct_cut": 0.008441880941063573,
+    "poverty_gap_pct_cut": 0.0005434805401294953,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CA",
     "reform_type": "EITCs",
-    "cost": 1665894400.0,
-    "poverty_pct_cut": 0.0056802803,
-    "child_poverty_pct_cut": 0.011298538,
-    "poverty_gap_pct_cut": 0.0028847652471364,
-    "gini_index_pct_cut": 0.0004635341890011
+    "cost": 1454988800.0,
+    "poverty_pct_cut": 0.006353021367094523,
+    "child_poverty_pct_cut": 0.010350432338222722,
+    "poverty_gap_pct_cut": 0.0009569617331003533,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CA",
     "reform_type": "CTCs and EITCs",
-    "cost": 2243078100.0,
-    "poverty_pct_cut": 0.008090979,
-    "child_poverty_pct_cut": 0.01758203,
-    "poverty_gap_pct_cut": 0.0039030499599076,
-    "gini_index_pct_cut": 0.0006295631291317
+    "cost": 2180017664.0,
+    "poverty_pct_cut": 0.010788610763357225,
+    "child_poverty_pct_cut": 0.018942783011600392,
+    "poverty_gap_pct_cut": 0.0015073304483996758,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CO",
     "reform_type": "CTCs",
-    "cost": 155596800.0,
-    "poverty_pct_cut": 0.011739401,
-    "child_poverty_pct_cut": 0.031466153,
-    "poverty_gap_pct_cut": 0.0011350533425556,
-    "gini_index_pct_cut": 0.0004374413959357
+    "cost": 1848449024.0,
+    "poverty_pct_cut": 0.1348176160827279,
+    "child_poverty_pct_cut": 0.27245907485485077,
+    "poverty_gap_pct_cut": 0.0055693616151258896,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CO",
     "reform_type": "EITCs",
-    "cost": 327512060.0,
-    "poverty_pct_cut": 0.016171118,
-    "child_poverty_pct_cut": 0.046956416,
-    "poverty_gap_pct_cut": 0.0028560688577667,
-    "gini_index_pct_cut": 0.0008476820889614
+    "cost": 437022720.0,
+    "poverty_pct_cut": 0.03970972867682576,
+    "child_poverty_pct_cut": 0.07773510180413723,
+    "poverty_gap_pct_cut": 0.0010480226612059002,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CO",
     "reform_type": "CTCs and EITCs",
-    "cost": 483115000.0,
-    "poverty_pct_cut": 0.027108364,
-    "child_poverty_pct_cut": 0.075146146,
-    "poverty_gap_pct_cut": 0.0040702339307168,
-    "gini_index_pct_cut": 0.0012873291262296
+    "cost": 2285472768.0,
+    "poverty_pct_cut": 0.16919786483049393,
+    "child_poverty_pct_cut": 0.32463347539305687,
+    "poverty_gap_pct_cut": 0.0070775301716879,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CT",
@@ -168,52 +186,28 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CT",
     "reform_type": "EITCs",
-    "cost": 186718200.0,
-    "poverty_pct_cut": 0.008471681,
-    "child_poverty_pct_cut": 0.025754174,
-    "poverty_gap_pct_cut": 0.0030528543175152,
-    "gini_index_pct_cut": 0.0008536771204619
+    "cost": 221996544.0,
+    "poverty_pct_cut": 0.027674995735287665,
+    "child_poverty_pct_cut": 0.05038396790623665,
+    "poverty_gap_pct_cut": 0.0010678534713780335,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "CT",
     "reform_type": "CTCs and EITCs",
-    "cost": 186718200.0,
-    "poverty_pct_cut": 0.008471681,
-    "child_poverty_pct_cut": 0.025754174,
-    "poverty_gap_pct_cut": 0.0030528543175152,
-    "gini_index_pct_cut": 0.0008536771204619
-  },
-  {
-    "state": "DE",
-    "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "DE",
-    "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "DE",
-    "reform_type": "CTCs and EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "cost": 221996544.0,
+    "poverty_pct_cut": 0.027674995735287665,
+    "child_poverty_pct_cut": 0.05038396790623665,
+    "poverty_gap_pct_cut": 0.0010678534713780335,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "DC",
@@ -222,25 +216,58 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "DC",
     "reform_type": "EITCs",
-    "cost": 104157180.0,
-    "poverty_pct_cut": 0.035153195,
-    "child_poverty_pct_cut": 0.098443314,
-    "poverty_gap_pct_cut": 0.011725240157764,
-    "gini_index_pct_cut": 0.0
+    "cost": 88016896.0,
+    "poverty_pct_cut": 0.05208290368318558,
+    "child_poverty_pct_cut": 0.08233387768268585,
+    "poverty_gap_pct_cut": 0.0018908371082762105,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "DC",
     "reform_type": "CTCs and EITCs",
-    "cost": 104157180.0,
-    "poverty_pct_cut": 0.035153195,
-    "child_poverty_pct_cut": 0.098443314,
-    "poverty_gap_pct_cut": 0.011725240157764,
-    "gini_index_pct_cut": 0.0
+    "cost": 88016896.0,
+    "poverty_pct_cut": 0.05208290368318558,
+    "child_poverty_pct_cut": 0.08233387768268585,
+    "poverty_gap_pct_cut": 0.0018908371082762105,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "DE",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "DE",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "DE",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "FL",
@@ -249,7 +276,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "FL",
@@ -258,7 +286,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "FL",
@@ -267,7 +296,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "GA",
@@ -276,7 +306,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "GA",
@@ -285,7 +316,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "GA",
@@ -294,7 +326,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "HI",
@@ -303,106 +336,28 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "HI",
     "reform_type": "EITCs",
-    "cost": 62328830.0,
-    "poverty_pct_cut": 0.011088185,
-    "child_poverty_pct_cut": 0.035241317,
-    "poverty_gap_pct_cut": 0.0027849831528564,
-    "gini_index_pct_cut": 0.0009351165140583
+    "cost": 89080832.0,
+    "poverty_pct_cut": 0.02085264027118683,
+    "child_poverty_pct_cut": 0.041625287383794785,
+    "poverty_gap_pct_cut": 0.0011587398703550452,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "HI",
     "reform_type": "CTCs and EITCs",
-    "cost": 62328830.0,
-    "poverty_pct_cut": 0.011088185,
-    "child_poverty_pct_cut": 0.035241317,
-    "poverty_gap_pct_cut": 0.0027849831528564,
-    "gini_index_pct_cut": 0.0009351165140583
-  },
-  {
-    "state": "ID",
-    "reform_type": "CTCs",
-    "cost": 67592190.0,
-    "poverty_pct_cut": 0.001533129,
-    "child_poverty_pct_cut": 0.005064646,
-    "poverty_gap_pct_cut": 4.63447402012226e-05,
-    "gini_index_pct_cut": 0.0006822034254805
-  },
-  {
-    "state": "ID",
-    "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "ID",
-    "reform_type": "CTCs and EITCs",
-    "cost": 67592190.0,
-    "poverty_pct_cut": 0.001533129,
-    "child_poverty_pct_cut": 0.005064646,
-    "poverty_gap_pct_cut": 4.63447402012226e-05,
-    "gini_index_pct_cut": 0.0006822034254805
-  },
-  {
-    "state": "IL",
-    "reform_type": "CTCs",
-    "cost": 93019140.0,
-    "poverty_pct_cut": 0.003396328,
-    "child_poverty_pct_cut": 0.010616509,
-    "poverty_gap_pct_cut": 0.0002867135505902,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "IL",
-    "reform_type": "EITCs",
-    "cost": 433162240.0,
-    "poverty_pct_cut": 0.013137615,
-    "child_poverty_pct_cut": 0.03407022,
-    "poverty_gap_pct_cut": 0.0015677397189549,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "IL",
-    "reform_type": "CTCs and EITCs",
-    "cost": 433162240.0,
-    "poverty_pct_cut": 0.013137615,
-    "child_poverty_pct_cut": 0.03407022,
-    "poverty_gap_pct_cut": 0.0015677397189549,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "IN",
-    "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "IN",
-    "reform_type": "EITCs",
-    "cost": 103062530.0,
-    "poverty_pct_cut": 0.007591409,
-    "child_poverty_pct_cut": 0.017228257,
-    "poverty_gap_pct_cut": 0.0008070353666668,
-    "gini_index_pct_cut": 0.0004194741242226
-  },
-  {
-    "state": "IN",
-    "reform_type": "CTCs and EITCs",
-    "cost": 103062530.0,
-    "poverty_pct_cut": 0.007591409,
-    "child_poverty_pct_cut": 0.017228257,
-    "poverty_gap_pct_cut": 0.0008070353666668,
-    "gini_index_pct_cut": 0.0004194741242226
+    "cost": 89080832.0,
+    "poverty_pct_cut": 0.02085264027118683,
+    "child_poverty_pct_cut": 0.041625287383794785,
+    "poverty_gap_pct_cut": 0.0011587398703550452,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "IA",
@@ -411,25 +366,118 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "IA",
     "reform_type": "EITCs",
-    "cost": 57061376.0,
-    "poverty_pct_cut": 0.011998508,
-    "child_poverty_pct_cut": 0.03258221,
-    "poverty_gap_pct_cut": 0.0010433340759882,
-    "gini_index_pct_cut": 0.0005491240940511
+    "cost": 66032640.0,
+    "poverty_pct_cut": 0.007388880785583751,
+    "child_poverty_pct_cut": 0.012247377955645788,
+    "poverty_gap_pct_cut": 0.00028847709552994353,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "IA",
     "reform_type": "CTCs and EITCs",
-    "cost": 57061376.0,
-    "poverty_pct_cut": 0.011998508,
-    "child_poverty_pct_cut": 0.03258221,
-    "poverty_gap_pct_cut": 0.0010433340759882,
-    "gini_index_pct_cut": 0.0005491240940511
+    "cost": 66032640.0,
+    "poverty_pct_cut": 0.007388880785583751,
+    "child_poverty_pct_cut": 0.012247377955645788,
+    "poverty_gap_pct_cut": 0.00028847709552994353,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "ID",
+    "reform_type": "CTCs",
+    "cost": 34494464.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 3.8314955627512045e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "ID",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "ID",
+    "reform_type": "CTCs and EITCs",
+    "cost": 34494464.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 3.8314955627512045e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "IL",
+    "reform_type": "CTCs",
+    "cost": 53012480.0,
+    "poverty_pct_cut": 0.002361979327200542,
+    "child_poverty_pct_cut": 0.004784776755139533,
+    "poverty_gap_pct_cut": 6.888989032770503e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "IL",
+    "reform_type": "EITCs",
+    "cost": 430219264.0,
+    "poverty_pct_cut": 0.01891175238415599,
+    "child_poverty_pct_cut": 0.034136022386305476,
+    "poverty_gap_pct_cut": 0.0006107114230544126,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "IL",
+    "reform_type": "CTCs and EITCs",
+    "cost": 430219264.0,
+    "poverty_pct_cut": 0.01891175238415599,
+    "child_poverty_pct_cut": 0.034136022386305476,
+    "poverty_gap_pct_cut": 0.0006107114230544126,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "IN",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "IN",
+    "reform_type": "EITCs",
+    "cost": 98881536.0,
+    "poverty_pct_cut": 0.007762838253054522,
+    "child_poverty_pct_cut": 0.01361418556462013,
+    "poverty_gap_pct_cut": 0.00019493476039961276,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "IN",
+    "reform_type": "CTCs and EITCs",
+    "cost": 98881536.0,
+    "poverty_pct_cut": 0.007762838253054522,
+    "child_poverty_pct_cut": 0.01361418556462013,
+    "poverty_gap_pct_cut": 0.00019493476039961276,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "KS",
@@ -438,25 +486,28 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "KS",
     "reform_type": "EITCs",
-    "cost": 73589760.0,
-    "poverty_pct_cut": 0.0058461837,
-    "child_poverty_pct_cut": 0.016870193,
-    "poverty_gap_pct_cut": 0.0009353628215161,
-    "gini_index_pct_cut": 0.0
+    "cost": 73844736.0,
+    "poverty_pct_cut": 0.009764619055204093,
+    "child_poverty_pct_cut": 0.020426456350833178,
+    "poverty_gap_pct_cut": 0.0003660286005607514,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "KS",
     "reform_type": "CTCs and EITCs",
-    "cost": 73589760.0,
-    "poverty_pct_cut": 0.0058461837,
-    "child_poverty_pct_cut": 0.016870193,
-    "poverty_gap_pct_cut": 0.0009353628215161,
-    "gini_index_pct_cut": 0.0
+    "cost": 73844736.0,
+    "poverty_pct_cut": 0.009764619055204093,
+    "child_poverty_pct_cut": 0.020426456350833178,
+    "poverty_gap_pct_cut": 0.0003660286005607514,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "KY",
@@ -465,7 +516,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "KY",
@@ -474,7 +526,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "KY",
@@ -483,7 +536,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "LA",
@@ -492,106 +546,118 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "LA",
     "reform_type": "EITCs",
-    "cost": 48949250.0,
-    "poverty_pct_cut": 0.00268667,
-    "child_poverty_pct_cut": 0.006017855,
-    "poverty_gap_pct_cut": 0.0004907571284133,
-    "gini_index_pct_cut": 0.0
+    "cost": 33631744.0,
+    "poverty_pct_cut": 0.004024413666532685,
+    "child_poverty_pct_cut": 0.007367330137640238,
+    "poverty_gap_pct_cut": 9.31307295932855e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "LA",
     "reform_type": "CTCs and EITCs",
-    "cost": 48949250.0,
-    "poverty_pct_cut": 0.00268667,
-    "child_poverty_pct_cut": 0.006017855,
-    "poverty_gap_pct_cut": 0.0004907571284133,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "ME",
-    "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "ME",
-    "reform_type": "EITCs",
-    "cost": 40016896.0,
-    "poverty_pct_cut": 0.005967974,
-    "child_poverty_pct_cut": 0.016150173,
-    "poverty_gap_pct_cut": 0.0012556765325549,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "ME",
-    "reform_type": "CTCs and EITCs",
-    "cost": 40016896.0,
-    "poverty_pct_cut": 0.005967974,
-    "child_poverty_pct_cut": 0.016150173,
-    "poverty_gap_pct_cut": 0.0012556765325549,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "MD",
-    "reform_type": "CTCs",
-    "cost": 37234690.0,
-    "poverty_pct_cut": 0.00095589197,
-    "child_poverty_pct_cut": 0.0030286023,
-    "poverty_gap_pct_cut": 0.0004558070333461,
-    "gini_index_pct_cut": 5.675630928937415e-05
-  },
-  {
-    "state": "MD",
-    "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "MD",
-    "reform_type": "CTCs and EITCs",
-    "cost": 37234690.0,
-    "poverty_pct_cut": 0.00095589197,
-    "child_poverty_pct_cut": 0.0030286023,
-    "poverty_gap_pct_cut": 0.0004558070333461,
-    "gini_index_pct_cut": 5.675630928937415e-05
+    "cost": 33631744.0,
+    "poverty_pct_cut": 0.004024413666532685,
+    "child_poverty_pct_cut": 0.007367330137640238,
+    "poverty_gap_pct_cut": 9.31307295932855e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MA",
     "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "cost": 478991360.0,
+    "poverty_pct_cut": 0.014842527090675302,
+    "child_poverty_pct_cut": 0.02897912056909667,
+    "poverty_gap_pct_cut": 0.0010591143592656427,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MA",
     "reform_type": "EITCs",
-    "cost": 281391100.0,
-    "poverty_pct_cut": 0.008947721,
-    "child_poverty_pct_cut": 0.026152875,
-    "poverty_gap_pct_cut": 0.0026551549949209,
-    "gini_index_pct_cut": 0.0007118449178195
+    "cost": 405481472.0,
+    "poverty_pct_cut": 0.02509026343209876,
+    "child_poverty_pct_cut": 0.04281416390505102,
+    "poverty_gap_pct_cut": 0.0015087504300969061,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MA",
     "reform_type": "CTCs and EITCs",
-    "cost": 281391100.0,
-    "poverty_pct_cut": 0.008947721,
-    "child_poverty_pct_cut": 0.026152875,
-    "poverty_gap_pct_cut": 0.0026551549949209,
-    "gini_index_pct_cut": 0.0007118449178195
+    "cost": 884477440.0,
+    "poverty_pct_cut": 0.03846458304259512,
+    "child_poverty_pct_cut": 0.06945412564608786,
+    "poverty_gap_pct_cut": 0.0026058361843336025,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "MD",
+    "reform_type": "CTCs",
+    "cost": 50661376.0,
+    "poverty_pct_cut": 0.001144095934108691,
+    "child_poverty_pct_cut": 0.002103062569446479,
+    "poverty_gap_pct_cut": 0.0002700927833325882,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "MD",
+    "reform_type": "EITCs",
+    "cost": 455610368.0,
+    "poverty_pct_cut": 0.03057200345210731,
+    "child_poverty_pct_cut": 0.054019448813050985,
+    "poverty_gap_pct_cut": 0.0018821094268632226,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "MD",
+    "reform_type": "CTCs and EITCs",
+    "cost": 506271744.0,
+    "poverty_pct_cut": 0.03109471104107797,
+    "child_poverty_pct_cut": 0.055016753263771534,
+    "poverty_gap_pct_cut": 0.0021559662205007176,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "ME",
+    "reform_type": "CTCs",
+    "cost": 113672192.0,
+    "poverty_pct_cut": 0.0265508983284235,
+    "child_poverty_pct_cut": 0.05522129312157631,
+    "poverty_gap_pct_cut": 0.0006403671357352314,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "ME",
+    "reform_type": "EITCs",
+    "cost": 59097088.0,
+    "poverty_pct_cut": 0.023106821347028017,
+    "child_poverty_pct_cut": 0.044662914238870144,
+    "poverty_gap_pct_cut": 0.0005163593768703394,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "ME",
+    "reform_type": "CTCs and EITCs",
+    "cost": 172767232.0,
+    "poverty_pct_cut": 0.04384912922978401,
+    "child_poverty_pct_cut": 0.08367915451526642,
+    "poverty_gap_pct_cut": 0.0011833124145704428,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MI",
@@ -600,34 +666,38 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MI",
     "reform_type": "EITCs",
-    "cost": 437810180.0,
-    "poverty_pct_cut": 0.016451262,
-    "child_poverty_pct_cut": 0.042818367,
-    "poverty_gap_pct_cut": 0.0018573303333567,
-    "gini_index_pct_cut": 0.0
+    "cost": 432445440.0,
+    "poverty_pct_cut": 0.019730844606573764,
+    "child_poverty_pct_cut": 0.03383783723872442,
+    "poverty_gap_pct_cut": 0.0005473762424343337,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MI",
     "reform_type": "CTCs and EITCs",
-    "cost": 437810180.0,
-    "poverty_pct_cut": 0.016451262,
-    "child_poverty_pct_cut": 0.042818367,
-    "poverty_gap_pct_cut": 0.0018573303333567,
-    "gini_index_pct_cut": 0.0
+    "cost": 432445440.0,
+    "poverty_pct_cut": 0.019730844606573764,
+    "child_poverty_pct_cut": 0.03383783723872442,
+    "poverty_gap_pct_cut": 0.0005473762424343337,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MN",
     "reform_type": "CTCs",
-    "cost": 878178300.0,
-    "poverty_pct_cut": 0.048234135,
-    "child_poverty_pct_cut": 0.1315946,
-    "poverty_gap_pct_cut": 0.0075575076462795,
-    "gini_index_pct_cut": 0.0022345337219415
+    "cost": 1335322368.0,
+    "poverty_pct_cut": 0.10610348917543888,
+    "child_poverty_pct_cut": 0.21511254832148552,
+    "poverty_gap_pct_cut": 0.003132034644055486,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MN",
@@ -636,43 +706,18 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MN",
     "reform_type": "CTCs and EITCs",
-    "cost": 878178300.0,
-    "poverty_pct_cut": 0.048234135,
-    "child_poverty_pct_cut": 0.1315946,
-    "poverty_gap_pct_cut": 0.0075575076462795,
-    "gini_index_pct_cut": 0.0022345337219415
-  },
-  {
-    "state": "MS",
-    "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "MS",
-    "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "MS",
-    "reform_type": "CTCs and EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "cost": 1335322368.0,
+    "poverty_pct_cut": 0.10610348917543888,
+    "child_poverty_pct_cut": 0.21511254832148552,
+    "poverty_gap_pct_cut": 0.003132034644055486,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MO",
@@ -681,25 +726,58 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MO",
     "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "cost": 21726208.0,
+    "poverty_pct_cut": 0.0009759703898453154,
+    "child_poverty_pct_cut": 0.002493594161933288,
+    "poverty_gap_pct_cut": 1.0324006127016412e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MO",
     "reform_type": "CTCs and EITCs",
+    "cost": 21726208.0,
+    "poverty_pct_cut": 0.0009759703898453154,
+    "child_poverty_pct_cut": 0.002493594161933288,
+    "poverty_gap_pct_cut": 1.0324006127016412e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "MS",
+    "reform_type": "CTCs",
     "cost": 0.0,
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "MS",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "MS",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MT",
@@ -708,187 +786,28 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MT",
     "reform_type": "EITCs",
-    "cost": 11431936.0,
-    "poverty_pct_cut": 0.0006998744,
-    "child_poverty_pct_cut": 0.0017711164,
-    "poverty_gap_pct_cut": 0.0004548404051073,
-    "gini_index_pct_cut": 0.0
+    "cost": 22110208.0,
+    "poverty_pct_cut": 0.012920037377625704,
+    "child_poverty_pct_cut": 0.01809182297438383,
+    "poverty_gap_pct_cut": 0.0001813274869995028,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "MT",
     "reform_type": "CTCs and EITCs",
-    "cost": 11431936.0,
-    "poverty_pct_cut": 0.0006998744,
-    "child_poverty_pct_cut": 0.0017711164,
-    "poverty_gap_pct_cut": 0.0004548404051073,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NE",
-    "reform_type": "CTCs",
-    "cost": 79953920.0,
-    "poverty_pct_cut": 0.016708324,
-    "child_poverty_pct_cut": 0.042748574,
-    "poverty_gap_pct_cut": 0.0022351238024915,
-    "gini_index_pct_cut": 0.0016751461415805
-  },
-  {
-    "state": "NE",
-    "reform_type": "EITCs",
-    "cost": 21601280.0,
-    "poverty_pct_cut": 0.008246279,
-    "child_poverty_pct_cut": 0.023066679,
-    "poverty_gap_pct_cut": 0.0006368919830312,
-    "gini_index_pct_cut": 0.0004769274813786
-  },
-  {
-    "state": "NE",
-    "reform_type": "CTCs and EITCs",
-    "cost": 101554180.0,
-    "poverty_pct_cut": 0.021352842,
-    "child_poverty_pct_cut": 0.055481862,
-    "poverty_gap_pct_cut": 0.0028932136762059,
-    "gini_index_pct_cut": 0.0021532091318804
-  },
-  {
-    "state": "NV",
-    "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NV",
-    "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NV",
-    "reform_type": "CTCs and EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NH",
-    "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NH",
-    "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NH",
-    "reform_type": "CTCs and EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NJ",
-    "reform_type": "CTCs",
-    "cost": 235399170.0,
-    "poverty_pct_cut": 0.008096295,
-    "child_poverty_pct_cut": 0.02446927,
-    "poverty_gap_pct_cut": 0.0014314689563401,
-    "gini_index_pct_cut": 0.0002983884289454
-  },
-  {
-    "state": "NJ",
-    "reform_type": "EITCs",
-    "cost": 530354180.0,
-    "poverty_pct_cut": 0.013751176,
-    "child_poverty_pct_cut": 0.036670312,
-    "poverty_gap_pct_cut": 0.003494253217449,
-    "gini_index_pct_cut": 0.0006256671897427
-  },
-  {
-    "state": "NJ",
-    "reform_type": "CTCs and EITCs",
-    "cost": 765759500.0,
-    "poverty_pct_cut": 0.020669863,
-    "child_poverty_pct_cut": 0.057084303,
-    "poverty_gap_pct_cut": 0.004982737354641,
-    "gini_index_pct_cut": 0.0009246279633173
-  },
-  {
-    "state": "NM",
-    "reform_type": "CTCs",
-    "cost": 168073220.0,
-    "poverty_pct_cut": 0.024991376,
-    "child_poverty_pct_cut": 0.07168215,
-    "poverty_gap_pct_cut": 0.0031837623262917,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NM",
-    "reform_type": "EITCs",
-    "cost": 149128200.0,
-    "poverty_pct_cut": 0.03311868,
-    "child_poverty_pct_cut": 0.07474792,
-    "poverty_gap_pct_cut": 0.0028990650503761,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NM",
-    "reform_type": "CTCs and EITCs",
-    "cost": 317200400.0,
-    "poverty_pct_cut": 0.04998979,
-    "child_poverty_pct_cut": 0.11790802,
-    "poverty_gap_pct_cut": 0.0063039194990331,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "NY",
-    "reform_type": "CTCs",
-    "cost": 1532041200.0,
-    "poverty_pct_cut": 0.015092923,
-    "child_poverty_pct_cut": 0.041004274,
-    "poverty_gap_pct_cut": 0.0025338915737503,
-    "gini_index_pct_cut": 0.0005622669540671
-  },
-  {
-    "state": "NY",
-    "reform_type": "EITCs",
-    "cost": 890137600.0,
-    "poverty_pct_cut": 0.012121937,
-    "child_poverty_pct_cut": 0.032420225,
-    "poverty_gap_pct_cut": 0.0025124428991212,
-    "gini_index_pct_cut": 0.0003387143203665
-  },
-  {
-    "state": "NY",
-    "reform_type": "CTCs and EITCs",
-    "cost": 2422178800.0,
-    "poverty_pct_cut": 0.024713814,
-    "child_poverty_pct_cut": 0.06655131,
-    "poverty_gap_pct_cut": 0.005111132643194,
-    "gini_index_pct_cut": 0.0009015412105475
+    "cost": 22110208.0,
+    "poverty_pct_cut": 0.012920037377625704,
+    "child_poverty_pct_cut": 0.01809182297438383,
+    "poverty_gap_pct_cut": 0.0001813274869995028,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "NC",
@@ -897,7 +816,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "NC",
@@ -906,7 +826,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "NC",
@@ -915,7 +836,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "ND",
@@ -924,7 +846,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "ND",
@@ -933,7 +856,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "ND",
@@ -942,7 +866,188 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NE",
+    "reform_type": "CTCs",
+    "cost": 143554560.0,
+    "poverty_pct_cut": 0.030519773562749226,
+    "child_poverty_pct_cut": 0.06008391578992208,
+    "poverty_gap_pct_cut": 0.0011242586097311928,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NE",
+    "reform_type": "EITCs",
+    "cost": 34153472.0,
+    "poverty_pct_cut": 0.005880986262733738,
+    "child_poverty_pct_cut": 0.009974658178786436,
+    "poverty_gap_pct_cut": 0.00018768551991458655,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NE",
+    "reform_type": "CTCs and EITCs",
+    "cost": 177710080.0,
+    "poverty_pct_cut": 0.03473156007627646,
+    "child_poverty_pct_cut": 0.06673619523644447,
+    "poverty_gap_pct_cut": 0.0013192779192817946,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NH",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NH",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NH",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NJ",
+    "reform_type": "CTCs",
+    "cost": 334987776.0,
+    "poverty_pct_cut": 0.01503495565460374,
+    "child_poverty_pct_cut": 0.030079467066874106,
+    "poverty_gap_pct_cut": 0.00096578209674135,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NJ",
+    "reform_type": "EITCs",
+    "cost": 615362560.0,
+    "poverty_pct_cut": 0.02851365739479661,
+    "child_poverty_pct_cut": 0.05173553340137005,
+    "poverty_gap_pct_cut": 0.0016816663302803693,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NJ",
+    "reform_type": "CTCs and EITCs",
+    "cost": 950352384.0,
+    "poverty_pct_cut": 0.04134243633598089,
+    "child_poverty_pct_cut": 0.07564339476327102,
+    "poverty_gap_pct_cut": 0.0026843629089927813,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NM",
+    "reform_type": "CTCs",
+    "cost": 159168512.0,
+    "poverty_pct_cut": 0.02527827334900697,
+    "child_poverty_pct_cut": 0.05484045669436455,
+    "poverty_gap_pct_cut": 0.0009051035208082342,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NM",
+    "reform_type": "EITCs",
+    "cost": 123972608.0,
+    "poverty_pct_cut": 0.0250582421819369,
+    "child_poverty_pct_cut": 0.04987839236855507,
+    "poverty_gap_pct_cut": 0.0006584070803048455,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NM",
+    "reform_type": "CTCs and EITCs",
+    "cost": 283147264.0,
+    "poverty_pct_cut": 0.049829660604397454,
+    "child_poverty_pct_cut": 0.09826276699701945,
+    "poverty_gap_pct_cut": 0.0016177593120422103,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NV",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NV",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NV",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NY",
+    "reform_type": "CTCs",
+    "cost": 847770624.0,
+    "poverty_pct_cut": 0.01237034799459462,
+    "child_poverty_pct_cut": 0.02499380174021308,
+    "poverty_gap_pct_cut": 0.0005961449157393881,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NY",
+    "reform_type": "EITCs",
+    "cost": 831529984.0,
+    "poverty_pct_cut": 0.016841244337972336,
+    "child_poverty_pct_cut": 0.03083829005469432,
+    "poverty_gap_pct_cut": 0.0009245771347692455,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "NY",
+    "reform_type": "CTCs and EITCs",
+    "cost": 1679269888.0,
+    "poverty_pct_cut": 0.0303901971067087,
+    "child_poverty_pct_cut": 0.057475193923052684,
+    "poverty_gap_pct_cut": 0.0015466227468345108,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OH",
@@ -951,79 +1056,88 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OH",
     "reform_type": "EITCs",
-    "cost": 39530496.0,
-    "poverty_pct_cut": 8.929298e-05,
-    "child_poverty_pct_cut": 0.00024332867,
-    "poverty_gap_pct_cut": 9.669069867826451e-06,
-    "gini_index_pct_cut": 2.3519365729819903e-05
+    "cost": 38643712.0,
+    "poverty_pct_cut": 0.00045246348211852214,
+    "child_poverty_pct_cut": 0.0003030565994170805,
+    "poverty_gap_pct_cut": 6.725552234557422e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OH",
     "reform_type": "CTCs and EITCs",
-    "cost": 39530496.0,
-    "poverty_pct_cut": 8.929298e-05,
-    "child_poverty_pct_cut": 0.00024332867,
-    "poverty_gap_pct_cut": 9.669069867826451e-06,
-    "gini_index_pct_cut": 2.3519365729819903e-05
+    "cost": 38643712.0,
+    "poverty_pct_cut": 0.00045246348211852214,
+    "child_poverty_pct_cut": 0.0003030565994170805,
+    "poverty_gap_pct_cut": 6.725552234557422e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OK",
     "reform_type": "CTCs",
-    "cost": 37638144.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 9.916105677963553e-05,
-    "gini_index_pct_cut": 0.0
+    "cost": 33563648.0,
+    "poverty_pct_cut": 0.002767854800913483,
+    "child_poverty_pct_cut": 0.003932477592024952,
+    "poverty_gap_pct_cut": 2.8208727118490098e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OK",
     "reform_type": "EITCs",
-    "cost": 32317440.0,
-    "poverty_pct_cut": 0.0031303118,
-    "child_poverty_pct_cut": 0.008590076,
-    "poverty_gap_pct_cut": 0.0004584605128554,
-    "gini_index_pct_cut": 0.0
+    "cost": 24767488.0,
+    "poverty_pct_cut": 0.004660318582318723,
+    "child_poverty_pct_cut": 0.005025571119040251,
+    "poverty_gap_pct_cut": 9.358089174974148e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OK",
     "reform_type": "CTCs and EITCs",
-    "cost": 69955580.0,
-    "poverty_pct_cut": 0.0031303118,
-    "child_poverty_pct_cut": 0.008590076,
-    "poverty_gap_pct_cut": 0.0005576438225595,
-    "gini_index_pct_cut": 0.0
+    "cost": 58330112.0,
+    "poverty_pct_cut": 0.006279991508927196,
+    "child_poverty_pct_cut": 0.007460039446596056,
+    "poverty_gap_pct_cut": 0.00012222919236330748,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OR",
     "reform_type": "CTCs",
-    "cost": 49928190.0,
-    "poverty_pct_cut": 0.0013113447,
-    "child_poverty_pct_cut": 0.0045457114,
-    "poverty_gap_pct_cut": 0.0007756219227359,
-    "gini_index_pct_cut": 0.0
+    "cost": 105136128.0,
+    "poverty_pct_cut": 0.007798153363789122,
+    "child_poverty_pct_cut": 0.014764760000010332,
+    "poverty_gap_pct_cut": 0.0006437434753107221,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OR",
     "reform_type": "EITCs",
-    "cost": 49098750.0,
-    "poverty_pct_cut": 0.0055603073,
-    "child_poverty_pct_cut": 0.018738396,
-    "poverty_gap_pct_cut": 0.0006001591050241,
-    "gini_index_pct_cut": 0.0
+    "cost": 64776192.0,
+    "poverty_pct_cut": 0.008317896630614996,
+    "child_poverty_pct_cut": 0.015470661067714294,
+    "poverty_gap_pct_cut": 0.0002664880284350387,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "OR",
     "reform_type": "CTCs and EITCs",
-    "cost": 99021820.0,
-    "poverty_pct_cut": 0.0073045194,
-    "child_poverty_pct_cut": 0.0233109,
-    "poverty_gap_pct_cut": 0.001379754779386,
-    "gini_index_pct_cut": 0.0
+    "cost": 169911296.0,
+    "poverty_pct_cut": 0.017258106730878353,
+    "child_poverty_pct_cut": 0.033107537465790905,
+    "poverty_gap_pct_cut": 0.0009150269636836094,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "PA",
@@ -1032,25 +1146,28 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "PA",
     "reform_type": "EITCs",
-    "cost": 172819460.0,
-    "poverty_pct_cut": 0.004901388,
-    "child_poverty_pct_cut": 0.0156927,
-    "poverty_gap_pct_cut": 0.0006786637765935,
-    "gini_index_pct_cut": 0.0001296215412386
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "PA",
     "reform_type": "CTCs and EITCs",
-    "cost": 172819460.0,
-    "poverty_pct_cut": 0.004901388,
-    "child_poverty_pct_cut": 0.0156927,
-    "poverty_gap_pct_cut": 0.0006786637765935,
-    "gini_index_pct_cut": 0.0001296215412386
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "RI",
@@ -1059,25 +1176,28 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "RI",
     "reform_type": "EITCs",
-    "cost": 22726656.0,
-    "poverty_pct_cut": 0.002980274,
-    "child_poverty_pct_cut": 0.0066237547,
-    "poverty_gap_pct_cut": 0.001023614744577,
-    "gini_index_pct_cut": 0.0
+    "cost": 34718720.0,
+    "poverty_pct_cut": 0.016415694262832403,
+    "child_poverty_pct_cut": 0.02191752288490534,
+    "poverty_gap_pct_cut": 0.000402428730822979,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "RI",
     "reform_type": "CTCs and EITCs",
-    "cost": 22726656.0,
-    "poverty_pct_cut": 0.002980274,
-    "child_poverty_pct_cut": 0.0066237547,
-    "poverty_gap_pct_cut": 0.001023614744577,
-    "gini_index_pct_cut": 0.0
+    "cost": 34718720.0,
+    "poverty_pct_cut": 0.016415694262832403,
+    "child_poverty_pct_cut": 0.02191752288490534,
+    "poverty_gap_pct_cut": 0.000402428730822979,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "SC",
@@ -1086,25 +1206,28 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "SC",
     "reform_type": "EITCs",
-    "cost": 3937280.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 4.032252801030332e-06,
-    "gini_index_pct_cut": 0.0
+    "cost": 6296576.0,
+    "poverty_pct_cut": 0.00030143020142401965,
+    "child_poverty_pct_cut": 0.0004312809822814805,
+    "poverty_gap_pct_cut": 1.493231285551978e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "SC",
     "reform_type": "CTCs and EITCs",
-    "cost": 3937280.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 4.032252801030332e-06,
-    "gini_index_pct_cut": 0.0
+    "cost": 6296576.0,
+    "poverty_pct_cut": 0.00030143020142401965,
+    "child_poverty_pct_cut": 0.0004312809822814805,
+    "poverty_gap_pct_cut": 1.493231285551978e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "SD",
@@ -1113,7 +1236,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "SD",
@@ -1122,7 +1246,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "SD",
@@ -1131,7 +1256,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "TN",
@@ -1140,7 +1266,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "TN",
@@ -1149,7 +1276,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "TN",
@@ -1158,7 +1286,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "TX",
@@ -1167,7 +1296,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "TX",
@@ -1176,7 +1306,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "TX",
@@ -1185,61 +1316,38 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "UT",
     "reform_type": "CTCs",
-    "cost": 12036096.0,
-    "poverty_pct_cut": 0.0009775705,
-    "child_poverty_pct_cut": 0.0029711674,
-    "poverty_gap_pct_cut": 2.2867862213875617e-05,
-    "gini_index_pct_cut": 0.0001580442229608
-  },
-  {
-    "state": "UT",
-    "reform_type": "EITCs",
-    "cost": 5500928.0,
+    "cost": 2041856.0,
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 1.0872805622032029e-05,
-    "gini_index_pct_cut": 6.581347407573295e-05
+    "poverty_gap_pct_cut": 7.055808080393121e-07,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "UT",
+    "reform_type": "EITCs",
+    "cost": 4734976.0,
+    "poverty_pct_cut": 0.0003320117830298841,
+    "child_poverty_pct_cut": 0.00044236492249183357,
+    "poverty_gap_pct_cut": 4.495053789801164e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "UT",
     "reform_type": "CTCs and EITCs",
-    "cost": 21477376.0,
-    "poverty_pct_cut": 0.0009775705,
-    "child_poverty_pct_cut": 0.0029711674,
-    "poverty_gap_pct_cut": 3.7678249696662815e-05,
-    "gini_index_pct_cut": 0.0002762763720599
-  },
-  {
-    "state": "VT",
-    "reform_type": "CTCs",
-    "cost": 32876544.0,
-    "poverty_pct_cut": 0.0058916844,
-    "child_poverty_pct_cut": 0.021115039,
-    "poverty_gap_pct_cut": 0.0011275050626415,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "VT",
-    "reform_type": "EITCs",
-    "cost": 29255680.0,
-    "poverty_pct_cut": 0.010311077,
-    "child_poverty_pct_cut": 0.03386525,
-    "poverty_gap_pct_cut": 0.002320858224843,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "VT",
-    "reform_type": "CTCs and EITCs",
-    "cost": 62132224.0,
-    "poverty_pct_cut": 0.012942231,
-    "child_poverty_pct_cut": 0.041872624,
-    "poverty_gap_pct_cut": 0.0035270954168922,
-    "gini_index_pct_cut": 0.0
+    "cost": 7808000.0,
+    "poverty_pct_cut": 0.0003320117830298841,
+    "child_poverty_pct_cut": 0.00044236492249183357,
+    "poverty_gap_pct_cut": 5.346582658704988e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "VA",
@@ -1248,25 +1356,58 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "VA",
     "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "cost": 193001472.0,
+    "poverty_pct_cut": 0.012551140505820513,
+    "child_poverty_pct_cut": 0.023021208122372627,
+    "poverty_gap_pct_cut": 0.0004359905134147315,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "VA",
     "reform_type": "CTCs and EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "cost": 193001472.0,
+    "poverty_pct_cut": 0.012551140505820513,
+    "child_poverty_pct_cut": 0.023021208122372627,
+    "poverty_gap_pct_cut": 0.0004359905134147315,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "VT",
+    "reform_type": "CTCs",
+    "cost": 44523520.0,
+    "poverty_pct_cut": 0.0135421147570014,
+    "child_poverty_pct_cut": 0.03256167471408844,
+    "poverty_gap_pct_cut": 0.0006497244325684363,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "VT",
+    "reform_type": "EITCs",
+    "cost": 44392448.0,
+    "poverty_pct_cut": 0.04147098958492279,
+    "child_poverty_pct_cut": 0.07804127782583237,
+    "poverty_gap_pct_cut": 0.0008088769129964131,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "VT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 88899584.0,
+    "poverty_pct_cut": 0.06458047777414322,
+    "child_poverty_pct_cut": 0.1273374706506729,
+    "poverty_gap_pct_cut": 0.0015293316121434408,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WA",
@@ -1275,52 +1416,28 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WA",
     "reform_type": "EITCs",
-    "cost": 225060860.0,
-    "poverty_pct_cut": 0.00766339,
-    "child_poverty_pct_cut": 0.01615825,
-    "poverty_gap_pct_cut": 0.001546113406459,
-    "gini_index_pct_cut": 0.0002989490290698
+    "cost": 286885888.0,
+    "poverty_pct_cut": 0.012615760671906173,
+    "child_poverty_pct_cut": 0.021875121956691147,
+    "poverty_gap_pct_cut": 0.0008049340920636501,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WA",
     "reform_type": "CTCs and EITCs",
-    "cost": 225060860.0,
-    "poverty_pct_cut": 0.00766339,
-    "child_poverty_pct_cut": 0.01615825,
-    "poverty_gap_pct_cut": 0.001546113406459,
-    "gini_index_pct_cut": 0.0002989490290698
-  },
-  {
-    "state": "WV",
-    "reform_type": "CTCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "WV",
-    "reform_type": "EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
-  },
-  {
-    "state": "WV",
-    "reform_type": "CTCs and EITCs",
-    "cost": 0.0,
-    "poverty_pct_cut": 0.0,
-    "child_poverty_pct_cut": 0.0,
-    "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "cost": 286885888.0,
+    "poverty_pct_cut": 0.012615760671906173,
+    "child_poverty_pct_cut": 0.021875121956691147,
+    "poverty_gap_pct_cut": 0.0008049340920636501,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WI",
@@ -1329,25 +1446,58 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WI",
     "reform_type": "EITCs",
-    "cost": 98054140.0,
-    "poverty_pct_cut": 0.008595016,
-    "child_poverty_pct_cut": 0.029497022,
-    "poverty_gap_pct_cut": 0.0006883955504287,
-    "gini_index_pct_cut": 0.0001294985815405
+    "cost": 136815616.0,
+    "poverty_pct_cut": 0.01481485046679154,
+    "child_poverty_pct_cut": 0.030888902372680604,
+    "poverty_gap_pct_cut": 0.00028475199439228853,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WI",
     "reform_type": "CTCs and EITCs",
-    "cost": 98054140.0,
-    "poverty_pct_cut": 0.008595016,
-    "child_poverty_pct_cut": 0.029497022,
-    "poverty_gap_pct_cut": 0.0006883955504287,
-    "gini_index_pct_cut": 0.0001294985815405
+    "cost": 136815616.0,
+    "poverty_pct_cut": 0.01481485046679154,
+    "child_poverty_pct_cut": 0.030888902372680604,
+    "poverty_gap_pct_cut": 0.00028475199439228853,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "WV",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "WV",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "WV",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WY",
@@ -1356,7 +1506,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WY",
@@ -1365,7 +1516,8 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
   },
   {
     "state": "WY",
@@ -1374,6 +1526,3067 @@
     "poverty_pct_cut": 0.0,
     "child_poverty_pct_cut": 0.0,
     "poverty_gap_pct_cut": 0.0,
-    "gini_index_pct_cut": 0.0
+    "gini_index_pct_cut": 0.0,
+    "year": 2024
+  },
+  {
+    "state": "AL",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AL",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AL",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AK",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AK",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AK",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AZ",
+    "reform_type": "CTCs",
+    "cost": 90047488.0,
+    "poverty_pct_cut": 0.0018815356759457951,
+    "child_poverty_pct_cut": 0.003443214473211103,
+    "poverty_gap_pct_cut": 3.202949995124424e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AZ",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AZ",
+    "reform_type": "CTCs and EITCs",
+    "cost": 90047488.0,
+    "poverty_pct_cut": 0.0018815356759457951,
+    "child_poverty_pct_cut": 0.003443214473211103,
+    "poverty_gap_pct_cut": 3.202949995124424e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AR",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AR",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AR",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CA",
+    "reform_type": "CTCs",
+    "cost": 750101504.0,
+    "poverty_pct_cut": 0.005016812007135321,
+    "child_poverty_pct_cut": 0.010261459327099286,
+    "poverty_gap_pct_cut": 0.0004916834095860778,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CA",
+    "reform_type": "EITCs",
+    "cost": 1500754432.0,
+    "poverty_pct_cut": 0.006937290946902626,
+    "child_poverty_pct_cut": 0.010898680696230328,
+    "poverty_gap_pct_cut": 0.0008603259395362834,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 2250849280.0,
+    "poverty_pct_cut": 0.012373473415909057,
+    "child_poverty_pct_cut": 0.021457442198250368,
+    "poverty_gap_pct_cut": 0.0013581089712493516,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CO",
+    "reform_type": "CTCs",
+    "cost": 1859549184.0,
+    "poverty_pct_cut": 0.13021005131304264,
+    "child_poverty_pct_cut": 0.26234916411340237,
+    "poverty_gap_pct_cut": 0.004968441101316712,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CO",
+    "reform_type": "EITCs",
+    "cost": 443577344.0,
+    "poverty_pct_cut": 0.03696610336191952,
+    "child_poverty_pct_cut": 0.07135149789974093,
+    "poverty_gap_pct_cut": 0.0009339766360538832,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CO",
+    "reform_type": "CTCs and EITCs",
+    "cost": 2303131648.0,
+    "poverty_pct_cut": 0.1590182837098837,
+    "child_poverty_pct_cut": 0.30568793043494225,
+    "poverty_gap_pct_cut": 0.006305167511235887,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CT",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CT",
+    "reform_type": "EITCs",
+    "cost": 259277824.0,
+    "poverty_pct_cut": 0.032755709066987035,
+    "child_poverty_pct_cut": 0.0582805335521698,
+    "poverty_gap_pct_cut": 0.0010619407912050359,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "CT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 259277824.0,
+    "poverty_pct_cut": 0.032755709066987035,
+    "child_poverty_pct_cut": 0.0582805335521698,
+    "poverty_gap_pct_cut": 0.0010619407912050359,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "DE",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "DE",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "DE",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "DC",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "DC",
+    "reform_type": "EITCs",
+    "cost": 120320000.0,
+    "poverty_pct_cut": 0.06794034689664841,
+    "child_poverty_pct_cut": 0.10072354227304459,
+    "poverty_gap_pct_cut": 0.0021988431931347515,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "DC",
+    "reform_type": "CTCs and EITCs",
+    "cost": 120320000.0,
+    "poverty_pct_cut": 0.06794034689664841,
+    "child_poverty_pct_cut": 0.10072354227304459,
+    "poverty_gap_pct_cut": 0.0021988431931347515,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "FL",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "FL",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "FL",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "GA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "GA",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "GA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "HI",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "HI",
+    "reform_type": "EITCs",
+    "cost": 90735616.0,
+    "poverty_pct_cut": 0.022106779739260674,
+    "child_poverty_pct_cut": 0.03860415145754814,
+    "poverty_gap_pct_cut": 0.001030113445562765,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "HI",
+    "reform_type": "CTCs and EITCs",
+    "cost": 90735616.0,
+    "poverty_pct_cut": 0.022106779739260674,
+    "child_poverty_pct_cut": 0.03860415145754814,
+    "poverty_gap_pct_cut": 0.001030113445562765,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ID",
+    "reform_type": "CTCs",
+    "cost": 34570240.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 3.146139210480867e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ID",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ID",
+    "reform_type": "CTCs and EITCs",
+    "cost": 34570240.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 3.146139210480867e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IL",
+    "reform_type": "CTCs",
+    "cost": 108008448.0,
+    "poverty_pct_cut": 0.004449800590651541,
+    "child_poverty_pct_cut": 0.009329581780869322,
+    "poverty_gap_pct_cut": 0.00012096222888895225,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IL",
+    "reform_type": "EITCs",
+    "cost": 491354624.0,
+    "poverty_pct_cut": 0.01829246858901837,
+    "child_poverty_pct_cut": 0.0346197798190748,
+    "poverty_gap_pct_cut": 0.0006012890702177554,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IL",
+    "reform_type": "CTCs and EITCs",
+    "cost": 491354624.0,
+    "poverty_pct_cut": 0.01829246858901837,
+    "child_poverty_pct_cut": 0.0346197798190748,
+    "poverty_gap_pct_cut": 0.0006012890702177554,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IN",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IN",
+    "reform_type": "EITCs",
+    "cost": 100541440.0,
+    "poverty_pct_cut": 0.006728216868294921,
+    "child_poverty_pct_cut": 0.012566352961584926,
+    "poverty_gap_pct_cut": 0.00017243924119123239,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IN",
+    "reform_type": "CTCs and EITCs",
+    "cost": 100541440.0,
+    "poverty_pct_cut": 0.006728216868294921,
+    "child_poverty_pct_cut": 0.012566352961584926,
+    "poverty_gap_pct_cut": 0.00017243924119123239,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IA",
+    "reform_type": "EITCs",
+    "cost": 67209216.0,
+    "poverty_pct_cut": 0.00797852257710474,
+    "child_poverty_pct_cut": 0.01545605771298142,
+    "poverty_gap_pct_cut": 0.00025991247510661995,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "IA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 67209216.0,
+    "poverty_pct_cut": 0.00797852257710474,
+    "child_poverty_pct_cut": 0.01545605771298142,
+    "poverty_gap_pct_cut": 0.00025991247510661995,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "KS",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "KS",
+    "reform_type": "EITCs",
+    "cost": 76555264.0,
+    "poverty_pct_cut": 0.008278273686300963,
+    "child_poverty_pct_cut": 0.016517070587724447,
+    "poverty_gap_pct_cut": 0.00033138633361755,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "KS",
+    "reform_type": "CTCs and EITCs",
+    "cost": 76555264.0,
+    "poverty_pct_cut": 0.008278273686300963,
+    "child_poverty_pct_cut": 0.016517070587724447,
+    "poverty_gap_pct_cut": 0.00033138633361755,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "KY",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "KY",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "KY",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "LA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "LA",
+    "reform_type": "EITCs",
+    "cost": 34185216.0,
+    "poverty_pct_cut": 0.0017867786664282903,
+    "child_poverty_pct_cut": 0.0026639575420025117,
+    "poverty_gap_pct_cut": 8.243431653866391e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "LA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 34185216.0,
+    "poverty_pct_cut": 0.0017867786664282903,
+    "child_poverty_pct_cut": 0.0026639575420025117,
+    "poverty_gap_pct_cut": 8.243431653866391e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ME",
+    "reform_type": "CTCs",
+    "cost": 126171136.0,
+    "poverty_pct_cut": 0.03439937811344862,
+    "child_poverty_pct_cut": 0.0726283136755228,
+    "poverty_gap_pct_cut": 0.0007378310656309092,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ME",
+    "reform_type": "EITCs",
+    "cost": 59846656.0,
+    "poverty_pct_cut": 0.028245541267096996,
+    "child_poverty_pct_cut": 0.05610634759068489,
+    "poverty_gap_pct_cut": 0.00045013650797513273,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ME",
+    "reform_type": "CTCs and EITCs",
+    "cost": 186014720.0,
+    "poverty_pct_cut": 0.04916026070713997,
+    "child_poverty_pct_cut": 0.0921307485550642,
+    "poverty_gap_pct_cut": 0.0012242383082344337,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MD",
+    "reform_type": "CTCs",
+    "cost": 58400768.0,
+    "poverty_pct_cut": 0.0023293286344028274,
+    "child_poverty_pct_cut": 0.004139171290944432,
+    "poverty_gap_pct_cut": 0.000268062663455059,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MD",
+    "reform_type": "EITCs",
+    "cost": 468912128.0,
+    "poverty_pct_cut": 0.03040340798906982,
+    "child_poverty_pct_cut": 0.052087395917624235,
+    "poverty_gap_pct_cut": 0.0016784806502273748,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MD",
+    "reform_type": "CTCs and EITCs",
+    "cost": 527315968.0,
+    "poverty_pct_cut": 0.03121261578053236,
+    "child_poverty_pct_cut": 0.053310589864850044,
+    "poverty_gap_pct_cut": 0.0019514506824111451,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MA",
+    "reform_type": "CTCs",
+    "cost": 483440128.0,
+    "poverty_pct_cut": 0.017194716001136437,
+    "child_poverty_pct_cut": 0.032620038009352155,
+    "poverty_gap_pct_cut": 0.0009225950095342858,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MA",
+    "reform_type": "EITCs",
+    "cost": 412304896.0,
+    "poverty_pct_cut": 0.025905836321827438,
+    "child_poverty_pct_cut": 0.045839736652043134,
+    "poverty_gap_pct_cut": 0.0013370423067825168,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 895746560.0,
+    "poverty_pct_cut": 0.0421679737046361,
+    "child_poverty_pct_cut": 0.07540663931932715,
+    "poverty_gap_pct_cut": 0.0022965320403852563,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MI",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MI",
+    "reform_type": "EITCs",
+    "cost": 439826432.0,
+    "poverty_pct_cut": 0.019589504656883385,
+    "child_poverty_pct_cut": 0.03135488830650082,
+    "poverty_gap_pct_cut": 0.0004917639037450961,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MI",
+    "reform_type": "CTCs and EITCs",
+    "cost": 439826432.0,
+    "poverty_pct_cut": 0.019589504656883385,
+    "child_poverty_pct_cut": 0.03135488830650082,
+    "poverty_gap_pct_cut": 0.0004917639037450961,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MN",
+    "reform_type": "CTCs",
+    "cost": 1327665152.0,
+    "poverty_pct_cut": 0.09662690199911594,
+    "child_poverty_pct_cut": 0.19469047151505947,
+    "poverty_gap_pct_cut": 0.002728878088633976,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MN",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MN",
+    "reform_type": "CTCs and EITCs",
+    "cost": 1327665152.0,
+    "poverty_pct_cut": 0.09662690199911594,
+    "child_poverty_pct_cut": 0.19469047151505947,
+    "poverty_gap_pct_cut": 0.002728878088633976,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MS",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MS",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MS",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MO",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MO",
+    "reform_type": "EITCs",
+    "cost": 20108288.0,
+    "poverty_pct_cut": 0.00014270424435380846,
+    "child_poverty_pct_cut": 0.00015547778457403183,
+    "poverty_gap_pct_cut": 6.726891343264937e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MO",
+    "reform_type": "CTCs and EITCs",
+    "cost": 20108288.0,
+    "poverty_pct_cut": 0.00014270424435380846,
+    "child_poverty_pct_cut": 0.00015547778457403183,
+    "poverty_gap_pct_cut": 6.726891343264937e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MT",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MT",
+    "reform_type": "EITCs",
+    "cost": 22460416.0,
+    "poverty_pct_cut": 0.006076199002563953,
+    "child_poverty_pct_cut": 0.011404110584408045,
+    "poverty_gap_pct_cut": 0.00016294018398093594,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "MT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 22460416.0,
+    "poverty_pct_cut": 0.006076199002563953,
+    "child_poverty_pct_cut": 0.011404110584408045,
+    "poverty_gap_pct_cut": 0.00016294018398093594,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NE",
+    "reform_type": "CTCs",
+    "cost": 145813504.0,
+    "poverty_pct_cut": 0.026099483172098797,
+    "child_poverty_pct_cut": 0.05360365162293116,
+    "poverty_gap_pct_cut": 0.0009935567597125947,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NE",
+    "reform_type": "EITCs",
+    "cost": 34726912.0,
+    "poverty_pct_cut": 0.00574568387431403,
+    "child_poverty_pct_cut": 0.010571407775084177,
+    "poverty_gap_pct_cut": 0.0001676168843732191,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NE",
+    "reform_type": "CTCs and EITCs",
+    "cost": 180540416.0,
+    "poverty_pct_cut": 0.03155814235409101,
+    "child_poverty_pct_cut": 0.06322317073742549,
+    "poverty_gap_pct_cut": 0.0011683972153087117,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NV",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NV",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NV",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NH",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NH",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NH",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NJ",
+    "reform_type": "CTCs",
+    "cost": 330898432.0,
+    "poverty_pct_cut": 0.012290945548253754,
+    "child_poverty_pct_cut": 0.024966843736668427,
+    "poverty_gap_pct_cut": 0.0008558155182111566,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NJ",
+    "reform_type": "EITCs",
+    "cost": 627364864.0,
+    "poverty_pct_cut": 0.028189878600339096,
+    "child_poverty_pct_cut": 0.05066519199560086,
+    "poverty_gap_pct_cut": 0.0014957893566934892,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NJ",
+    "reform_type": "CTCs and EITCs",
+    "cost": 958260736.0,
+    "poverty_pct_cut": 0.03846765852843722,
+    "child_poverty_pct_cut": 0.06992339125523965,
+    "poverty_gap_pct_cut": 0.002382710893995917,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NM",
+    "reform_type": "CTCs",
+    "cost": 159569920.0,
+    "poverty_pct_cut": 0.023174863308668137,
+    "child_poverty_pct_cut": 0.05241853619615237,
+    "poverty_gap_pct_cut": 0.0008045305661132069,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NM",
+    "reform_type": "EITCs",
+    "cost": 125991936.0,
+    "poverty_pct_cut": 0.02649509223798911,
+    "child_poverty_pct_cut": 0.052792251110076904,
+    "poverty_gap_pct_cut": 0.0006048699743392269,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NM",
+    "reform_type": "CTCs and EITCs",
+    "cost": 285562880.0,
+    "poverty_pct_cut": 0.05104649687806765,
+    "child_poverty_pct_cut": 0.10505038251479466,
+    "poverty_gap_pct_cut": 0.0014513364461258566,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NY",
+    "reform_type": "CTCs",
+    "cost": 1496173568.0,
+    "poverty_pct_cut": 0.020542838762944136,
+    "child_poverty_pct_cut": 0.04262123264085788,
+    "poverty_gap_pct_cut": 0.0010769012102837382,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NY",
+    "reform_type": "EITCs",
+    "cost": 846126592.0,
+    "poverty_pct_cut": 0.01686971829398177,
+    "child_poverty_pct_cut": 0.03149608963156844,
+    "poverty_gap_pct_cut": 0.0008042458653012656,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NY",
+    "reform_type": "CTCs and EITCs",
+    "cost": 2342264320.0,
+    "poverty_pct_cut": 0.03762266856546585,
+    "child_poverty_pct_cut": 0.07348568709746289,
+    "poverty_gap_pct_cut": 0.0019121389001264637,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NC",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NC",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "NC",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ND",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ND",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "ND",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OH",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OH",
+    "reform_type": "EITCs",
+    "cost": 42341376.0,
+    "poverty_pct_cut": 0.00035245637821693283,
+    "child_poverty_pct_cut": 0.0003686410524096573,
+    "poverty_gap_pct_cut": 6.136934704159574e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OH",
+    "reform_type": "CTCs and EITCs",
+    "cost": 42341376.0,
+    "poverty_pct_cut": 0.00035245637821693283,
+    "child_poverty_pct_cut": 0.0003686410524096573,
+    "poverty_gap_pct_cut": 6.136934704159574e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OK",
+    "reform_type": "CTCs",
+    "cost": 31621120.0,
+    "poverty_pct_cut": 0.0011826899404695722,
+    "child_poverty_pct_cut": 0.0026433076611283466,
+    "poverty_gap_pct_cut": 2.042223316487147e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OK",
+    "reform_type": "EITCs",
+    "cost": 23763968.0,
+    "poverty_pct_cut": 0.002517877286300063,
+    "child_poverty_pct_cut": 0.004478277452290058,
+    "poverty_gap_pct_cut": 8.31717085256388e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OK",
+    "reform_type": "CTCs and EITCs",
+    "cost": 55382016.0,
+    "poverty_pct_cut": 0.003165029874071479,
+    "child_poverty_pct_cut": 0.005127967381849885,
+    "poverty_gap_pct_cut": 0.00010362863336899209,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OR",
+    "reform_type": "CTCs",
+    "cost": 109868032.0,
+    "poverty_pct_cut": 0.007029349547034751,
+    "child_poverty_pct_cut": 0.012676721904426813,
+    "poverty_gap_pct_cut": 0.000595440914011344,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OR",
+    "reform_type": "EITCs",
+    "cost": 65969152.0,
+    "poverty_pct_cut": 0.008903704079178473,
+    "child_poverty_pct_cut": 0.015796630992554128,
+    "poverty_gap_pct_cut": 0.00023593575379298595,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "OR",
+    "reform_type": "CTCs and EITCs",
+    "cost": 175835648.0,
+    "poverty_pct_cut": 0.015425533677140871,
+    "child_poverty_pct_cut": 0.027971021520594757,
+    "poverty_gap_pct_cut": 0.0008356334165703702,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "PA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "PA",
+    "reform_type": "EITCs",
+    "cost": 191387648.0,
+    "poverty_pct_cut": 0.009426130096578752,
+    "child_poverty_pct_cut": 0.017253846921341714,
+    "poverty_gap_pct_cut": 0.0002127689508838262,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "PA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 191387648.0,
+    "poverty_pct_cut": 0.009426130096578752,
+    "child_poverty_pct_cut": 0.017253846921341714,
+    "poverty_gap_pct_cut": 0.0002127689508838262,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "RI",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "RI",
+    "reform_type": "EITCs",
+    "cost": 35362816.0,
+    "poverty_pct_cut": 0.015712383668869734,
+    "child_poverty_pct_cut": 0.023905672132968903,
+    "poverty_gap_pct_cut": 0.00035218763006356535,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "RI",
+    "reform_type": "CTCs and EITCs",
+    "cost": 35362816.0,
+    "poverty_pct_cut": 0.015712383668869734,
+    "child_poverty_pct_cut": 0.023905672132968903,
+    "poverty_gap_pct_cut": 0.00035218763006356535,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "SC",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "SC",
+    "reform_type": "EITCs",
+    "cost": 4283392.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 4.915123450974761e-08,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "SC",
+    "reform_type": "CTCs and EITCs",
+    "cost": 4283392.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 4.915123450974761e-08,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "SD",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "SD",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "SD",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "TN",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "TN",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "TN",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "TX",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "TX",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "TX",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "UT",
+    "reform_type": "CTCs",
+    "cost": 3987456.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 3.1251765886533296e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "UT",
+    "reform_type": "EITCs",
+    "cost": 2957312.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 6.138467312274071e-07,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "UT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 8591360.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 4.70225344456138e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "VT",
+    "reform_type": "CTCs",
+    "cost": 52453376.0,
+    "poverty_pct_cut": 0.015796178951859474,
+    "child_poverty_pct_cut": 0.03777073696255684,
+    "poverty_gap_pct_cut": 0.0006900431516896003,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "VT",
+    "reform_type": "EITCs",
+    "cost": 48119808.0,
+    "poverty_pct_cut": 0.04608229547739029,
+    "child_poverty_pct_cut": 0.08493167161941528,
+    "poverty_gap_pct_cut": 0.0007682050928892711,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "VT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 100597760.0,
+    "poverty_pct_cut": 0.07109226286411285,
+    "child_poverty_pct_cut": 0.1378861665725708,
+    "poverty_gap_pct_cut": 0.0015295650363915559,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "VA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "VA",
+    "reform_type": "EITCs",
+    "cost": 266182656.0,
+    "poverty_pct_cut": 0.015749583613466133,
+    "child_poverty_pct_cut": 0.02621314979412339,
+    "poverty_gap_pct_cut": 0.0005417862597368855,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "VA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 266182656.0,
+    "poverty_pct_cut": 0.015749583613466133,
+    "child_poverty_pct_cut": 0.02621314979412339,
+    "poverty_gap_pct_cut": 0.0005417862597368855,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WA",
+    "reform_type": "EITCs",
+    "cost": 294209536.0,
+    "poverty_pct_cut": 0.010814502742141486,
+    "child_poverty_pct_cut": 0.01803549872711301,
+    "poverty_gap_pct_cut": 0.0007174344202425196,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 294209536.0,
+    "poverty_pct_cut": 0.010814502742141486,
+    "child_poverty_pct_cut": 0.01803549872711301,
+    "poverty_gap_pct_cut": 0.0007174344202425196,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WV",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WV",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WV",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WI",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WI",
+    "reform_type": "EITCs",
+    "cost": 139375616.0,
+    "poverty_pct_cut": 0.014247459825128317,
+    "child_poverty_pct_cut": 0.030952289002016187,
+    "poverty_gap_pct_cut": 0.000254143313563411,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WI",
+    "reform_type": "CTCs and EITCs",
+    "cost": 139375616.0,
+    "poverty_pct_cut": 0.014247459825128317,
+    "child_poverty_pct_cut": 0.030952289002016187,
+    "poverty_gap_pct_cut": 0.000254143313563411,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WY",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WY",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "WY",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2025
+  },
+  {
+    "state": "AL",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AL",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AL",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AK",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AK",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AK",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AZ",
+    "reform_type": "CTCs",
+    "cost": 92151808.0,
+    "poverty_pct_cut": 0.003341375345674654,
+    "child_poverty_pct_cut": 0.006580484164361324,
+    "poverty_gap_pct_cut": 3.236561829483855e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AZ",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AZ",
+    "reform_type": "CTCs and EITCs",
+    "cost": 92151808.0,
+    "poverty_pct_cut": 0.003341375345674654,
+    "child_poverty_pct_cut": 0.006580484164361324,
+    "poverty_gap_pct_cut": 3.236561829483855e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AR",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AR",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "AR",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CA",
+    "reform_type": "CTCs",
+    "cost": 760083456.0,
+    "poverty_pct_cut": 0.0040526429832429866,
+    "child_poverty_pct_cut": 0.008350606149283872,
+    "poverty_gap_pct_cut": 0.00047239393827420035,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CA",
+    "reform_type": "EITCs",
+    "cost": 1484484096.0,
+    "poverty_pct_cut": 0.005342911330508024,
+    "child_poverty_pct_cut": 0.008697579777505054,
+    "poverty_gap_pct_cut": 0.00080213927076989,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 2244580352.0,
+    "poverty_pct_cut": 0.009594319367002195,
+    "child_poverty_pct_cut": 0.01745118845196513,
+    "poverty_gap_pct_cut": 0.0012793077480119255,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CO",
+    "reform_type": "CTCs",
+    "cost": 1829179392.0,
+    "poverty_pct_cut": 0.12808465026319027,
+    "child_poverty_pct_cut": 0.25665809214115143,
+    "poverty_gap_pct_cut": 0.004758953703660573,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CO",
+    "reform_type": "EITCs",
+    "cost": 224428032.0,
+    "poverty_pct_cut": 0.02274747274350375,
+    "child_poverty_pct_cut": 0.04379638424143195,
+    "poverty_gap_pct_cut": 0.00046096263037350826,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CO",
+    "reform_type": "CTCs and EITCs",
+    "cost": 2053612544.0,
+    "poverty_pct_cut": 0.14154745265841484,
+    "child_poverty_pct_cut": 0.27666289918124676,
+    "poverty_gap_pct_cut": 0.005411531806437244,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CT",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CT",
+    "reform_type": "EITCs",
+    "cost": 261508096.0,
+    "poverty_pct_cut": 0.03395015932619572,
+    "child_poverty_pct_cut": 0.06070045456290245,
+    "poverty_gap_pct_cut": 0.000985053183302839,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "CT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 261508096.0,
+    "poverty_pct_cut": 0.03395015932619572,
+    "child_poverty_pct_cut": 0.06070045456290245,
+    "poverty_gap_pct_cut": 0.000985053183302839,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "DE",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "DE",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "DE",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "DC",
+    "reform_type": "CTCs",
+    "cost": 110557184.0,
+    "poverty_pct_cut": 0.04729011654853821,
+    "child_poverty_pct_cut": 0.09067831933498383,
+    "poverty_gap_pct_cut": 0.001649283013266034,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "DC",
+    "reform_type": "EITCs",
+    "cost": 121751552.0,
+    "poverty_pct_cut": 0.05088617280125618,
+    "child_poverty_pct_cut": 0.07660193741321564,
+    "poverty_gap_pct_cut": 0.0018635734664092605,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "DC",
+    "reform_type": "CTCs and EITCs",
+    "cost": 232308736.0,
+    "poverty_pct_cut": 0.10139128565788269,
+    "child_poverty_pct_cut": 0.16724391281604767,
+    "poverty_gap_pct_cut": 0.0037004625333278,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "FL",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "FL",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "FL",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "GA",
+    "reform_type": "CTCs",
+    "cost": 107694336.0,
+    "poverty_pct_cut": 0.0010169513809614728,
+    "child_poverty_pct_cut": 0.0022136319150506878,
+    "poverty_gap_pct_cut": 2.098023639318994e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "GA",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "GA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 107694336.0,
+    "poverty_pct_cut": 0.0010169513809614728,
+    "child_poverty_pct_cut": 0.0022136319150506878,
+    "poverty_gap_pct_cut": 2.098023639318994e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "HI",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "HI",
+    "reform_type": "EITCs",
+    "cost": 91899904.0,
+    "poverty_pct_cut": 0.020076983608305454,
+    "child_poverty_pct_cut": 0.0362253338098526,
+    "poverty_gap_pct_cut": 0.0009736360563546817,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "HI",
+    "reform_type": "CTCs and EITCs",
+    "cost": 91899904.0,
+    "poverty_pct_cut": 0.020076983608305454,
+    "child_poverty_pct_cut": 0.0362253338098526,
+    "poverty_gap_pct_cut": 0.0009736360563546817,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ID",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ID",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ID",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IL",
+    "reform_type": "CTCs",
+    "cost": 109263360.0,
+    "poverty_pct_cut": 0.004634869723197292,
+    "child_poverty_pct_cut": 0.009453850168296519,
+    "poverty_gap_pct_cut": 0.00011249614218758582,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IL",
+    "reform_type": "EITCs",
+    "cost": 497438208.0,
+    "poverty_pct_cut": 0.021063542870037696,
+    "child_poverty_pct_cut": 0.03768282723339165,
+    "poverty_gap_pct_cut": 0.000561030508909537,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IL",
+    "reform_type": "CTCs and EITCs",
+    "cost": 497438208.0,
+    "poverty_pct_cut": 0.021063542870037696,
+    "child_poverty_pct_cut": 0.03768282723339165,
+    "poverty_gap_pct_cut": 0.000561030508909537,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IN",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IN",
+    "reform_type": "EITCs",
+    "cost": 101811200.0,
+    "poverty_pct_cut": 0.007419062183342046,
+    "child_poverty_pct_cut": 0.013305603035001291,
+    "poverty_gap_pct_cut": 0.00016129293478367205,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IN",
+    "reform_type": "CTCs and EITCs",
+    "cost": 101811200.0,
+    "poverty_pct_cut": 0.007419062183342046,
+    "child_poverty_pct_cut": 0.013305603035001291,
+    "poverty_gap_pct_cut": 0.00016129293478367205,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IA",
+    "reform_type": "EITCs",
+    "cost": 68036608.0,
+    "poverty_pct_cut": 0.009341940633021295,
+    "child_poverty_pct_cut": 0.019336136989295483,
+    "poverty_gap_pct_cut": 0.00024410435580900732,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "IA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 68036608.0,
+    "poverty_pct_cut": 0.009341940633021295,
+    "child_poverty_pct_cut": 0.019336136989295483,
+    "poverty_gap_pct_cut": 0.00024410435580900732,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "KS",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "KS",
+    "reform_type": "EITCs",
+    "cost": 77547520.0,
+    "poverty_pct_cut": 0.015090285334736109,
+    "child_poverty_pct_cut": 0.03145526256412268,
+    "poverty_gap_pct_cut": 0.0003102579446582148,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "KS",
+    "reform_type": "CTCs and EITCs",
+    "cost": 77547520.0,
+    "poverty_pct_cut": 0.015090285334736109,
+    "child_poverty_pct_cut": 0.03145526256412268,
+    "poverty_gap_pct_cut": 0.0003102579446582148,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "KY",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "KY",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "KY",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "LA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "LA",
+    "reform_type": "EITCs",
+    "cost": 34565120.0,
+    "poverty_pct_cut": 0.0035591046325862408,
+    "child_poverty_pct_cut": 0.003687479557508292,
+    "poverty_gap_pct_cut": 7.799409512857822e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "LA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 34565120.0,
+    "poverty_pct_cut": 0.0035591046325862408,
+    "child_poverty_pct_cut": 0.003687479557508292,
+    "poverty_gap_pct_cut": 7.799409512857822e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ME",
+    "reform_type": "CTCs",
+    "cost": 128087040.0,
+    "poverty_pct_cut": 0.03651358839124441,
+    "child_poverty_pct_cut": 0.06684914231300354,
+    "poverty_gap_pct_cut": 0.0006884204391694826,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ME",
+    "reform_type": "EITCs",
+    "cost": 60527616.0,
+    "poverty_pct_cut": 0.02680578362196684,
+    "child_poverty_pct_cut": 0.04449063166975975,
+    "poverty_gap_pct_cut": 0.00041215993868371176,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ME",
+    "reform_type": "CTCs and EITCs",
+    "cost": 188613632.0,
+    "poverty_pct_cut": 0.05910041369497776,
+    "child_poverty_pct_cut": 0.10581672936677933,
+    "poverty_gap_pct_cut": 0.00114101495425047,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MD",
+    "reform_type": "CTCs",
+    "cost": 57686016.0,
+    "poverty_pct_cut": 0.0030681894761528383,
+    "child_poverty_pct_cut": 0.005085888162739138,
+    "poverty_gap_pct_cut": 0.0002466446290135498,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MD",
+    "reform_type": "EITCs",
+    "cost": 473559040.0,
+    "poverty_pct_cut": 0.031330799451097846,
+    "child_poverty_pct_cut": 0.052151879761368036,
+    "poverty_gap_pct_cut": 0.0015765742589722409,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MD",
+    "reform_type": "CTCs and EITCs",
+    "cost": 531247104.0,
+    "poverty_pct_cut": 0.033966338727623224,
+    "child_poverty_pct_cut": 0.05688517680391669,
+    "poverty_gap_pct_cut": 0.0018299934240050043,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MA",
+    "reform_type": "CTCs",
+    "cost": 486892032.0,
+    "poverty_pct_cut": 0.015821806258625455,
+    "child_poverty_pct_cut": 0.03184049162599775,
+    "poverty_gap_pct_cut": 0.0008645300149050316,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MA",
+    "reform_type": "EITCs",
+    "cost": 417189376.0,
+    "poverty_pct_cut": 0.02537153506030639,
+    "child_poverty_pct_cut": 0.04614620179765754,
+    "poverty_gap_pct_cut": 0.0012678869494016204,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 904075776.0,
+    "poverty_pct_cut": 0.03985594057788452,
+    "child_poverty_pct_cut": 0.07334077854951222,
+    "poverty_gap_pct_cut": 0.002166573292537247,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MI",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MI",
+    "reform_type": "EITCs",
+    "cost": 445378560.0,
+    "poverty_pct_cut": 0.02041856299799222,
+    "child_poverty_pct_cut": 0.03236329448051178,
+    "poverty_gap_pct_cut": 0.0004613022834106072,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MI",
+    "reform_type": "CTCs and EITCs",
+    "cost": 445378560.0,
+    "poverty_pct_cut": 0.02041856299799222,
+    "child_poverty_pct_cut": 0.03236329448051178,
+    "poverty_gap_pct_cut": 0.0004613022834106072,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MN",
+    "reform_type": "CTCs",
+    "cost": 1355753472.0,
+    "poverty_pct_cut": 0.10202614404261112,
+    "child_poverty_pct_cut": 0.20443852804601192,
+    "poverty_gap_pct_cut": 0.0025723969164225024,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MN",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MN",
+    "reform_type": "CTCs and EITCs",
+    "cost": 1355753472.0,
+    "poverty_pct_cut": 0.10202614404261112,
+    "child_poverty_pct_cut": 0.20443852804601192,
+    "poverty_gap_pct_cut": 0.0025723969164225024,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MS",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MS",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MS",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MO",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MO",
+    "reform_type": "EITCs",
+    "cost": 20898816.0,
+    "poverty_pct_cut": 0.0004968892179704198,
+    "child_poverty_pct_cut": 0.0005614523286112671,
+    "poverty_gap_pct_cut": 7.112729487293311e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MO",
+    "reform_type": "CTCs and EITCs",
+    "cost": 20898816.0,
+    "poverty_pct_cut": 0.0004968892179704198,
+    "child_poverty_pct_cut": 0.0005614523286112671,
+    "poverty_gap_pct_cut": 7.112729487293311e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MT",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MT",
+    "reform_type": "EITCs",
+    "cost": 45418496.0,
+    "poverty_pct_cut": 0.006733136484399438,
+    "child_poverty_pct_cut": 0.014000901952385902,
+    "poverty_gap_pct_cut": 0.0003054364649641407,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "MT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 45418496.0,
+    "poverty_pct_cut": 0.006733136484399438,
+    "child_poverty_pct_cut": 0.014000901952385902,
+    "poverty_gap_pct_cut": 0.0003054364649641407,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NE",
+    "reform_type": "CTCs",
+    "cost": 144373760.0,
+    "poverty_pct_cut": 0.028281388183434803,
+    "child_poverty_pct_cut": 0.05919375270605087,
+    "poverty_gap_pct_cut": 0.0009348446779734802,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NE",
+    "reform_type": "EITCs",
+    "cost": 35171328.0,
+    "poverty_pct_cut": 0.00490555454355975,
+    "child_poverty_pct_cut": 0.008410770911723375,
+    "poverty_gap_pct_cut": 0.00015646935392603945,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NE",
+    "reform_type": "CTCs and EITCs",
+    "cost": 179542016.0,
+    "poverty_pct_cut": 0.03351188078522682,
+    "child_poverty_pct_cut": 0.06845291703939438,
+    "poverty_gap_pct_cut": 0.001099000889078451,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NV",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NV",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NV",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NH",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NH",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NH",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NJ",
+    "reform_type": "CTCs",
+    "cost": 325189120.0,
+    "poverty_pct_cut": 0.012568201695103198,
+    "child_poverty_pct_cut": 0.02498117263894528,
+    "poverty_gap_pct_cut": 0.0007968078105399236,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NJ",
+    "reform_type": "EITCs",
+    "cost": 633781248.0,
+    "poverty_pct_cut": 0.02781934741263588,
+    "child_poverty_pct_cut": 0.05051039687047402,
+    "poverty_gap_pct_cut": 0.0014108999886546859,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NJ",
+    "reform_type": "CTCs and EITCs",
+    "cost": 958980096.0,
+    "poverty_pct_cut": 0.039850313837329544,
+    "child_poverty_pct_cut": 0.0733210804561774,
+    "poverty_gap_pct_cut": 0.0022391304795250943,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NM",
+    "reform_type": "CTCs",
+    "cost": 161863680.0,
+    "poverty_pct_cut": 0.023436046205461025,
+    "child_poverty_pct_cut": 0.0492155592267712,
+    "poverty_gap_pct_cut": 0.0007633697420688217,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NM",
+    "reform_type": "EITCs",
+    "cost": 127422464.0,
+    "poverty_pct_cut": 0.02298112027347088,
+    "child_poverty_pct_cut": 0.04368684192498525,
+    "poverty_gap_pct_cut": 0.0005718340633789884,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NM",
+    "reform_type": "CTCs and EITCs",
+    "cost": 289284096.0,
+    "poverty_pct_cut": 0.04518828292687734,
+    "child_poverty_pct_cut": 0.09036353975534439,
+    "poverty_gap_pct_cut": 0.0013721785022869333,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NY",
+    "reform_type": "CTCs",
+    "cost": 1916240384.0,
+    "poverty_pct_cut": 0.02570768606920655,
+    "child_poverty_pct_cut": 0.053548280185518354,
+    "poverty_gap_pct_cut": 0.0012763798997207274,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NY",
+    "reform_type": "EITCs",
+    "cost": 857627648.0,
+    "poverty_pct_cut": 0.018138524982182738,
+    "child_poverty_pct_cut": 0.034400084758929625,
+    "poverty_gap_pct_cut": 0.0007646021585562014,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NY",
+    "reform_type": "CTCs and EITCs",
+    "cost": 2773898752.0,
+    "poverty_pct_cut": 0.04365204065106809,
+    "child_poverty_pct_cut": 0.08573195155566701,
+    "poverty_gap_pct_cut": 0.0020813561045207765,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NC",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NC",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "NC",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ND",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ND",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "ND",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OH",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OH",
+    "reform_type": "EITCs",
+    "cost": 44027904.0,
+    "poverty_pct_cut": 3.686633038644989e-05,
+    "child_poverty_pct_cut": 8.950384023288885e-05,
+    "poverty_gap_pct_cut": 6.410520437023398e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OH",
+    "reform_type": "CTCs and EITCs",
+    "cost": 44027904.0,
+    "poverty_pct_cut": 3.686633038644989e-05,
+    "child_poverty_pct_cut": 8.950384023288885e-05,
+    "poverty_gap_pct_cut": 6.410520437023398e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OK",
+    "reform_type": "CTCs",
+    "cost": 30698496.0,
+    "poverty_pct_cut": 0.0016632799990475178,
+    "child_poverty_pct_cut": 0.002397680375725031,
+    "poverty_gap_pct_cut": 1.4604831758257034e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OK",
+    "reform_type": "EITCs",
+    "cost": 22699008.0,
+    "poverty_pct_cut": 0.0047900986159220334,
+    "child_poverty_pct_cut": 0.008623145875753834,
+    "poverty_gap_pct_cut": 7.569737243140939e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OK",
+    "reform_type": "CTCs and EITCs",
+    "cost": 53403648.0,
+    "poverty_pct_cut": 0.005454384721815586,
+    "child_poverty_pct_cut": 0.009781386610120535,
+    "poverty_gap_pct_cut": 9.046159678640652e-05,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OR",
+    "reform_type": "CTCs",
+    "cost": 108624384.0,
+    "poverty_pct_cut": 0.0070939946454018354,
+    "child_poverty_pct_cut": 0.013085683555497477,
+    "poverty_gap_pct_cut": 0.0005582405420547376,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OR",
+    "reform_type": "EITCs",
+    "cost": 66851328.0,
+    "poverty_pct_cut": 0.0075771996440986795,
+    "child_poverty_pct_cut": 0.012250425682092706,
+    "poverty_gap_pct_cut": 0.0002203897304397522,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "OR",
+    "reform_type": "CTCs and EITCs",
+    "cost": 175473152.0,
+    "poverty_pct_cut": 0.015302089042961597,
+    "child_poverty_pct_cut": 0.025933960763116676,
+    "poverty_gap_pct_cut": 0.0007817584402788994,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "PA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "PA",
+    "reform_type": "EITCs",
+    "cost": 193740800.0,
+    "poverty_pct_cut": 0.008123021607068093,
+    "child_poverty_pct_cut": 0.015596751616719891,
+    "poverty_gap_pct_cut": 0.00019755258661974975,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "PA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 193740800.0,
+    "poverty_pct_cut": 0.008123021607068093,
+    "child_poverty_pct_cut": 0.015596751616719891,
+    "poverty_gap_pct_cut": 0.00019755258661974975,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "RI",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "RI",
+    "reform_type": "EITCs",
+    "cost": 35860480.0,
+    "poverty_pct_cut": 0.016282288823276758,
+    "child_poverty_pct_cut": 0.024404335767030716,
+    "poverty_gap_pct_cut": 0.00033713877294563725,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "RI",
+    "reform_type": "CTCs and EITCs",
+    "cost": 35860480.0,
+    "poverty_pct_cut": 0.016282288823276758,
+    "child_poverty_pct_cut": 0.024404335767030716,
+    "poverty_gap_pct_cut": 0.00033713877294563725,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "SC",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "SC",
+    "reform_type": "EITCs",
+    "cost": 6315520.0,
+    "poverty_pct_cut": 1.596106345199847e-05,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 1.7301356892428769e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "SC",
+    "reform_type": "CTCs and EITCs",
+    "cost": 6315520.0,
+    "poverty_pct_cut": 1.596106345199847e-05,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 1.7301356892428769e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "SD",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "SD",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "SD",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "TN",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "TN",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "TN",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "TX",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "TX",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "TX",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "UT",
+    "reform_type": "CTCs",
+    "cost": 6307840.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 3.591257394157083e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "UT",
+    "reform_type": "EITCs",
+    "cost": 2791424.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 6.170763801314513e-07,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "UT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 10881024.0,
+    "poverty_pct_cut": 6.048324394214433e-06,
+    "child_poverty_pct_cut": 1.0098055099660996e-05,
+    "poverty_gap_pct_cut": 5.422748887721206e-06,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "VT",
+    "reform_type": "CTCs",
+    "cost": 52166656.0,
+    "poverty_pct_cut": 0.011136096902191639,
+    "child_poverty_pct_cut": 0.02561255730688572,
+    "poverty_gap_pct_cut": 0.0006380688536652883,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "VT",
+    "reform_type": "EITCs",
+    "cost": 48693248.0,
+    "poverty_pct_cut": 0.031340789049863815,
+    "child_poverty_pct_cut": 0.05297299101948738,
+    "poverty_gap_pct_cut": 0.0007053678682045001,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "VT",
+    "reform_type": "CTCs and EITCs",
+    "cost": 100835328.0,
+    "poverty_pct_cut": 0.06574034690856934,
+    "child_poverty_pct_cut": 0.12659238278865814,
+    "poverty_gap_pct_cut": 0.0013975904116216105,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "VA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "VA",
+    "reform_type": "EITCs",
+    "cost": 272120832.0,
+    "poverty_pct_cut": 0.013245457275347277,
+    "child_poverty_pct_cut": 0.023017880295149305,
+    "poverty_gap_pct_cut": 0.0005131178875728708,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "VA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 272120832.0,
+    "poverty_pct_cut": 0.013245457275347277,
+    "child_poverty_pct_cut": 0.023017880295149305,
+    "poverty_gap_pct_cut": 0.0005131178875728708,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WA",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WA",
+    "reform_type": "EITCs",
+    "cost": 298353152.0,
+    "poverty_pct_cut": 0.012160325539298356,
+    "child_poverty_pct_cut": 0.01841107290238142,
+    "poverty_gap_pct_cut": 0.0006814189435049998,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WA",
+    "reform_type": "CTCs and EITCs",
+    "cost": 298353152.0,
+    "poverty_pct_cut": 0.012160325539298356,
+    "child_poverty_pct_cut": 0.01841107290238142,
+    "poverty_gap_pct_cut": 0.0006814189435049998,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WV",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WV",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WV",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WI",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WI",
+    "reform_type": "EITCs",
+    "cost": 141035520.0,
+    "poverty_pct_cut": 0.012452650291379541,
+    "child_poverty_pct_cut": 0.025323232170194387,
+    "poverty_gap_pct_cut": 0.0002378641478803115,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WI",
+    "reform_type": "CTCs and EITCs",
+    "cost": 141035520.0,
+    "poverty_pct_cut": 0.012452650291379541,
+    "child_poverty_pct_cut": 0.025323232170194387,
+    "poverty_gap_pct_cut": 0.0002378641478803115,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WY",
+    "reform_type": "CTCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WY",
+    "reform_type": "EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
+  },
+  {
+    "state": "WY",
+    "reform_type": "CTCs and EITCs",
+    "cost": 0.0,
+    "poverty_pct_cut": 0.0,
+    "child_poverty_pct_cut": 0.0,
+    "poverty_gap_pct_cut": 0.0,
+    "gini_index_pct_cut": 0.0,
+    "year": 2026
   }
 ]
