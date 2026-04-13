@@ -4,39 +4,42 @@ export interface StateResult {
   cost: number;
   poverty_pct_cut: number;
   child_poverty_pct_cut: number;
-  poverty_gap_pct_cut: number;
-  gini_index_pct_cut: number;
-  year: number;
 }
 
-export const YEARS = [2024, 2025, 2026];
+export interface DistrictResult {
+  congressional_district_geoid: number;
+  state_fips: number;
+  state: string;
+  reform_type: string;
+  cost: number;
+  poverty_pct_cut: number;
+  child_poverty_pct_cut: number;
+}
 
-export type MetricKey =
-  | "cost"
-  | "poverty_pct_cut"
-  | "child_poverty_pct_cut"
-  | "poverty_gap_pct_cut"
-  | "gini_index_pct_cut";
+export type MetricKey = "cost" | "poverty_pct_cut" | "child_poverty_pct_cut";
+
+export type ViewType = "state" | "district";
 
 export interface MetricOption {
   label: string;
   key: MetricKey;
+  format: "currency" | "percent";
 }
 
 export const METRICS: MetricOption[] = [
-  { label: "Cost", key: "cost" },
-  { label: "Poverty reduction", key: "poverty_pct_cut" },
-  { label: "Child poverty reduction", key: "child_poverty_pct_cut" },
-  { label: "Poverty gap reduction", key: "poverty_gap_pct_cut" },
-  { label: "Inequality reduction", key: "gini_index_pct_cut" },
+  { label: "Total Cost", key: "cost", format: "currency" },
+  { label: "Poverty Reduction", key: "poverty_pct_cut", format: "percent" },
+  {
+    label: "Child Poverty Reduction",
+    key: "child_poverty_pct_cut",
+    format: "percent",
+  },
 ];
 
-export const REFORM_TYPES = [
-  "CTCs",
-  "EITCs",
-  "CTCs and EITCs",
-  "State income tax",
-];
+export const REFORM_TYPES = ["CTCs", "EITCs", "CTCs and EITCs"];
+
+export const SUPPORTED_YEARS = [2024, 2025, 2026] as const;
+export type SupportedYear = (typeof SUPPORTED_YEARS)[number];
 
 export const STATE_NAMES: Record<string, string> = {
   AL: "Alabama",
