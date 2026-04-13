@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://us-state-eitcs-ctcs.vercel.app/sitemap.xml
