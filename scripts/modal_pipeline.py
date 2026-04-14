@@ -48,78 +48,37 @@ STATE_FIPS = {
     "WI": 55, "WY": 56,
 }
 
-# State-specific EITC variables (must neutralize individual state credits, not aggregates)
-# The state_eitc aggregation variable doesn't propagate neutralization to individual credits
-STATE_EITC_VARS = {
-    "CA": ["ca_eitc"],
-    "CO": ["co_eitc"],
-    "CT": ["ct_eitc"],
-    "DC": ["dc_eitc"],
-    "DE": ["de_eitc"],
-    "HI": ["hi_eitc"],
-    "IA": ["ia_eitc"],
-    "IL": ["il_eitc"],
-    "IN": ["in_eitc"],
-    "KS": ["ks_total_eitc"],  # Kansas uses combined refundable + non-refundable
-    "LA": ["la_eitc"],
-    "MA": ["ma_eitc"],
-    "MD": ["md_refundable_eitc", "md_non_refundable_eitc"],  # MD has split EITC
-    "ME": ["me_eitc"],
-    "MI": ["mi_eitc"],
-    "MO": ["mo_wftc"],  # Missouri Working Families Tax Credit
-    "MT": ["mt_eitc"],
-    "NE": ["ne_eitc"],
-    "NJ": ["nj_eitc"],
-    "NM": ["nm_eitc"],
-    "NY": ["ny_eitc", "ny_supplemental_eitc"],  # NY has two EITC components
-    "OH": ["oh_eitc"],
-    "OK": ["ok_eitc"],
-    "OR": ["or_eitc"],
-    "PA": ["pa_eitc"],  # NEW in 2025
-    "RI": ["ri_eitc"],
-    "SC": ["sc_eitc"],
-    "UT": ["ut_eitc"],
-    "VA": ["va_non_refundable_eitc", "va_refundable_eitc"],  # VA has split EITC
-    "VT": ["vt_eitc"],
-    "WA": ["wa_working_families_tax_credit"],  # Washington uses different name
-    "WI": ["wi_earned_income_credit"],  # Wisconsin uses different name
-}
+def get_state_credit_variables(state: str, year: int):
+    """
+    Get the EITC and CTC variables for a specific state and year.
 
-# State-specific CTC variables
-STATE_CTC_VARS = {
-    "AZ": ["az_dependent_tax_credit"],
-    "CA": ["ca_yctc"],  # California Young Child Tax Credit
-    "CO": ["co_ctc", "co_family_affordability_credit"],
-    "CT": ["ct_child_tax_rebate"],
-    "DC": ["dc_ctc"],  # NEW in 2026
-    "GA": ["ga_ctc"],  # NEW in 2026
-    "ID": ["id_ctc"],  # EXPIRES in 2026
-    "IL": ["il_ctc"],
-    "MA": ["ma_child_and_family_credit_or_dependent_care_credit"],
-    "MD": ["md_ctc"],
-    "ME": ["me_dependent_exemption_credit"],
-    "MN": ["mn_child_and_working_families_credits"],  # Minnesota combined CTC
-    "NE": ["ne_refundable_ctc"],
-    "NJ": ["nj_ctc"],
-    "NM": ["nm_ctc"],
-    "NY": ["ny_ctc"],
-    "OK": ["ok_child_care_child_tax_credit"],
-    "OR": ["or_ctc"],
-    "RI": ["ri_child_tax_rebate"],
-    "UT": ["ut_ctc"],
-    "VT": ["vt_ctc"],
-}
+    Uses policyengine-us parameters (gov.states.household.state_eitcs and state_ctcs)
+    to get the official list of state credit variables, then filters by state.
 
-# Year-specific exclusions - some programs don't exist in certain years
-EITC_YEAR_EXCLUSIONS = {
-    2024: ["PA"],  # PA EITC doesn't exist in 2024
-}
+    Args:
+        state: Two-letter state code
+        year: Tax year
 
-CTC_YEAR_EXCLUSIONS = {
-    2024: ["DC", "GA"],  # DC and GA CTC don't exist in 2024
-    2025: ["DC", "GA"],  # DC and GA CTC don't exist in 2025
-    2026: ["ID"],  # ID CTC expires in 2026
-}
+    Returns:
+        tuple: (eitc_vars list, ctc_vars list)
+    """
+    from policyengine_us import CountryTaxBenefitSystem
+
+    system = CountryTaxBenefitSystem()
+    params = system.parameters
+
+    # Get the official list of state EITC and CTC variables from policyengine-us parameters
+    # These are maintained in gov/states/household/state_eitcs.yaml and state_ctcs.yaml
+    all_eitc_vars = params.gov.states.household.state_eitcs(f"{year}-01-01")
+    all_ctc_vars = params.gov.states.household.state_ctcs(f"{year}-01-01")
+
+    state_lower = state.lower()
+
+    # Filter to only variables for this state (variables start with state code + underscore)
+    eitc_vars = [v for v in all_eitc_vars if v.startswith(f"{state_lower}_")]
+    ctc_vars = [v for v in all_ctc_vars if v.startswith(f"{state_lower}_")]
+
+    return eitc_vars, ctc_vars
 
 YEAR = 2025
 
@@ -297,15 +256,8 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
     gc.collect()
 
     # Get state-specific credit variables to neutralize (respecting year exclusions)
-    if state in EITC_YEAR_EXCLUSIONS.get(year, []):
-        state_eitc_vars = []
-    else:
-        state_eitc_vars = STATE_EITC_VARS.get(state, [])
-
-    if state in CTC_YEAR_EXCLUSIONS.get(year, []):
-        state_ctc_vars = []
-    else:
-        state_ctc_vars = STATE_CTC_VARS.get(state, [])
+    # Dynamically discover state credit variables from policyengine-us
+    state_eitc_vars, state_ctc_vars = get_state_credit_variables(state, year)
 
     print(f"  State credit variables: EITC={state_eitc_vars}, CTC={state_ctc_vars}")
 
