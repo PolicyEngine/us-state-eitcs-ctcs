@@ -78,6 +78,15 @@ def get_state_credit_variables(state: str, year: int):
     eitc_vars = [v for v in all_eitc_vars if v.startswith(f"{state_lower}_")]
     ctc_vars = [v for v in all_ctc_vars if v.startswith(f"{state_lower}_")]
 
+    # Minnesota combined its CTC and WFC into a single credit
+    # (mn_child_and_working_families_credits). The legacy mn_wfc variable is not
+    # used in the tax calculation. Replace with the combined credit and include
+    # it in both EITC and CTC lists so the separate reforms reflect the impact.
+    if state == "MN":
+        combined = "mn_child_and_working_families_credits"
+        eitc_vars = [combined]
+        ctc_vars = [combined]
+
     return eitc_vars, ctc_vars
 
 YEAR = 2025
@@ -107,6 +116,37 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
                 for var in neutralized_variables:
                     self.neutralize_variable(var)
         return NeutralizeReform
+
+    def create_mn_component_reform(component: str):
+        """
+        Create a parameter-based reform for Minnesota's combined credit.
+
+        Minnesota combined its CTC and Working Family Credit into a single
+        variable. To isolate components, we zero out the relevant parameters.
+
+        component: "ctc" zeros the child tax credit portion,
+                   "wfc" zeros the working family credit portion,
+                   "both" neutralizes the entire combined variable.
+        """
+        def modifier(parameters):
+            from policyengine_core.periods import instant
+            start = instant("2020-01-01")
+            stop = instant("2100-12-31")
+            path = parameters.gov.states.mn.tax.income.credits.cwfc
+            if component in ("ctc", "both"):
+                path.ctc.amount.update(start=start, stop=stop, value=0)
+            if component in ("wfc", "both"):
+                for bracket in path.wfc.phase_in.brackets:
+                    bracket.rate.update(start=start, stop=stop, value=0)
+                for bracket in path.wfc.additional.amount.brackets:
+                    bracket.amount.update(start=start, stop=stop, value=0)
+            return parameters
+
+        class MnComponentReform(Reform):
+            def apply(self):
+                self.modify_parameters(modifier_function=modifier)
+
+        return MnComponentReform
 
     def safe_pct_change(baseline_val, reform_val):
         """Calculate percentage change safely."""
@@ -261,29 +301,34 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
 
     print(f"  State credit variables: EITC={state_eitc_vars}, CTC={state_ctc_vars}")
 
-    # Run reform simulations using state-specific variables
     reform_results = {}
 
-    # Define reforms with state-specific variables
-    reforms_to_run = [
-        ("CTCs", state_ctc_vars),
-        ("EITCs", state_eitc_vars),
-        ("CTCs and EITCs", state_ctc_vars + state_eitc_vars),
-    ]
+    if state == "MN":
+        reforms_to_run = [
+            ("CTCs", create_mn_component_reform("ctc")),
+            ("EITCs", create_mn_component_reform("wfc")),
+            ("CTCs and EITCs", create_mn_component_reform("both")),
+        ]
+    else:
+        reforms_to_run = [
+            ("CTCs", state_ctc_vars),
+            ("EITCs", state_eitc_vars),
+            ("CTCs and EITCs", state_ctc_vars + state_eitc_vars),
+        ]
 
-    for reform_name, reform_vars in reforms_to_run:
-        # Filter out empty variable lists - if no credits exist, skip neutralization
-        valid_vars = [v for v in reform_vars if v]
+    for reform_name, reform_spec in reforms_to_run:
+        if state == "MN":
+            reform = reform_spec
+            print(f"  Running {reform_name} (MN parameter reform)...")
+        else:
+            valid_vars = [v for v in reform_spec if v]
+            if not valid_vars:
+                print(f"  Skipping {reform_name} neutralization (no applicable credits)")
+                reform_results[reform_name] = baseline_metrics
+                continue
+            print(f"  Running {reform_name} neutralized (vars: {valid_vars})...")
+            reform = create_reform(valid_vars)
 
-        if not valid_vars:
-            # No credits to neutralize for this state/reform type
-            # Use baseline metrics (no change)
-            print(f"  Skipping {reform_name} neutralization (no applicable credits)")
-            reform_results[reform_name] = baseline_metrics
-            continue
-
-        print(f"  Running {reform_name} neutralized (vars: {valid_vars})...")
-        reform = create_reform(valid_vars)
         hh_reform, person_reform = run_simulation(dataset, reform=reform, year=year)
         reform_results[reform_name] = calculate_district_metrics(
             hh_reform, person_reform, districts
