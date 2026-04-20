@@ -159,6 +159,10 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
         if len(incomes) == 0 or weights.sum() == 0:
             return 0
 
+        # Clip negative incomes to zero to avoid Lorenz curve issues
+        # (matches microdf's negatives='zero' approach)
+        incomes = np.clip(incomes, 0, None)
+
         sorted_indices = np.argsort(incomes)
         sorted_incomes = incomes[sorted_indices]
         sorted_weights = weights[sorted_indices]

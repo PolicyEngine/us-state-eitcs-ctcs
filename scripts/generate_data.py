@@ -155,6 +155,10 @@ def calculate_gini(incomes, weights):
     if len(incomes) == 0 or weights.sum() == 0:
         return 0
 
+    # Clip negative incomes to zero to avoid Lorenz curve issues
+    # (matches microdf's negatives='zero' approach)
+    incomes = np.clip(incomes, 0, None)
+
     # Sort by income
     sorted_indices = np.argsort(incomes)
     sorted_incomes = incomes[sorted_indices]
