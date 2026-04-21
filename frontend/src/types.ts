@@ -38,7 +38,7 @@ export const METRICS: MetricOption[] = [
 
 export const REFORM_TYPES = ["CTCs", "EITCs", "CTCs and EITCs"];
 
-export const SUPPORTED_YEARS = [2025, 2026] as const;
+export const SUPPORTED_YEARS = [2024, 2025, 2026] as const;
 export type SupportedYear = (typeof SUPPORTED_YEARS)[number];
 
 export const STATE_NAMES: Record<string, string> = {
