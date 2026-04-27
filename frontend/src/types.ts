@@ -4,6 +4,12 @@ export interface StateResult {
   cost: number;
   poverty_pct_cut: number;
   child_poverty_pct_cut: number;
+  baseline_poverty_count: number;
+  reform_poverty_count: number;
+  population: number;
+  baseline_child_poverty_count: number;
+  reform_child_poverty_count: number;
+  child_population: number;
 }
 
 export interface DistrictResult {
@@ -14,6 +20,12 @@ export interface DistrictResult {
   cost: number;
   poverty_pct_cut: number;
   child_poverty_pct_cut: number;
+  baseline_poverty_count: number;
+  reform_poverty_count: number;
+  population: number;
+  baseline_child_poverty_count: number;
+  reform_child_poverty_count: number;
+  child_population: number;
 }
 
 export type MetricKey = "cost" | "poverty_pct_cut" | "child_poverty_pct_cut";
