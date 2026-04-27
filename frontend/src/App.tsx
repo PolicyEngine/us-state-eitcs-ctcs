@@ -65,25 +65,51 @@ export default function App() {
     return data.filter((row) => row.reform_type === creditType);
   }, [yearData, viewType, creditType]);
 
+  // Always compute national stats from district-level data so the number
+  // is the same regardless of state vs district view toggle.
+  const nationalDistrictData = useMemo(() => {
+    if (!yearData) return [];
+    return yearData.districtData.filter((row) => row.reform_type === creditType);
+  }, [yearData, creditType]);
+
   const stats = useMemo(() => {
-    if (filteredData.length === 0)
-      return { totalCost: 0, avgPoverty: 0, avgChildPoverty: 0 };
-    const totalCost = filteredData.reduce(
+    if (nationalDistrictData.length === 0)
+      return { totalCost: 0, povertyReduction: 0, childPovertyReduction: 0 };
+
+    const totalCost = nationalDistrictData.reduce(
       (sum, d) => sum + (d.cost || 0),
       0,
     );
-    const avgPoverty =
-      filteredData.reduce(
-        (sum, d) => sum + (d.poverty_pct_cut || 0),
-        0,
-      ) / filteredData.length;
-    const avgChildPoverty =
-      filteredData.reduce(
-        (sum, d) => sum + (d.child_poverty_pct_cut || 0),
-        0,
-      ) / filteredData.length;
-    return { totalCost, avgPoverty, avgChildPoverty };
-  }, [filteredData]);
+
+    // Sum raw weighted counts across all districts for true national rates
+    const totalBaselinePoverty = nationalDistrictData.reduce(
+      (sum, d) => sum + (d.baseline_poverty_count || 0), 0);
+    const totalReformPoverty = nationalDistrictData.reduce(
+      (sum, d) => sum + (d.reform_poverty_count || 0), 0);
+    const totalPopulation = nationalDistrictData.reduce(
+      (sum, d) => sum + (d.population || 0), 0);
+
+    const totalBaselineChildPoverty = nationalDistrictData.reduce(
+      (sum, d) => sum + (d.baseline_child_poverty_count || 0), 0);
+    const totalReformChildPoverty = nationalDistrictData.reduce(
+      (sum, d) => sum + (d.reform_child_poverty_count || 0), 0);
+    const totalChildPopulation = nationalDistrictData.reduce(
+      (sum, d) => sum + (d.child_population || 0), 0);
+
+    // National poverty rate = total in poverty / total population
+    const baselineRate = totalPopulation > 0 ? totalBaselinePoverty / totalPopulation : 0;
+    const reformRate = totalPopulation > 0 ? totalReformPoverty / totalPopulation : 0;
+    const povertyReduction = reformRate > 0 ? (reformRate - baselineRate) / reformRate : 0;
+
+    const baselineChildRate = totalChildPopulation > 0
+      ? totalBaselineChildPoverty / totalChildPopulation : 0;
+    const reformChildRate = totalChildPopulation > 0
+      ? totalReformChildPoverty / totalChildPopulation : 0;
+    const childPovertyReduction = reformChildRate > 0
+      ? (reformChildRate - baselineChildRate) / reformChildRate : 0;
+
+    return { totalCost, povertyReduction, childPovertyReduction };
+  }, [nationalDistrictData]);
 
   const regionData = useMemo(() => {
     if (!selectedRegion || filteredData.length === 0) return null;
@@ -125,9 +151,6 @@ export default function App() {
     [],
   );
 
-  const viewLabel =
-    viewType === "state" ? "states" : "congressional districts";
-
   if (loading) {
     return (
       <>
@@ -159,9 +182,8 @@ export default function App() {
       <Hero />
       <StatsBanner
         totalCost={stats.totalCost}
-        avgPoverty={stats.avgPoverty}
-        avgChildPoverty={stats.avgChildPoverty}
-        viewLabel={viewLabel}
+        povertyReduction={stats.povertyReduction}
+        childPovertyReduction={stats.childPovertyReduction}
       />
       <main style={styles.mainContent}>
         <ControlBar

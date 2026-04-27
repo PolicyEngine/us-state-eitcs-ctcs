@@ -91,6 +91,15 @@ def get_state_credit_variables(state: str, year: int):
 
 YEAR = 2025
 
+
+def safe_pct_change(baseline_val, reform_val):
+    """Calculate percentage change safely."""
+    import numpy as np
+    if reform_val == 0 or np.isnan(reform_val):
+        return 0
+    return (baseline_val - reform_val) / reform_val
+
+
 # Volume for persisting results
 volume = modal.Volume.from_name("state-eitc-ctc-results", create_if_missing=True)
 
@@ -147,12 +156,6 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
                 self.modify_parameters(modifier_function=modifier)
 
         return MnComponentReform
-
-    def safe_pct_change(baseline_val, reform_val):
-        """Calculate percentage change safely."""
-        if reform_val == 0 or np.isnan(reform_val):
-            return 0
-        return (baseline_val - reform_val) / reform_val
 
     def calculate_gini(incomes, weights):
         """Calculate Gini coefficient for weighted data."""
@@ -212,7 +215,7 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
                 "person_id",
                 "person_household_id",
                 "person_weight",
-                "in_poverty",
+                "person_in_poverty",
                 "is_child",
             ],
             map_to="person",
@@ -254,26 +257,26 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
 
             person_subset = person_data.loc[mask_person]
             total_person_weight = person_subset["person_weight"].sum()
-            if total_person_weight > 0:
-                poverty = (
-                    person_subset["in_poverty"] * person_subset["person_weight"]
-                ).sum() / total_person_weight
-            else:
-                poverty = 0
+            poverty_count = (
+                person_subset["person_in_poverty"] * person_subset["person_weight"]
+            ).sum() if total_person_weight > 0 else 0
+            poverty = poverty_count / total_person_weight if total_person_weight > 0 else 0
 
             children = person_subset[person_subset["is_child"] == True]
             total_child_weight = children["person_weight"].sum()
-            if total_child_weight > 0:
-                child_poverty = (
-                    children["in_poverty"] * children["person_weight"]
-                ).sum() / total_child_weight
-            else:
-                child_poverty = 0
+            child_poverty_count = (
+                children["person_in_poverty"] * children["person_weight"]
+            ).sum() if total_child_weight > 0 else 0
+            child_poverty = child_poverty_count / total_child_weight if total_child_weight > 0 else 0
 
             results[district] = {
                 "net_income": net_income,
                 "poverty": poverty,
                 "child_poverty": child_poverty,
+                "poverty_count": poverty_count,
+                "child_poverty_count": child_poverty_count,
+                "population": total_person_weight,
+                "child_population": total_child_weight,
                 "poverty_gap": poverty_gap,
                 "gini_index": gini_index,
             }
@@ -383,6 +386,12 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
                     "child_poverty_pct_cut": float(child_poverty_pct_cut),
                     "poverty_gap_pct_cut": float(poverty_gap_pct_cut),
                     "gini_index_pct_cut": float(gini_index_pct_cut),
+                    "baseline_poverty_count": float(baseline["poverty_count"]),
+                    "reform_poverty_count": float(reform["poverty_count"]),
+                    "population": float(baseline["population"]),
+                    "baseline_child_poverty_count": float(baseline["child_poverty_count"]),
+                    "reform_child_poverty_count": float(reform["child_poverty_count"]),
+                    "child_population": float(baseline["child_population"]),
                 }
             )
 
@@ -439,15 +448,39 @@ def generate_all_state_impacts(year: int = YEAR) -> dict:
             if len(reform_data) == 0:
                 continue
 
+            # Sum raw counts across districts for proper population-weighted aggregation
+            baseline_pov = reform_data["baseline_poverty_count"].sum()
+            reform_pov = reform_data["reform_poverty_count"].sum()
+            population = reform_data["population"].sum()
+            baseline_child_pov = reform_data["baseline_child_poverty_count"].sum()
+            reform_child_pov = reform_data["reform_child_poverty_count"].sum()
+            child_population = reform_data["child_population"].sum()
+
+            # Compute state-level pct_cut from aggregated counts
+            state_poverty_pct_cut = float(-safe_pct_change(
+                baseline_pov / population if population > 0 else 0,
+                reform_pov / population if population > 0 else 0,
+            )) if population > 0 else 0
+            state_child_poverty_pct_cut = float(-safe_pct_change(
+                baseline_child_pov / child_population if child_population > 0 else 0,
+                reform_child_pov / child_population if child_population > 0 else 0,
+            )) if child_population > 0 else 0
+
             state_results.append(
                 {
                     "state": state,
                     "reform_type": reform_type,
                     "cost": reform_data["cost"].sum(),
-                    "poverty_pct_cut": reform_data["poverty_pct_cut"].mean(),
-                    "child_poverty_pct_cut": reform_data["child_poverty_pct_cut"].mean(),
+                    "poverty_pct_cut": state_poverty_pct_cut,
+                    "child_poverty_pct_cut": state_child_poverty_pct_cut,
                     "poverty_gap_pct_cut": reform_data["poverty_gap_pct_cut"].mean(),
                     "gini_index_pct_cut": reform_data["gini_index_pct_cut"].mean(),
+                    "baseline_poverty_count": float(baseline_pov),
+                    "reform_poverty_count": float(reform_pov),
+                    "population": float(population),
+                    "baseline_child_poverty_count": float(baseline_child_pov),
+                    "reform_child_poverty_count": float(reform_child_pov),
+                    "child_population": float(child_population),
                 }
             )
 
@@ -464,7 +497,9 @@ def generate_all_state_impacts(year: int = YEAR) -> dict:
     with open(f"/results/results_{timestamp}.json", "w") as f:
         json.dump(state_json, f, indent=2)
 
-    # Save latest versions
+    # Save year-specific and latest versions
+    district_df.to_csv(f"/results/district_impacts_{year}.csv", index=False)
+    state_df.to_csv(f"/results/state_impacts_{year}.csv", index=False)
     district_df.to_csv("/results/district_impacts_latest.csv", index=False)
     state_df.to_csv("/results/state_impacts_latest.csv", index=False)
     with open("/results/results_latest.json", "w") as f:

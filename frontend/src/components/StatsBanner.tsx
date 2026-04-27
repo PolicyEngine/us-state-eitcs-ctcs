@@ -3,9 +3,8 @@ import { formatValue } from "../utils";
 
 interface StatsBannerProps {
   totalCost: number;
-  avgPoverty: number;
-  avgChildPoverty: number;
-  viewLabel: string;
+  povertyReduction: number;
+  childPovertyReduction: number;
 }
 
 const styles: Record<string, CSSProperties> = {
@@ -64,25 +63,24 @@ const styles: Record<string, CSSProperties> = {
 
 export default function StatsBanner({
   totalCost,
-  avgPoverty,
-  avgChildPoverty,
-  viewLabel,
+  povertyReduction,
+  childPovertyReduction,
 }: StatsBannerProps) {
   const stats = [
     {
       eyebrow: "Total Investment",
       value: formatValue(totalCost, "currency"),
-      context: `across all ${viewLabel}`,
+      context: "across all states",
     },
     {
       eyebrow: "Poverty Reduction",
-      value: formatValue(avgPoverty, "percent"),
-      context: "average decrease",
+      value: formatValue(povertyReduction, "percent"),
+      context: "national decrease",
     },
     {
       eyebrow: "Child Poverty Reduction",
-      value: formatValue(avgChildPoverty, "percent"),
-      context: "average decrease",
+      value: formatValue(childPovertyReduction, "percent"),
+      context: "national decrease",
     },
   ];
 

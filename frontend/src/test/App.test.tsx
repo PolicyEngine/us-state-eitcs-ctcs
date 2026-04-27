@@ -29,12 +29,12 @@ vi.mock("maplibre-gl", () => {
   return { default: { Map: MockMap, Popup: MockPopup }, Map: MockMap, Popup: MockPopup };
 });
 
-const mockStateCSV = `state,reform_type,cost,poverty_pct_cut,child_poverty_pct_cut,poverty_gap_pct_cut,gini_index_pct_cut
-CA,CTCs and EITCs,1068379512.85,0.0126,0.0259,0.0163,0.0021
-CO,CTCs and EITCs,974795548.75,0.0992,0.3564,0.0441,0.0015`;
+const mockStateCSV = `state,reform_type,cost,poverty_pct_cut,child_poverty_pct_cut,poverty_gap_pct_cut,gini_index_pct_cut,baseline_poverty_count,reform_poverty_count,population,baseline_child_poverty_count,reform_child_poverty_count,child_population
+CA,CTCs and EITCs,1068379512.85,0.0126,0.0259,0.0163,0.0021,4000000,4050000,39000000,800000,820000,9000000
+CO,CTCs and EITCs,974795548.75,0.0992,0.3564,0.0441,0.0015,500000,555000,5800000,100000,135000,1300000`;
 
-const mockDistrictCSV = `congressional_district_geoid,state_fips,state,reform_type,cost,poverty_pct_cut,child_poverty_pct_cut,poverty_gap_pct_cut,gini_index_pct_cut
-601,6,CA,CTCs and EITCs,100000,0.01,0.02,0.01,0.001`;
+const mockDistrictCSV = `congressional_district_geoid,state_fips,state,reform_type,cost,poverty_pct_cut,child_poverty_pct_cut,poverty_gap_pct_cut,gini_index_pct_cut,baseline_poverty_count,reform_poverty_count,population,baseline_child_poverty_count,reform_child_poverty_count,child_population
+601,6,CA,CTCs and EITCs,100000,0.01,0.02,0.01,0.001,80000,81000,750000,16000,16400,170000`;
 
 const mockGeoJSON = {
   type: "FeatureCollection",
