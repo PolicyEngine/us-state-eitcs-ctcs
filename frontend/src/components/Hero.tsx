@@ -74,7 +74,6 @@ export default function Hero() {
       <div style={styles.decorBefore} />
       <div style={styles.decorAfter} />
       <div style={styles.inner}>
-        <span style={styles.label}>Interactive Analysis</span>
         <h1 style={styles.h1}>
           The Impact of State Tax Credits on American Families
         </h1>

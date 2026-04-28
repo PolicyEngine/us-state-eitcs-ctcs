@@ -43,6 +43,8 @@ const styles: Record<string, CSSProperties> = {
   },
 };
 
+const isIframed = window.self !== window.top;
+
 export default function App() {
   const { dataByYear, stateGeoData, districtGeoData, loading, error } =
     useData();
@@ -154,7 +156,7 @@ export default function App() {
   if (loading) {
     return (
       <>
-        <Masthead />
+        {!isIframed && <Masthead />}
         <Hero />
         <div style={styles.loading} role="status" aria-live="polite">
           <div style={styles.spinner} />
@@ -167,7 +169,7 @@ export default function App() {
   if (error) {
     return (
       <>
-        <Masthead />
+        {!isIframed && <Masthead />}
         <Hero />
         <div style={styles.error}>
           <p>Error loading data: {error}</p>
@@ -178,7 +180,7 @@ export default function App() {
 
   return (
     <>
-      <Masthead />
+      {!isIframed && <Masthead />}
       <Hero />
       <StatsBanner
         totalCost={stats.totalCost}
