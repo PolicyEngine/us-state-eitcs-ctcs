@@ -172,9 +172,10 @@ export function useData(): UseDataReturn {
     async function load() {
       try {
         // Load GeoJSON files
+        const base = import.meta.env.BASE_URL;
         const [stateGeoRes, districtGeoRes] = await Promise.all([
-          fetch("/data/states_from_districts.geojson"),
-          fetch("/data/real_congressional_districts.geojson"),
+          fetch(`${base}data/states_from_districts.geojson`),
+          fetch(`${base}data/real_congressional_districts.geojson`),
         ]);
 
         if (!stateGeoRes.ok || !districtGeoRes.ok) {
@@ -190,8 +191,8 @@ export function useData(): UseDataReturn {
         // Load all year-specific CSVs in parallel
         const yearPromises = SUPPORTED_YEARS.map(async (year: SupportedYear) => {
           const [stateRes, districtRes] = await Promise.all([
-            fetch(`/data/state_impacts_${year}.csv`),
-            fetch(`/data/district_impacts_${year}.csv`),
+            fetch(`${base}data/state_impacts_${year}.csv`),
+            fetch(`${base}data/district_impacts_${year}.csv`),
           ]);
 
           if (!stateRes.ok || !districtRes.ok) {
