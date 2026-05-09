@@ -1,3 +1,7 @@
+@import "tailwindcss";
+@import "@policyengine/ui-kit/theme.css";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
 :root {
   --teal-900: #134e4a;
   --teal-800: #115e59;

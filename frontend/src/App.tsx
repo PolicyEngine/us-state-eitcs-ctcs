@@ -1,4 +1,6 @@
-import { useState, useMemo, useCallback, lazy, Suspense } from "react";
+'use client';
+
+import { useEffect, useState, useMemo, useCallback, lazy, Suspense } from "react";
 import type { CSSProperties } from "react";
 import { useData } from "./data/useData";
 import Masthead from "./components/Masthead";
@@ -43,9 +45,16 @@ const styles: Record<string, CSSProperties> = {
   },
 };
 
-const isIframed = window.self !== window.top;
-
 export default function App() {
+  // Detect iframe embedding on the client only — Next.js renders client
+  // components on the server too for the initial HTML, so window is not
+  // available at module evaluation.
+  const [isIframed, setIsIframed] = useState(false);
+  useEffect(() => {
+    setIsIframed(window.self !== window.top);
+  }, []);
+
+
   const { dataByYear, stateGeoData, districtGeoData, loading, error } =
     useData();
 

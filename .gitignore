@@ -7,3 +7,12 @@ __pycache__/
 # Modal
 .modal/
 temp_modal_results/
+
+# Next.js
+.next/
+out/
+build/
+coverage/
+.vercel/
+.turbo/
+next-env.d.ts
