@@ -1,11 +1,9 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
-  "framework": null,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "cleanUrls": true,
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "cd frontend && bun run build",
+  "installCommand": "cd frontend && bun install",
+  "outputDirectory": "frontend/.next",
   "headers": [
     {
       "source": "/(.*)",
@@ -15,9 +13,7 @@
           "value": "(?!us-state-eitcs-ctcs\\.vercel\\.app).*\\.vercel\\.app"
         }
       ],
-      "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex" }
-      ]
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
     }
   ]
 }

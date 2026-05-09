@@ -171,8 +171,9 @@ export function useData(): UseDataReturn {
 
     async function load() {
       try {
-        // Load GeoJSON files
-        const base = import.meta.env.BASE_URL;
+        // Load GeoJSON files. Public assets are served from the site root
+        // under Next.js, so the base path is just "/".
+        const base = "/";
         const [stateGeoRes, districtGeoRes] = await Promise.all([
           fetch(`${base}data/states_from_districts.geojson`),
           fetch(`${base}data/real_congressional_districts.geojson`),
