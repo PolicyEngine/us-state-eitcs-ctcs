@@ -46,7 +46,7 @@ export default function Masthead() {
           aria-label="Visit PolicyEngine"
         >
           <img
-            src="/policyengine-logo.svg"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/policyengine-logo.svg`}
             alt="PolicyEngine"
             style={styles.logoImg}
           />

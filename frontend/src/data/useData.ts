@@ -33,6 +33,15 @@ interface UseDataReturn {
   error: string | null;
 }
 
+function publicAssetPath(path: string): string {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const normalizedBasePath =
+    basePath === "/" ? "" : basePath.replace(/\/$/, "");
+  const normalizedPath = path.replace(/^\//, "");
+
+  return `${normalizedBasePath}/${normalizedPath}`;
+}
+
 function transformAlaska(
   coords: unknown,
   scale: number,
@@ -171,12 +180,9 @@ export function useData(): UseDataReturn {
 
     async function load() {
       try {
-        // Load GeoJSON files. Public assets are served from the site root
-        // under Next.js, so the base path is just "/".
-        const base = "/";
         const [stateGeoRes, districtGeoRes] = await Promise.all([
-          fetch(`${base}data/states_from_districts.geojson`),
-          fetch(`${base}data/real_congressional_districts.geojson`),
+          fetch(publicAssetPath("data/states_from_districts.geojson")),
+          fetch(publicAssetPath("data/real_congressional_districts.geojson")),
         ]);
 
         if (!stateGeoRes.ok || !districtGeoRes.ok) {
@@ -192,8 +198,8 @@ export function useData(): UseDataReturn {
         // Load all year-specific CSVs in parallel
         const yearPromises = SUPPORTED_YEARS.map(async (year: SupportedYear) => {
           const [stateRes, districtRes] = await Promise.all([
-            fetch(`${base}data/state_impacts_${year}.csv`),
-            fetch(`${base}data/district_impacts_${year}.csv`),
+            fetch(publicAssetPath(`data/state_impacts_${year}.csv`)),
+            fetch(publicAssetPath(`data/district_impacts_${year}.csv`)),
           ]);
 
           if (!stateRes.ok || !districtRes.ok) {
