@@ -51,6 +51,8 @@ const mockGeoJSON = {
 };
 
 beforeEach(() => {
+  delete process.env.NEXT_PUBLIC_BASE_PATH;
+
   globalThis.fetch = vi.fn().mockImplementation((url: string) => {
     if (url.includes("state_impacts")) {
       return Promise.resolve({
@@ -107,5 +109,26 @@ describe("App", () => {
     await waitFor(() => {
       expect(screen.getByText(/Error loading data/)).toBeInTheDocument();
     });
+  });
+
+  it("prefixes public data requests with the Next base path", async () => {
+    process.env.NEXT_PUBLIC_BASE_PATH = "/us/state-eitcs-ctcs";
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        "/us/state-eitcs-ctcs/data/states_from_districts.geojson",
+      );
+    });
+    expect(globalThis.fetch).toHaveBeenCalledWith(
+      "/us/state-eitcs-ctcs/data/real_congressional_districts.geojson",
+    );
+    expect(globalThis.fetch).toHaveBeenCalledWith(
+      "/us/state-eitcs-ctcs/data/state_impacts_2025.csv",
+    );
+    expect(globalThis.fetch).toHaveBeenCalledWith(
+      "/us/state-eitcs-ctcs/data/district_impacts_2026.csv",
+    );
   });
 });
