@@ -1,3 +1,6 @@
+import { PolicyEngineShell } from "@policyengine/ui-kit/layout";
+import "@policyengine/ui-kit/styles.css";
+
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import PolicyEngineHeader from '@/components/PolicyEngineHeader';
@@ -103,6 +106,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <PolicyEngineShell country="us">
         <PolicyEngineHeader />
         {children}
         <noscript>
@@ -119,6 +123,7 @@ export default function RootLayout({
             </p>
           </div>
         </noscript>
+              </PolicyEngineShell>
       </body>
     </html>
   );
