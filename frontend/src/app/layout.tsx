@@ -106,10 +106,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <PolicyEngineShell country="us">
-        <PolicyEngineHeader />
-        {children}
-        <noscript>
+                <noscript>
           <div style={{ padding: 40, textAlign: 'center', fontFamily: 'sans-serif' }}>
             <h1>State Tax Credits Impact | PolicyEngine</h1>
             <p>
@@ -123,7 +120,10 @@ export default function RootLayout({
             </p>
           </div>
         </noscript>
-              </PolicyEngineShell>
+        <PolicyEngineShell country="us">
+          <PolicyEngineHeader />
+        {children}
+        </PolicyEngineShell>
       </body>
     </html>
   );
