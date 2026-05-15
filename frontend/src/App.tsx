@@ -3,7 +3,6 @@
 import { useEffect, useState, useMemo, useCallback, lazy, Suspense } from "react";
 import type { CSSProperties } from "react";
 import { useData } from "./data/useData";
-import Masthead from "./components/Masthead";
 import Hero from "./components/Hero";
 import StatsBanner from "./components/StatsBanner";
 import ControlBar from "./components/ControlBar";
@@ -165,7 +164,6 @@ export default function App() {
   if (loading) {
     return (
       <>
-        {!isIframed && <Masthead />}
         <Hero />
         <div style={styles.loading} role="status" aria-live="polite">
           <div style={styles.spinner} />
@@ -178,7 +176,6 @@ export default function App() {
   if (error) {
     return (
       <>
-        {!isIframed && <Masthead />}
         <Hero />
         <div style={styles.error}>
           <p>Error loading data: {error}</p>
@@ -189,7 +186,6 @@ export default function App() {
 
   return (
     <>
-      {!isIframed && <Masthead />}
       <Hero />
       <StatsBanner
         totalCost={stats.totalCost}
