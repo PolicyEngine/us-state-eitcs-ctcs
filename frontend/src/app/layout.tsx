@@ -3,8 +3,6 @@ import "@policyengine/ui-kit/styles.css";
 
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import PolicyEngineHeader from '@/components/PolicyEngineHeader';
-
 const SITE_URL = 'https://us-state-eitcs-ctcs.vercel.app';
 const TITLE = 'State Tax Credits Impact | PolicyEngine';
 const DESCRIPTION =
@@ -121,7 +119,6 @@ export default function RootLayout({
           </div>
         </noscript>
         <PolicyEngineShell country="us">
-          <PolicyEngineHeader />
         {children}
         </PolicyEngineShell>
       </body>
