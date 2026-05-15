@@ -16,3 +16,5 @@ coverage/
 .vercel/
 .turbo/
 next-env.d.ts
+.vercel
+.env*.local
