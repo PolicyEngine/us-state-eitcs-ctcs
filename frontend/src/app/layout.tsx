@@ -1,3 +1,6 @@
+import { PolicyEngineShell } from "@policyengine/ui-kit/layout";
+import "@policyengine/ui-kit/styles.css";
+
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import PolicyEngineHeader from '@/components/PolicyEngineHeader';
@@ -103,9 +106,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <PolicyEngineHeader />
-        {children}
-        <noscript>
+                <noscript>
           <div style={{ padding: 40, textAlign: 'center', fontFamily: 'sans-serif' }}>
             <h1>State Tax Credits Impact | PolicyEngine</h1>
             <p>
@@ -119,6 +120,10 @@ export default function RootLayout({
             </p>
           </div>
         </noscript>
+        <PolicyEngineShell country="us">
+          <PolicyEngineHeader />
+        {children}
+        </PolicyEngineShell>
       </body>
     </html>
   );
