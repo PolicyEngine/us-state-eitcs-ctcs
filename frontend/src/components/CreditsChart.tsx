@@ -52,6 +52,7 @@ export default function CreditsChart({ data, currentEarnings }: Props) {
       type: "scatter",
       mode: "lines",
       name: s.name,
+      legendgroup: s.key,
       line: { color: s.color, width: 2, shape: "linear" },
       hovertemplate:
         `<b>${s.name}</b><br>` +
@@ -63,6 +64,7 @@ export default function CreditsChart({ data, currentEarnings }: Props) {
       y: [interpolate(x, ys, currentEarnings)],
       type: "scatter",
       mode: "markers",
+      legendgroup: s.key,
       marker: { color: s.color, size: 9, line: { color: "white", width: 1.5 } },
       showlegend: false,
       hovertemplate:
