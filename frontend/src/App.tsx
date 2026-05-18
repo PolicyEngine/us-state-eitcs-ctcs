@@ -199,11 +199,13 @@ export default function App() {
   return (
     <>
       <Hero />
-      <StatsBanner
-        totalCost={stats.totalCost}
-        povertyReduction={stats.povertyReduction}
-        childPovertyReduction={stats.childPovertyReduction}
-      />
+      {appView === "map" && (
+        <StatsBanner
+          totalCost={stats.totalCost}
+          povertyReduction={stats.povertyReduction}
+          childPovertyReduction={stats.childPovertyReduction}
+        />
+      )}
       <main style={styles.mainContent}>
         <div style={styles.tabBar}>
           <PillGroup
