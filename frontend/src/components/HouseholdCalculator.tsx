@@ -260,9 +260,16 @@ const styles: Record<string, CSSProperties> = {
   chartCard: {
     background: "var(--white)",
     borderRadius: 12,
-    padding: 16,
+    padding: 20,
     border: "1px solid var(--slate-200)",
     marginTop: 16,
+  },
+  chartTitle: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 16,
+    fontWeight: 600,
+    color: "var(--slate-800)",
+    margin: "0 0 8px 0",
   },
 };
 
@@ -544,6 +551,7 @@ export default function HouseholdCalculator({ year }: Props) {
               </div>
               {sweep && (
                 <div style={styles.chartCard}>
+                  <h3 style={styles.chartTitle}>Credits by earnings</h3>
                   <Suspense fallback={<Spinner size={28} label="Loading chart…" />}>
                     <CreditsChart
                       data={sweep}

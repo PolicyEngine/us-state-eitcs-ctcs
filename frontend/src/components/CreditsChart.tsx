@@ -22,38 +22,66 @@ const series = [
   { key: "stateCtc" as const, name: "State CTC", color: "#026AA2" },
 ];
 
-const MARKER_COLOR = "#6B7280";
+function interpolate(
+  xs: number[],
+  ys: number[],
+  x: number,
+): number {
+  if (xs.length === 0) return 0;
+  if (x <= xs[0]) return ys[0];
+  if (x >= xs[xs.length - 1]) return ys[ys.length - 1];
+  for (let i = 1; i < xs.length; i++) {
+    if (xs[i] >= x) {
+      const t = (x - xs[i - 1]) / (xs[i] - xs[i - 1] || 1);
+      return ys[i - 1] + t * (ys[i] - ys[i - 1]);
+    }
+  }
+  return ys[ys.length - 1];
+}
 
 export default function CreditsChart({ data, currentEarnings }: Props) {
   const x = data.map((d) => d.earnings);
 
-  const traces = series.map((s) => ({
-    x,
-    y: data.map((d) => d[s.key]),
-    type: "scatter" as const,
-    mode: "lines" as const,
-    name: s.name,
-    line: { color: s.color, width: 2.5, shape: "linear" as const },
-    hovertemplate: `<b>${s.name}</b>: $%{y:,.0f}<extra></extra>`,
-  }));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const traces: any[] = [];
+  series.forEach((s) => {
+    const ys = data.map((d) => d[s.key]);
+    traces.push({
+      x,
+      y: ys,
+      type: "scatter",
+      mode: "lines",
+      name: s.name,
+      line: { color: s.color, width: 2, shape: "linear" },
+      hovertemplate:
+        `<b>${s.name}</b><br>` +
+        `If you earn $%{x:,.0f}, your ${s.name} is $%{y:,.0f}.` +
+        `<extra></extra>`,
+    });
+    traces.push({
+      x: [currentEarnings],
+      y: [interpolate(x, ys, currentEarnings)],
+      type: "scatter",
+      mode: "markers",
+      marker: { color: s.color, size: 9, line: { color: "white", width: 1.5 } },
+      showlegend: false,
+      hovertemplate:
+        `<b>Your ${s.name}</b><br>` +
+        `If you earn $%{x:,.0f}, your ${s.name} is $%{y:,.0f}.` +
+        `<extra></extra>`,
+    });
+  });
 
   return (
     <Plot
       data={traces}
       layout={{
-        title: {
-          text: "Credits by earnings",
-          font: { family: PE_FONT, size: 18, color: "#000000" },
-          x: 0,
-          xanchor: "left",
-        },
         font: { family: PE_FONT, color: "#000000", size: 14 },
         autosize: true,
         height: 420,
-        margin: { l: 70, r: 40, t: 60, b: 90 },
+        margin: { l: 70, r: 30, t: 8, b: 80 },
         paper_bgcolor: "#FFFFFF",
-        plot_bgcolor: "#FFFFFF",
-        template: "plotly_white" as unknown as undefined,
+        plot_bgcolor: "rgba(0,0,0,0)",
         xaxis: {
           title: {
             text: "Annual earnings",
@@ -83,56 +111,32 @@ export default function CreditsChart({ data, currentEarnings }: Props) {
         },
         legend: {
           orientation: "h",
-          y: 1.08,
-          x: 1,
-          xanchor: "right",
+          y: 1.15,
+          x: 0,
+          xanchor: "left",
           font: { family: PE_FONT, size: 12, color: "#000000" },
           bgcolor: "rgba(0,0,0,0)",
         },
-        hovermode: "x unified",
+        hovermode: "closest",
         hoverlabel: {
+          align: "left",
           bgcolor: "#FFFFFF",
           bordercolor: "#E2E8F0",
-          font: { family: PE_FONT, size: 12, color: "#000000" },
+          font: { family: PE_FONT, size: 13, color: "#000000" },
         },
-        modebar: {
-          bgcolor: "rgba(0,0,0,0)",
-          color: "rgba(0,0,0,0)",
-        },
-        shapes: [
-          {
-            type: "line",
-            x0: currentEarnings,
-            x1: currentEarnings,
-            yref: "paper",
-            y0: 0,
-            y1: 1,
-            line: { color: MARKER_COLOR, width: 1.5, dash: "dash" },
-          },
-        ],
-        annotations: [
-          {
-            x: currentEarnings,
-            yref: "paper",
-            y: 1.04,
-            text: `Your earnings: $${currentEarnings.toLocaleString()}`,
-            showarrow: false,
-            font: { family: PE_FONT, size: 12, color: MARKER_COLOR },
-            xanchor: "left",
-          },
-        ],
+        modebar: { bgcolor: "rgba(0,0,0,0)", color: "rgba(0,0,0,0)" },
         images: [
           {
             source: PE_LOGO_URL,
             xref: "paper",
             yref: "paper",
-            x: 1,
-            y: -0.18,
-            sizex: 0.14,
-            sizey: 0.14,
+            x: 1.0,
+            y: -0.22,
+            sizex: 0.13,
+            sizey: 0.13,
             xanchor: "right",
             yanchor: "bottom",
-            opacity: 0.85,
+            opacity: 0.9,
           },
         ],
       }}
