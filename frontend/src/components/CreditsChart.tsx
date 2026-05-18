@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import type { SweepPoint } from "../api/policyengine";
-import { colors } from "../designTokens";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -11,31 +10,31 @@ interface Props {
   currentEarnings: number;
 }
 
-const palette = {
-  fedEitc: colors.primary,        // teal 600-ish
-  fedCtc: "#2C7A7B",              // PolicyEngine darker teal
-  stateEitc: "#3182CE",           // policy positive blue
-  stateCtc: "#805AD5",            // purple accent
-  marker: "#475569",              // slate-600
-};
+const PE_LOGO_URL =
+  "https://raw.githubusercontent.com/PolicyEngine/policyengine-app-v2/main/app/public/assets/logos/policyengine/teal.png";
+
+const PE_FONT = "Inter, system-ui, -apple-system, sans-serif";
+
+const series = [
+  { key: "federalEitc" as const, name: "Federal EITC", color: "#319795" },
+  { key: "federalCtc" as const, name: "Federal CTC", color: "#285E61" },
+  { key: "stateEitc" as const, name: "State EITC", color: "#0EA5E9" },
+  { key: "stateCtc" as const, name: "State CTC", color: "#026AA2" },
+];
+
+const MARKER_COLOR = "#6B7280";
 
 export default function CreditsChart({ data, currentEarnings }: Props) {
   const x = data.map((d) => d.earnings);
-  const series = [
-    { name: "Federal EITC", y: data.map((d) => d.federalEitc), color: palette.fedEitc },
-    { name: "Federal CTC", y: data.map((d) => d.federalCtc), color: palette.fedCtc },
-    { name: "State EITC", y: data.map((d) => d.stateEitc), color: palette.stateEitc },
-    { name: "State CTC", y: data.map((d) => d.stateCtc), color: palette.stateCtc },
-  ];
 
   const traces = series.map((s) => ({
     x,
-    y: s.y,
+    y: data.map((d) => d[s.key]),
     type: "scatter" as const,
     mode: "lines" as const,
     name: s.name,
     line: { color: s.color, width: 2.5, shape: "spline" as const },
-    hovertemplate: `<b>${s.name}</b><br>Earnings: $%{x:,.0f}<br>Credit: $%{y:,.0f}<extra></extra>`,
+    hovertemplate: `<b>${s.name}</b>: $%{y:,.0f}<extra></extra>`,
   }));
 
   return (
@@ -44,41 +43,62 @@ export default function CreditsChart({ data, currentEarnings }: Props) {
       layout={{
         title: {
           text: "Credits by earnings",
-          font: { family: "Inter, sans-serif", size: 16, color: "#1A202C" },
-          x: 0.02,
+          font: { family: PE_FONT, size: 18, color: "#000000" },
+          x: 0,
+          xanchor: "left",
         },
+        font: { family: PE_FONT, color: "#000000", size: 14 },
         autosize: true,
-        height: 360,
-        margin: { l: 64, r: 16, t: 48, b: 56 },
+        height: 420,
+        margin: { l: 70, r: 40, t: 60, b: 90 },
+        paper_bgcolor: "#FFFFFF",
+        plot_bgcolor: "#FFFFFF",
+        template: "plotly_white" as unknown as undefined,
         xaxis: {
-          title: { text: "Annual earnings", font: { family: "Inter, sans-serif", size: 12, color: "#64748b" } },
+          title: {
+            text: "Annual earnings",
+            font: { family: PE_FONT, size: 14, color: "#000000" },
+            standoff: 12,
+          },
           tickformat: "$,.0f",
-          gridcolor: "#e2e8f0",
-          zerolinecolor: "#cbd5e1",
-          tickfont: { family: "Inter, sans-serif", size: 11, color: "#64748b" },
+          gridcolor: "#E2E8F0",
+          zerolinecolor: "#E2E8F0",
+          tickfont: { family: PE_FONT, size: 12, color: "#5A5A5A" },
+          showline: true,
+          linecolor: "#E2E8F0",
         },
         yaxis: {
-          title: { text: "Credit amount", font: { family: "Inter, sans-serif", size: 12, color: "#64748b" } },
+          title: {
+            text: "Credit amount",
+            font: { family: PE_FONT, size: 14, color: "#000000" },
+            standoff: 12,
+          },
           tickformat: "$,.0f",
-          gridcolor: "#e2e8f0",
-          zerolinecolor: "#cbd5e1",
-          tickfont: { family: "Inter, sans-serif", size: 11, color: "#64748b" },
+          gridcolor: "#E2E8F0",
+          zerolinecolor: "#E2E8F0",
+          tickfont: { family: PE_FONT, size: 12, color: "#5A5A5A" },
           rangemode: "tozero",
+          showline: true,
+          linecolor: "#E2E8F0",
         },
         legend: {
           orientation: "h",
-          y: -0.2,
-          x: 0,
-          font: { family: "Inter, sans-serif", size: 12, color: "#334155" },
+          y: 1.08,
+          x: 1,
+          xanchor: "right",
+          font: { family: PE_FONT, size: 12, color: "#000000" },
+          bgcolor: "rgba(0,0,0,0)",
         },
         hovermode: "x unified",
         hoverlabel: {
-          bgcolor: "white",
-          bordercolor: "#e2e8f0",
-          font: { family: "Inter, sans-serif", size: 12, color: "#1A202C" },
+          bgcolor: "#FFFFFF",
+          bordercolor: "#E2E8F0",
+          font: { family: PE_FONT, size: 12, color: "#000000" },
         },
-        paper_bgcolor: "white",
-        plot_bgcolor: "white",
+        modebar: {
+          bgcolor: "rgba(0,0,0,0)",
+          color: "rgba(0,0,0,0)",
+        },
         shapes: [
           {
             type: "line",
@@ -87,18 +107,32 @@ export default function CreditsChart({ data, currentEarnings }: Props) {
             yref: "paper",
             y0: 0,
             y1: 1,
-            line: { color: palette.marker, width: 1.5, dash: "dash" },
+            line: { color: MARKER_COLOR, width: 1.5, dash: "dash" },
           },
         ],
         annotations: [
           {
             x: currentEarnings,
             yref: "paper",
-            y: 1.02,
+            y: 1.04,
             text: `Your earnings: $${currentEarnings.toLocaleString()}`,
             showarrow: false,
-            font: { family: "Inter, sans-serif", size: 11, color: palette.marker },
+            font: { family: PE_FONT, size: 12, color: MARKER_COLOR },
             xanchor: "left",
+          },
+        ],
+        images: [
+          {
+            source: PE_LOGO_URL,
+            xref: "paper",
+            yref: "paper",
+            x: 1,
+            y: -0.18,
+            sizex: 0.14,
+            sizey: 0.14,
+            xanchor: "right",
+            yanchor: "bottom",
+            opacity: 0.85,
           },
         ],
       }}
