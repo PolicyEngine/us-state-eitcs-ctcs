@@ -1,4 +1,11 @@
-import { lazy, Suspense, useState, type CSSProperties, type FormEvent } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useState,
+  type CSSProperties,
+  type FormEvent,
+} from "react";
 import { STATE_NAMES, type SupportedYear } from "../types";
 import {
   calculateHousehold,
@@ -306,6 +313,21 @@ export default function HouseholdCalculator({ year }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   const filingStatus = deriveFilingStatus(hasSpouse, childAges.length > 0);
+
+  useEffect(() => {
+    setResult(null);
+    setSweep(null);
+    setError(null);
+  }, [
+    state,
+    year,
+    hasSpouse,
+    primaryAge,
+    spouseAge,
+    employmentIncome,
+    spouseEmploymentIncome,
+    childAges,
+  ]);
 
   const addChild = () => setChildAges((c) => [...c, 5]);
   const removeChild = (i: number) =>
