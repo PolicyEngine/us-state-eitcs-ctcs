@@ -210,7 +210,7 @@ export default function App() {
         <div style={styles.tabBar}>
           <PillGroup
             options={[
-              { label: "Map", value: "map" },
+              { label: "Nationwide impacts", value: "map" },
               { label: "Household calculator", value: "household" },
             ]}
             value={appView}
