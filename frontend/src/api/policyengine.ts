@@ -99,6 +99,24 @@ function extract(
   return typeof v === "number" ? v : 0;
 }
 
+export interface SweepPoint extends CreditBreakdown {
+  earnings: number;
+}
+
+export async function sweepEarnings(
+  baseInput: HouseholdInput,
+  earningsValues: number[],
+): Promise<SweepPoint[]> {
+  const results = await Promise.all(
+    earningsValues.map((earnings) =>
+      calculateHousehold({ ...baseInput, employmentIncome: earnings }).then(
+        (credits) => ({ earnings, ...credits }),
+      ),
+    ),
+  );
+  return results.sort((a, b) => a.earnings - b.earnings);
+}
+
 export async function calculateHousehold(
   input: HouseholdInput,
 ): Promise<CreditBreakdown> {

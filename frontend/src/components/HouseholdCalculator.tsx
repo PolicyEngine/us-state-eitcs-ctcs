@@ -1,11 +1,21 @@
-import { useState, type CSSProperties, type FormEvent } from "react";
+import { lazy, Suspense, useState, type CSSProperties, type FormEvent } from "react";
 import { STATE_NAMES, type SupportedYear } from "../types";
 import {
   calculateHousehold,
+  sweepEarnings,
   type CreditBreakdown,
   type FilingStatus,
   type HouseholdInput,
+  type SweepPoint,
 } from "../api/policyengine";
+import Spinner from "./Spinner";
+
+const CreditsChart = lazy(() => import("./CreditsChart"));
+
+const SWEEP_VALUES = [
+  0, 5_000, 10_000, 15_000, 20_000, 25_000, 30_000, 35_000, 40_000,
+  50_000, 60_000, 75_000, 90_000, 110_000, 130_000, 160_000, 200_000,
+];
 
 interface Props {
   year: SupportedYear;
@@ -238,6 +248,27 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
     alignSelf: "flex-start",
   },
+  btnLoading: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+  },
+  btnSpinner: {
+    width: 14,
+    height: 14,
+    border: "2px solid rgba(255,255,255,0.4)",
+    borderTopColor: "white",
+    borderRadius: "50%",
+    animation: "spin 0.8s linear infinite",
+    display: "inline-block",
+  },
+  chartCard: {
+    background: "var(--white)",
+    borderRadius: 12,
+    padding: 16,
+    border: "1px solid var(--slate-200)",
+    marginTop: 16,
+  },
 };
 
 function deriveFilingStatus(
@@ -267,6 +298,8 @@ export default function HouseholdCalculator({ year }: Props) {
   const [childAges, setChildAges] = useState<number[]>([5]);
 
   const [result, setResult] = useState<CreditBreakdown | null>(null);
+  const [sweep, setSweep] = useState<SweepPoint[] | null>(null);
+  const [submittedEarnings, setSubmittedEarnings] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -282,6 +315,7 @@ export default function HouseholdCalculator({ year }: Props) {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setSweep(null);
     try {
       const input: HouseholdInput = {
         state,
@@ -293,11 +327,17 @@ export default function HouseholdCalculator({ year }: Props) {
         spouseEmploymentIncome: hasSpouse ? spouseEmploymentIncome : undefined,
         childAges,
       };
-      const r = await calculateHousehold(input);
+      const [r, s] = await Promise.all([
+        calculateHousehold(input),
+        sweepEarnings(input, SWEEP_VALUES),
+      ]);
       setResult(r);
+      setSweep(s);
+      setSubmittedEarnings(employmentIncome);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Calculation failed");
       setResult(null);
+      setSweep(null);
     } finally {
       setLoading(false);
     }
@@ -444,7 +484,14 @@ export default function HouseholdCalculator({ year }: Props) {
           </div>
 
           <button type="submit" style={styles.submit} disabled={loading}>
-            {loading ? "Calculating…" : "Calculate credits"}
+            {loading ? (
+              <span style={styles.btnLoading}>
+                <span style={styles.btnSpinner} aria-hidden="true" />
+                Calculating…
+              </span>
+            ) : (
+              "Calculate credits"
+            )}
           </button>
           <p style={styles.helpText}>
             Calculated for tax year {year} using PolicyEngine US.
@@ -454,7 +501,12 @@ export default function HouseholdCalculator({ year }: Props) {
         <div style={styles.section}>
           <h2 style={styles.sectionTitle}>Refundable credits</h2>
           {error && <div style={styles.error}>{error}</div>}
-          {!result && !error && (
+          {loading && !error && (
+            <div style={styles.results}>
+              <Spinner size={36} label="Calculating credits…" />
+            </div>
+          )}
+          {!loading && !result && !error && (
             <div style={styles.results}>
               <p style={styles.placeholder}>
                 Enter your household details and click <strong>Calculate
@@ -462,38 +514,50 @@ export default function HouseholdCalculator({ year }: Props) {
               </p>
             </div>
           )}
-          {result && (
-            <div style={styles.results}>
-              <p style={styles.resultsTitle}>For {STATE_NAMES[state]}, {year}</p>
-              <div style={styles.resultsRow}>
-                <span style={styles.resultsLabel}>Federal EITC</span>
-                <span style={styles.resultsValue}>
-                  {formatCurrency(result.federalEitc)}
-                </span>
+          {!loading && result && (
+            <>
+              <div style={styles.results}>
+                <p style={styles.resultsTitle}>For {STATE_NAMES[state]}, {year}</p>
+                <div style={styles.resultsRow}>
+                  <span style={styles.resultsLabel}>Federal EITC</span>
+                  <span style={styles.resultsValue}>
+                    {formatCurrency(result.federalEitc)}
+                  </span>
+                </div>
+                <div style={styles.resultsRow}>
+                  <span style={styles.resultsLabel}>Federal CTC</span>
+                  <span style={styles.resultsValue}>
+                    {formatCurrency(result.federalCtc)}
+                  </span>
+                </div>
+                <div style={styles.resultsRow}>
+                  <span style={styles.resultsLabel}>State EITC</span>
+                  <span style={styles.resultsValue}>
+                    {formatCurrency(result.stateEitc)}
+                  </span>
+                </div>
+                <div style={styles.resultsRow}>
+                  <span style={styles.resultsLabel}>State CTC</span>
+                  <span style={styles.resultsValue}>
+                    {formatCurrency(result.stateCtc)}
+                  </span>
+                </div>
+                <div style={styles.totalRow}>
+                  <span style={styles.totalLabel}>Total</span>
+                  <span style={styles.totalValue}>{formatCurrency(total)}</span>
+                </div>
               </div>
-              <div style={styles.resultsRow}>
-                <span style={styles.resultsLabel}>Federal CTC</span>
-                <span style={styles.resultsValue}>
-                  {formatCurrency(result.federalCtc)}
-                </span>
-              </div>
-              <div style={styles.resultsRow}>
-                <span style={styles.resultsLabel}>State EITC</span>
-                <span style={styles.resultsValue}>
-                  {formatCurrency(result.stateEitc)}
-                </span>
-              </div>
-              <div style={styles.resultsRow}>
-                <span style={styles.resultsLabel}>State CTC</span>
-                <span style={styles.resultsValue}>
-                  {formatCurrency(result.stateCtc)}
-                </span>
-              </div>
-              <div style={styles.totalRow}>
-                <span style={styles.totalLabel}>Total</span>
-                <span style={styles.totalValue}>{formatCurrency(total)}</span>
-              </div>
-            </div>
+              {sweep && (
+                <div style={styles.chartCard}>
+                  <Suspense fallback={<Spinner size={28} label="Loading chart…" />}>
+                    <CreditsChart
+                      data={sweep}
+                      currentEarnings={submittedEarnings}
+                    />
+                  </Suspense>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
