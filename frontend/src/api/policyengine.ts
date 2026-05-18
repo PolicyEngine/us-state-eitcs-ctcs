@@ -94,7 +94,7 @@ function extract(
 ): number {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const r = result as any;
-  const tu = r?.household?.tax_units?.tax_unit;
+  const tu = r?.tax_units?.tax_unit;
   const v = tu?.[varName]?.[String(year)];
   return typeof v === "number" ? v : 0;
 }
