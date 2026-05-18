@@ -7,9 +7,15 @@ import Hero from "./components/Hero";
 import StatsBanner from "./components/StatsBanner";
 import ControlBar from "./components/ControlBar";
 import Footer from "./components/Footer";
+import PillGroup from "./components/PillGroup";
 import type { MetricKey, ViewType, SupportedYear } from "./types";
 
 const Visualization = lazy(() => import("./components/Visualization"));
+const HouseholdCalculator = lazy(
+  () => import("./components/HouseholdCalculator"),
+);
+
+type AppView = "map" | "household";
 
 const styles: Record<string, CSSProperties> = {
   mainContent: {
@@ -42,6 +48,11 @@ const styles: Record<string, CSSProperties> = {
     color: "#dc2626",
     fontWeight: 600,
   },
+  tabBar: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: 24,
+  },
 };
 
 export default function App() {
@@ -57,6 +68,7 @@ export default function App() {
   const { dataByYear, stateGeoData, districtGeoData, loading, error } =
     useData();
 
+  const [appView, setAppView] = useState<AppView>("map");
   const [year, setYear] = useState<SupportedYear>(2025);
   const [viewType, setViewType] = useState<ViewType>("state");
   const [creditType, setCreditType] = useState("CTCs and EITCs");
@@ -187,42 +199,71 @@ export default function App() {
   return (
     <>
       <Hero />
-      <StatsBanner
-        totalCost={stats.totalCost}
-        povertyReduction={stats.povertyReduction}
-        childPovertyReduction={stats.childPovertyReduction}
-      />
-      <main style={styles.mainContent}>
-        <ControlBar
-          year={year}
-          onYearChange={handleYearChange}
-          viewType={viewType}
-          onViewTypeChange={handleViewTypeChange}
-          creditType={creditType}
-          onCreditTypeChange={handleCreditTypeChange}
-          metric={metric}
-          onMetricChange={setMetric}
+      {appView === "map" && (
+        <StatsBanner
+          totalCost={stats.totalCost}
+          povertyReduction={stats.povertyReduction}
+          childPovertyReduction={stats.childPovertyReduction}
         />
-        {stateGeoData && districtGeoData && (
+      )}
+      <main style={styles.mainContent}>
+        <div style={styles.tabBar}>
+          <PillGroup
+            options={[
+              { label: "Nationwide impacts", value: "map" },
+              { label: "Household calculator", value: "household" },
+            ]}
+            value={appView}
+            onChange={(v) => setAppView(v as AppView)}
+            ariaLabel="View"
+          />
+        </div>
+        {appView === "map" && (
+          <>
+            <ControlBar
+              year={year}
+              onYearChange={handleYearChange}
+              viewType={viewType}
+              onViewTypeChange={handleViewTypeChange}
+              creditType={creditType}
+              onCreditTypeChange={handleCreditTypeChange}
+              metric={metric}
+              onMetricChange={setMetric}
+            />
+            {stateGeoData && districtGeoData && (
+              <Suspense
+                fallback={
+                  <div style={styles.loading} role="status" aria-live="polite">
+                    <div style={styles.spinner} />
+                    <p>Loading map...</p>
+                  </div>
+                }
+              >
+                <Visualization
+                  stateGeoData={stateGeoData}
+                  districtGeoData={districtGeoData}
+                  filteredData={filteredData as unknown as Record<string, unknown>[]}
+                  viewType={viewType}
+                  metric={metric}
+                  creditType={creditType}
+                  selectedRegion={selectedRegion}
+                  regionData={regionData}
+                  onRegionClick={handleRegionClick}
+                />
+              </Suspense>
+            )}
+          </>
+        )}
+        {appView === "household" && (
           <Suspense
             fallback={
               <div style={styles.loading} role="status" aria-live="polite">
                 <div style={styles.spinner} />
-                <p>Loading map...</p>
+                <p>Loading calculator...</p>
               </div>
             }
           >
-            <Visualization
-              stateGeoData={stateGeoData}
-              districtGeoData={districtGeoData}
-              filteredData={filteredData as unknown as Record<string, unknown>[]}
-              viewType={viewType}
-              metric={metric}
-              creditType={creditType}
-              selectedRegion={selectedRegion}
-              regionData={regionData}
-              onRegionClick={handleRegionClick}
-            />
+            <HouseholdCalculator year={year} />
           </Suspense>
         )}
       </main>
