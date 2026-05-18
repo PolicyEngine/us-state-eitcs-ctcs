@@ -182,6 +182,30 @@ const styles: Record<string, CSSProperties> = {
     color: "var(--slate-500)",
     marginTop: 8,
   },
+  checkboxRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    cursor: "pointer",
+    padding: "8px 0",
+  },
+  checkbox: {
+    width: 18,
+    height: 18,
+    accentColor: "#0d9488",
+    cursor: "pointer",
+  },
+  checkboxLabel: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 14,
+    fontWeight: 500,
+    color: "var(--slate-700)",
+  },
+  pairRow: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: 16,
+  },
 };
 
 function deriveFilingStatus(
@@ -271,84 +295,79 @@ export default function HouseholdCalculator({ year }: Props) {
             </select>
           </div>
 
-          <div style={styles.field}>
-            <label style={styles.label} htmlFor="hc-age">Your age</label>
+          <label style={styles.checkboxRow}>
             <input
-              id="hc-age"
-              type="number"
-              min={18}
-              max={100}
-              style={styles.input}
-              value={primaryAge}
-              onChange={(e) => setPrimaryAge(Number(e.target.value))}
+              type="checkbox"
+              checked={hasSpouse}
+              onChange={(e) => setHasSpouse(e.target.checked)}
+              style={styles.checkbox}
             />
-          </div>
+            <span style={styles.checkboxLabel}>Are you married?</span>
+          </label>
 
-          <div style={styles.field}>
-            <label style={styles.label} htmlFor="hc-income">
-              Your earnings (annual)
-            </label>
-            <input
-              id="hc-income"
-              type="number"
-              min={0}
-              step={1000}
-              style={styles.input}
-              value={employmentIncome}
-              onChange={(e) => setEmploymentIncome(Number(e.target.value))}
-            />
-          </div>
-
-          <div style={styles.field}>
-            <span style={styles.label}>Spouse</span>
-            {hasSpouse ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <div style={styles.field}>
-                  <label style={styles.label} htmlFor="hc-spouse-age">
-                    Spouse age
-                  </label>
-                  <input
-                    id="hc-spouse-age"
-                    type="number"
-                    min={18}
-                    max={100}
-                    style={styles.input}
-                    value={spouseAge}
-                    onChange={(e) => setSpouseAge(Number(e.target.value))}
-                  />
-                </div>
-                <div style={styles.field}>
-                  <label style={styles.label} htmlFor="hc-spouse-income">
-                    Spouse earnings (annual)
-                  </label>
-                  <input
-                    id="hc-spouse-income"
-                    type="number"
-                    min={0}
-                    step={1000}
-                    style={styles.input}
-                    value={spouseEmploymentIncome}
-                    onChange={(e) =>
-                      setSpouseEmploymentIncome(Number(e.target.value))
-                    }
-                  />
-                </div>
-                <button
-                  type="button"
-                  style={styles.removeBtn}
-                  onClick={() => setHasSpouse(false)}
-                >
-                  Remove spouse
-                </button>
+          <div style={{ ...styles.pairRow, gridTemplateColumns: hasSpouse ? "1fr 1fr" : "1fr" }}>
+            <div style={styles.field}>
+              <label style={styles.label} htmlFor="hc-age">Your age</label>
+              <input
+                id="hc-age"
+                type="number"
+                min={18}
+                max={100}
+                style={styles.input}
+                value={primaryAge}
+                onChange={(e) => setPrimaryAge(Number(e.target.value))}
+              />
+            </div>
+            {hasSpouse && (
+              <div style={styles.field}>
+                <label style={styles.label} htmlFor="hc-spouse-age">
+                  Spouse age
+                </label>
+                <input
+                  id="hc-spouse-age"
+                  type="number"
+                  min={18}
+                  max={100}
+                  style={styles.input}
+                  value={spouseAge}
+                  onChange={(e) => setSpouseAge(Number(e.target.value))}
+                />
               </div>
-            ) : (
-              <button
-                type="button"
-                style={styles.addBtn}
-                onClick={() => setHasSpouse(true)}
-              >
-                + Add spouse
-              </button>
+            )}
+          </div>
+
+          <div style={{ ...styles.pairRow, gridTemplateColumns: hasSpouse ? "1fr 1fr" : "1fr" }}>
+            <div style={styles.field}>
+              <label style={styles.label} htmlFor="hc-income">
+                Your earnings (annual)
+              </label>
+              <input
+                id="hc-income"
+                type="number"
+                min={0}
+                step={1000}
+                style={styles.input}
+                value={employmentIncome}
+                onChange={(e) => setEmploymentIncome(Number(e.target.value))}
+              />
+            </div>
+            {hasSpouse && (
+              <div style={styles.field}>
+                <label style={styles.label} htmlFor="hc-spouse-income">
+                  Spouse earnings (annual)
+                </label>
+                <input
+                  id="hc-spouse-income"
+                  type="number"
+                  min={0}
+                  step={1000}
+                  style={styles.input}
+                  value={spouseEmploymentIncome}
+                  onChange={(e) =>
+                    setSpouseEmploymentIncome(Number(e.target.value))
+                  }
+                />
+              </div>
             )}
           </div>
 
