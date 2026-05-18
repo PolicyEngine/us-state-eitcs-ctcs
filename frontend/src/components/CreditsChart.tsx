@@ -96,6 +96,8 @@ export default function CreditsChart({ data, currentEarnings }: Props) {
           tickfont: { family: PE_FONT, size: 12, color: "#5A5A5A" },
           showline: true,
           linecolor: "#E2E8F0",
+          rangemode: "tozero",
+          range: [0, x[x.length - 1] ?? 0],
         },
         yaxis: {
           title: {
