@@ -6,7 +6,6 @@ import {
   type FilingStatus,
   type HouseholdInput,
 } from "../api/policyengine";
-import PillGroup from "./PillGroup";
 
 interface Props {
   year: SupportedYear;
@@ -185,11 +184,14 @@ const styles: Record<string, CSSProperties> = {
   },
 };
 
-const filingOptions: { label: string; value: FilingStatus }[] = [
-  { label: "Single", value: "SINGLE" },
-  { label: "Head of household", value: "HEAD_OF_HOUSEHOLD" },
-  { label: "Married filing jointly", value: "JOINT" },
-];
+function deriveFilingStatus(
+  hasSpouse: boolean,
+  hasChildren: boolean,
+): FilingStatus {
+  if (hasSpouse) return "JOINT";
+  if (hasChildren) return "HEAD_OF_HOUSEHOLD";
+  return "SINGLE";
+}
 
 function formatCurrency(n: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -201,19 +203,18 @@ function formatCurrency(n: number): string {
 
 export default function HouseholdCalculator({ year }: Props) {
   const [state, setState] = useState("CA");
-  const [filingStatus, setFilingStatus] = useState<FilingStatus>("SINGLE");
+  const [hasSpouse, setHasSpouse] = useState(false);
   const [primaryAge, setPrimaryAge] = useState(40);
   const [spouseAge, setSpouseAge] = useState(40);
   const [employmentIncome, setEmploymentIncome] = useState(30000);
   const [spouseEmploymentIncome, setSpouseEmploymentIncome] = useState(0);
-  const [otherIncome, setOtherIncome] = useState(0);
   const [childAges, setChildAges] = useState<number[]>([5]);
 
   const [result, setResult] = useState<CreditBreakdown | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isJoint = filingStatus === "JOINT";
+  const filingStatus = deriveFilingStatus(hasSpouse, childAges.length > 0);
 
   const addChild = () => setChildAges((c) => [...c, 5]);
   const removeChild = (i: number) =>
@@ -231,10 +232,9 @@ export default function HouseholdCalculator({ year }: Props) {
         year,
         filingStatus,
         primaryAge,
-        spouseAge: isJoint ? spouseAge : undefined,
+        spouseAge: hasSpouse ? spouseAge : undefined,
         employmentIncome,
-        spouseEmploymentIncome: isJoint ? spouseEmploymentIncome : undefined,
-        otherIncome,
+        spouseEmploymentIncome: hasSpouse ? spouseEmploymentIncome : undefined,
         childAges,
       };
       const r = await calculateHousehold(input);
@@ -272,19 +272,6 @@ export default function HouseholdCalculator({ year }: Props) {
           </div>
 
           <div style={styles.field}>
-            <span style={styles.label}>Filing status</span>
-            <PillGroup
-              options={filingOptions.map((o) => ({
-                label: o.label,
-                value: o.value,
-              }))}
-              value={filingStatus}
-              onChange={(v) => setFilingStatus(v as FilingStatus)}
-              ariaLabel="Filing status"
-            />
-          </div>
-
-          <div style={styles.field}>
             <label style={styles.label} htmlFor="hc-age">Your age</label>
             <input
               id="hc-age"
@@ -312,54 +299,57 @@ export default function HouseholdCalculator({ year }: Props) {
             />
           </div>
 
-          {isJoint && (
-            <>
-              <div style={styles.field}>
-                <label style={styles.label} htmlFor="hc-spouse-age">
-                  Spouse age
-                </label>
-                <input
-                  id="hc-spouse-age"
-                  type="number"
-                  min={18}
-                  max={100}
-                  style={styles.input}
-                  value={spouseAge}
-                  onChange={(e) => setSpouseAge(Number(e.target.value))}
-                />
-              </div>
-              <div style={styles.field}>
-                <label style={styles.label} htmlFor="hc-spouse-income">
-                  Spouse earnings (annual)
-                </label>
-                <input
-                  id="hc-spouse-income"
-                  type="number"
-                  min={0}
-                  step={1000}
-                  style={styles.input}
-                  value={spouseEmploymentIncome}
-                  onChange={(e) =>
-                    setSpouseEmploymentIncome(Number(e.target.value))
-                  }
-                />
-              </div>
-            </>
-          )}
-
           <div style={styles.field}>
-            <label style={styles.label} htmlFor="hc-other">
-              Other income (interest, optional)
-            </label>
-            <input
-              id="hc-other"
-              type="number"
-              min={0}
-              step={500}
-              style={styles.input}
-              value={otherIncome}
-              onChange={(e) => setOtherIncome(Number(e.target.value))}
-            />
+            <span style={styles.label}>Spouse</span>
+            {hasSpouse ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={styles.field}>
+                  <label style={styles.label} htmlFor="hc-spouse-age">
+                    Spouse age
+                  </label>
+                  <input
+                    id="hc-spouse-age"
+                    type="number"
+                    min={18}
+                    max={100}
+                    style={styles.input}
+                    value={spouseAge}
+                    onChange={(e) => setSpouseAge(Number(e.target.value))}
+                  />
+                </div>
+                <div style={styles.field}>
+                  <label style={styles.label} htmlFor="hc-spouse-income">
+                    Spouse earnings (annual)
+                  </label>
+                  <input
+                    id="hc-spouse-income"
+                    type="number"
+                    min={0}
+                    step={1000}
+                    style={styles.input}
+                    value={spouseEmploymentIncome}
+                    onChange={(e) =>
+                      setSpouseEmploymentIncome(Number(e.target.value))
+                    }
+                  />
+                </div>
+                <button
+                  type="button"
+                  style={styles.removeBtn}
+                  onClick={() => setHasSpouse(false)}
+                >
+                  Remove spouse
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                style={styles.addBtn}
+                onClick={() => setHasSpouse(true)}
+              >
+                + Add spouse
+              </button>
+            )}
           </div>
 
           <div style={styles.field}>

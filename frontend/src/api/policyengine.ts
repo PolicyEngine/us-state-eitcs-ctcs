@@ -8,7 +8,6 @@ export interface HouseholdInput {
   spouseAge?: number;
   employmentIncome: number;
   spouseEmploymentIncome?: number;
-  otherIncome?: number;
   childAges: number[];
 }
 
@@ -31,10 +30,6 @@ function buildHousehold(input: HouseholdInput) {
       employment_income: { [y]: input.employmentIncome },
     },
   };
-
-  if (input.otherIncome && input.otherIncome > 0) {
-    people.you.taxable_interest_income = { [y]: input.otherIncome };
-  }
 
   const adultMembers = ["you"];
   if (isJoint) {
