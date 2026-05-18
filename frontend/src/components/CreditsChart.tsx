@@ -33,7 +33,7 @@ export default function CreditsChart({ data, currentEarnings }: Props) {
     type: "scatter" as const,
     mode: "lines" as const,
     name: s.name,
-    line: { color: s.color, width: 2.5, shape: "spline" as const },
+    line: { color: s.color, width: 2.5, shape: "linear" as const },
     hovertemplate: `<b>${s.name}</b>: $%{y:,.0f}<extra></extra>`,
   }));
 

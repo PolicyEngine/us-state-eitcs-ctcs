@@ -12,11 +12,6 @@ import Spinner from "./Spinner";
 
 const CreditsChart = lazy(() => import("./CreditsChart"));
 
-const SWEEP_VALUES = [
-  0, 5_000, 10_000, 15_000, 20_000, 25_000, 30_000, 35_000, 40_000,
-  50_000, 60_000, 75_000, 90_000, 110_000, 130_000, 160_000, 200_000,
-];
-
 interface Props {
   year: SupportedYear;
 }
@@ -329,7 +324,7 @@ export default function HouseholdCalculator({ year }: Props) {
       };
       const [r, s] = await Promise.all([
         calculateHousehold(input),
-        sweepEarnings(input, SWEEP_VALUES),
+        sweepEarnings(input),
       ]);
       setResult(r);
       setSweep(s);
