@@ -206,6 +206,38 @@ const styles: Record<string, CSSProperties> = {
     gridTemplateColumns: "1fr 1fr",
     gap: 16,
   },
+  childGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    gap: 12,
+  },
+  childCard: {
+    border: "1px solid var(--slate-200)",
+    borderRadius: 8,
+    padding: 12,
+    background: "var(--slate-50)",
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  childCardLabel: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 12,
+    fontWeight: 600,
+    color: "var(--slate-600)",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  removeBtnSm: {
+    border: "1px solid var(--slate-200)",
+    background: "var(--white)",
+    color: "var(--slate-500)",
+    borderRadius: 6,
+    padding: "4px 8px",
+    fontSize: 12,
+    cursor: "pointer",
+    alignSelf: "flex-start",
+  },
 };
 
 function deriveFilingStatus(
@@ -373,23 +405,27 @@ export default function HouseholdCalculator({ year }: Props) {
 
           <div style={styles.field}>
             <span style={styles.label}>Children</span>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={styles.childGrid}>
               {childAges.map((age, i) => (
-                <div key={i} style={styles.childRow}>
-                  <span style={{ fontSize: 14, color: "var(--slate-600)" }}>
+                <div key={i} style={styles.childCard}>
+                  <label
+                    style={styles.childCardLabel}
+                    htmlFor={`hc-child-${i}`}
+                  >
                     Child {i + 1} age
-                  </span>
+                  </label>
                   <input
+                    id={`hc-child-${i}`}
                     type="number"
                     min={0}
                     max={18}
-                    style={{ ...styles.input, ...styles.childInput }}
+                    style={styles.input}
                     value={age}
                     onChange={(e) => updateChildAge(i, Number(e.target.value))}
                   />
                   <button
                     type="button"
-                    style={styles.removeBtn}
+                    style={styles.removeBtnSm}
                     onClick={() => removeChild(i)}
                     aria-label={`Remove child ${i + 1}`}
                   >
@@ -397,10 +433,14 @@ export default function HouseholdCalculator({ year }: Props) {
                   </button>
                 </div>
               ))}
-              <button type="button" style={styles.addBtn} onClick={addChild}>
-                + Add child
-              </button>
             </div>
+            <button
+              type="button"
+              style={{ ...styles.addBtn, marginTop: 12 }}
+              onClick={addChild}
+            >
+              + Add child
+            </button>
           </div>
 
           <button type="submit" style={styles.submit} disabled={loading}>
