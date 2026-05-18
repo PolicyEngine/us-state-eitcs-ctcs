@@ -125,6 +125,31 @@ export default function CreditsChart({ data, currentEarnings }: Props) {
           font: { family: PE_FONT, size: 13, color: "#000000" },
         },
         modebar: { bgcolor: "rgba(0,0,0,0)", color: "rgba(0,0,0,0)" },
+        shapes: [
+          {
+            type: "line",
+            x0: currentEarnings,
+            x1: currentEarnings,
+            yref: "paper",
+            y0: 0,
+            y1: 1,
+            line: { color: "#6B7280", width: 1.5, dash: "dash" },
+          },
+        ],
+        annotations: [
+          {
+            x: currentEarnings,
+            xref: "x",
+            yref: "paper",
+            y: 0.97,
+            text: `Your earnings: $${currentEarnings.toLocaleString()}`,
+            showarrow: false,
+            font: { family: PE_FONT, size: 12, color: "#5A5A5A" },
+            xanchor: "left",
+            xshift: 6,
+            bgcolor: "rgba(255,255,255,0.85)",
+          },
+        ],
         images: [
           {
             source: PE_LOGO_URL,
