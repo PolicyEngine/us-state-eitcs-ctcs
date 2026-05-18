@@ -72,7 +72,7 @@ function buildHousehold(input: HouseholdInput) {
           members: allMembers,
           filing_status: { [y]: input.filingStatus },
           eitc: { [y]: null },
-          ctc: { [y]: null },
+          ctc_value: { [y]: null },
           state_eitc: { [y]: null },
           state_ctc: { [y]: null },
         },
@@ -118,7 +118,7 @@ export async function calculateHousehold(
 
   return {
     federalEitc: extract(result, "eitc", input.year),
-    federalCtc: extract(result, "ctc", input.year),
+    federalCtc: extract(result, "ctc_value", input.year),
     stateEitc: extract(result, "state_eitc", input.year),
     stateCtc: extract(result, "state_ctc", input.year),
   };
