@@ -6,7 +6,7 @@ import {
   type CSSProperties,
   type FormEvent,
 } from "react";
-import { STATE_NAMES, type SupportedYear } from "../types";
+import { STATE_NAMES, SUPPORTED_YEARS, type SupportedYear } from "../types";
 import {
   calculateHousehold,
   sweepEarnings,
@@ -297,8 +297,9 @@ function formatCurrency(n: number): string {
   }).format(Math.round(n));
 }
 
-export default function HouseholdCalculator({ year }: Props) {
+export default function HouseholdCalculator({ year: initialYear }: Props) {
   const [state, setState] = useState("CA");
+  const [year, setYear] = useState<SupportedYear>(initialYear);
   const [hasSpouse, setHasSpouse] = useState(false);
   const [primaryAge, setPrimaryAge] = useState(40);
   const [spouseAge, setSpouseAge] = useState(40);
@@ -377,18 +378,35 @@ export default function HouseholdCalculator({ year }: Props) {
         <form style={styles.section} onSubmit={onSubmit}>
           <h2 style={styles.sectionTitle}>Your household</h2>
 
-          <div style={styles.field}>
-            <label style={styles.label} htmlFor="hc-state">State</label>
-            <select
-              id="hc-state"
-              style={styles.select}
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-            >
-              {Object.entries(STATE_NAMES).map(([code, name]) => (
-                <option key={code} value={code}>{name}</option>
-              ))}
-            </select>
+          <div style={{ ...styles.pairRow, gridTemplateColumns: "2fr 1fr" }}>
+            <div style={styles.field}>
+              <label style={styles.label} htmlFor="hc-state">State</label>
+              <select
+                id="hc-state"
+                style={styles.select}
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              >
+                {Object.entries(STATE_NAMES).map(([code, name]) => (
+                  <option key={code} value={code}>{name}</option>
+                ))}
+              </select>
+            </div>
+            <div style={styles.field}>
+              <label style={styles.label} htmlFor="hc-year">Tax year</label>
+              <select
+                id="hc-year"
+                style={styles.select}
+                value={year}
+                onChange={(e) =>
+                  setYear(Number(e.target.value) as SupportedYear)
+                }
+              >
+                {SUPPORTED_YEARS.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <label style={styles.checkboxRow}>
