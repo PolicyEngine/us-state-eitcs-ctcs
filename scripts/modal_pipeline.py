@@ -1,9 +1,15 @@
 """
 Modal pipeline for generating state EITC/CTC impact data.
 
-This pipeline runs PolicyEngine microsimulations in parallel across all 51 states
-(50 states + DC) to calculate the impacts of state-level earned income tax credits
-and child tax credits on poverty, inequality, and household finances.
+This pipeline runs PolicyEngine microsimulations on the populace-us dataset
+(https://huggingface.co/datasets/policyengine/populace-us) — a single national
+calibrated synthetic microdataset — to calculate the impacts of state-level
+earned income tax credits and child tax credits on poverty, inequality, and
+household finances.
+
+The national baseline is simulated once; each state then runs three national
+reform simulations (state CTCs neutralized, state EITCs neutralized, both) in
+parallel and extracts metrics for its own congressional districts.
 
 Usage:
     # Deploy and run the full pipeline
@@ -21,11 +27,18 @@ from pathlib import Path
 app = modal.App("state-eitc-ctc-impacts")
 
 # Define the image with required dependencies
-image = modal.Image.debian_slim(python_version="3.11").pip_install(
-    "policyengine-us==1.633.2",  # Pin to specific version for reproducibility
+image = modal.Image.debian_slim(python_version="3.12").pip_install(
+    "policyengine-us==1.765.6",  # Pin to specific version for reproducibility
     "pandas>=2.0.0",
     "numpy>=1.24.0",
+    "tables>=3.9.0",  # pandas HDF reader for the populace SingleYearDataset format
+    "huggingface_hub>=0.23.0",
 )
+
+# Populace dataset: one national HDF5 file (data year 2024); simulation years
+# beyond 2024 rely on policyengine-us uprating, as with the enhanced CPS.
+DATASET_REPO = "policyengine/populace-us"
+DATASET_FILENAME = "populace_us_2024.h5"
 
 # State configuration
 STATES = [
@@ -47,6 +60,20 @@ STATE_FIPS = {
     "TX": 48, "UT": 49, "VT": 50, "VA": 51, "WA": 53, "WV": 54,
     "WI": 55, "WY": 56,
 }
+
+YEAR = 2025
+
+
+def get_dataset_path():
+    """Download the populace-us national dataset and return its local path."""
+    from huggingface_hub import hf_hub_download
+
+    return hf_hub_download(
+        repo_id=DATASET_REPO,
+        filename=DATASET_FILENAME,
+        repo_type="dataset",
+    )
+
 
 def get_state_credit_variables(state: str, year: int):
     """
@@ -89,8 +116,6 @@ def get_state_credit_variables(state: str, year: int):
 
     return eitc_vars, ctc_vars
 
-YEAR = 2025
-
 
 def safe_pct_change(baseline_val, reform_val):
     """Calculate percentage change safely."""
@@ -100,207 +125,253 @@ def safe_pct_change(baseline_val, reform_val):
     return (baseline_val - reform_val) / reform_val
 
 
+def create_reform(neutralized_variables):
+    """Create a reform that neutralizes given variables."""
+    from policyengine_core.reforms import Reform
+
+    class NeutralizeReform(Reform):
+        def apply(self):
+            for var in neutralized_variables:
+                self.neutralize_variable(var)
+
+    return NeutralizeReform
+
+
+def create_mn_component_reform(component: str):
+    """
+    Create a parameter-based reform for Minnesota's combined credit.
+
+    Minnesota combined its CTC and Working Family Credit into a single
+    variable. To isolate components, we zero out the relevant parameters.
+
+    component: "ctc" zeros the child tax credit portion,
+               "wfc" zeros the working family credit portion,
+               "both" neutralizes the entire combined variable.
+    """
+    from policyengine_core.reforms import Reform
+
+    def modifier(parameters):
+        from policyengine_core.periods import instant
+        start = instant("2020-01-01")
+        stop = instant("2100-12-31")
+        path = parameters.gov.states.mn.tax.income.credits.cwfc
+        if component in ("ctc", "both"):
+            path.ctc.amount.update(start=start, stop=stop, value=0)
+        if component in ("wfc", "both"):
+            for bracket in path.wfc.phase_in.brackets:
+                bracket.rate.update(start=start, stop=stop, value=0)
+            for bracket in path.wfc.additional.amount.brackets:
+                bracket.amount.update(start=start, stop=stop, value=0)
+        return parameters
+
+    class MnComponentReform(Reform):
+        def apply(self):
+            self.modify_parameters(modifier_function=modifier)
+
+    return MnComponentReform
+
+
+def calculate_gini(incomes, weights):
+    """Calculate Gini coefficient for weighted data."""
+    import numpy as np
+
+    if len(incomes) == 0 or weights.sum() == 0:
+        return 0
+
+    # Clip negative incomes to zero to avoid Lorenz curve issues
+    # (matches microdf's negatives='zero' approach)
+    incomes = np.clip(incomes, 0, None)
+
+    sorted_indices = np.argsort(incomes)
+    sorted_incomes = incomes[sorted_indices]
+    sorted_weights = weights[sorted_indices]
+
+    cum_weights = np.cumsum(sorted_weights)
+    cum_income = np.cumsum(sorted_incomes * sorted_weights)
+
+    total_weight = cum_weights[-1]
+    total_income = cum_income[-1]
+
+    if total_income == 0:
+        return 0
+
+    cum_weights_norm = cum_weights / total_weight
+    cum_income_norm = cum_income / total_income
+
+    area_under = np.trapezoid(cum_income_norm, cum_weights_norm)
+    gini = 1 - 2 * area_under
+
+    return max(0, min(1, gini))
+
+
+def run_simulation(dataset, reform=None, year=YEAR):
+    """Run a national simulation and extract needed household/person data."""
+    import gc
+    import pandas as pd
+    from policyengine_us import Microsimulation
+
+    if reform:
+        sim = Microsimulation(reform=reform, dataset=dataset)
+    else:
+        sim = Microsimulation(dataset=dataset)
+
+    # Use calculate_dataframe and convert to regular pandas DataFrame
+    # to avoid microdf weight issues when filtering
+    hh_data = pd.DataFrame(sim.calculate_dataframe(
+        [
+            "household_id",
+            "household_weight",
+            "congressional_district_geoid",
+            "household_net_income",
+            "poverty_gap",
+            "equiv_household_net_income",
+            "household_count_people",
+        ],
+        map_to="household",
+        period=year,
+    ))
+
+    person_data = pd.DataFrame(sim.calculate_dataframe(
+        [
+            "person_id",
+            "person_household_id",
+            "person_weight",
+            "person_in_poverty",
+            "is_child",
+        ],
+        map_to="person",
+        period=year,
+    ))
+
+    del sim
+    gc.collect()
+
+    return hh_data, person_data
+
+
+def calculate_district_metrics(hh_data, person_data, districts):
+    """Calculate metrics for each district from simulation data."""
+    import pandas as pd
+
+    results = {}
+
+    for district in districts:
+        if pd.isna(district) or district == 0:
+            continue
+
+        district = int(district)
+
+        mask_hh = hh_data["congressional_district_geoid"] == district
+        hh_ids = set(hh_data.loc[mask_hh, "household_id"].values)
+        mask_person = person_data["person_household_id"].isin(hh_ids)
+
+        hh_subset = hh_data.loc[mask_hh]
+
+        net_income = (
+            hh_subset["household_net_income"] * hh_subset["household_weight"]
+        ).sum()
+
+        poverty_gap = (hh_subset["poverty_gap"] * hh_subset["household_weight"]).sum()
+
+        equiv_incomes = hh_subset["equiv_household_net_income"].values
+        gini_weights = (
+            hh_subset["household_weight"] * hh_subset["household_count_people"]
+        ).values
+        gini_index = calculate_gini(equiv_incomes, gini_weights)
+
+        person_subset = person_data.loc[mask_person]
+        total_person_weight = person_subset["person_weight"].sum()
+        poverty_count = (
+            person_subset["person_in_poverty"] * person_subset["person_weight"]
+        ).sum() if total_person_weight > 0 else 0
+        poverty = poverty_count / total_person_weight if total_person_weight > 0 else 0
+
+        children = person_subset[person_subset["is_child"] == True]
+        total_child_weight = children["person_weight"].sum()
+        child_poverty_count = (
+            children["person_in_poverty"] * children["person_weight"]
+        ).sum() if total_child_weight > 0 else 0
+        child_poverty = child_poverty_count / total_child_weight if total_child_weight > 0 else 0
+
+        results[district] = {
+            "net_income": net_income,
+            "poverty": poverty,
+            "child_poverty": child_poverty,
+            "poverty_count": poverty_count,
+            "child_poverty_count": child_poverty_count,
+            "population": total_person_weight,
+            "child_population": total_child_weight,
+            "poverty_gap": poverty_gap,
+            "gini_index": gini_index,
+        }
+
+    return results
+
+
 # Volume for persisting results
 volume = modal.Volume.from_name("state-eitc-ctc-results", create_if_missing=True)
 
 
 @app.function(
     image=image,
-    timeout=3600,  # 60 minutes per state (CA and NE need more time)
-    memory=16384,  # 16GB RAM for larger states
+    timeout=3600,
+    memory=16384,
     cpu=2.0,
 )
-def process_single_state(state: str, year: int = YEAR) -> list[dict]:
-    """Process a single state and return district-level impacts."""
+def compute_baseline_metrics(year: int = YEAR) -> dict:
+    """Run the national baseline simulation once and return per-district metrics."""
     import pandas as pd
-    import numpy as np
+
+    print("Running national baseline simulation...")
+    dataset = get_dataset_path()
+    hh_baseline, person_baseline = run_simulation(dataset, year=year)
+
+    districts = [
+        int(d)
+        for d in hh_baseline["congressional_district_geoid"].unique()
+        if not pd.isna(d) and d != 0
+    ]
+    metrics = calculate_district_metrics(hh_baseline, person_baseline, districts)
+    print(f"Baseline complete: {len(metrics)} districts")
+
+    return {int(k): v for k, v in metrics.items()}
+
+
+@app.function(
+    image=image,
+    timeout=3600,  # 60 minutes per state (3 national reform simulations)
+    memory=16384,  # 16GB RAM for national simulations
+    cpu=2.0,
+)
+def process_single_state(
+    state: str, year: int = YEAR, baseline_metrics: dict = None
+) -> list[dict]:
+    """Run the state's reform simulations and return district-level impacts."""
     import gc
-    from policyengine_us import Microsimulation
-    from policyengine_core.reforms import Reform
-
-    def create_reform(neutralized_variables):
-        """Create a reform that neutralizes given variables."""
-        class NeutralizeReform(Reform):
-            def apply(self):
-                for var in neutralized_variables:
-                    self.neutralize_variable(var)
-        return NeutralizeReform
-
-    def create_mn_component_reform(component: str):
-        """
-        Create a parameter-based reform for Minnesota's combined credit.
-
-        Minnesota combined its CTC and Working Family Credit into a single
-        variable. To isolate components, we zero out the relevant parameters.
-
-        component: "ctc" zeros the child tax credit portion,
-                   "wfc" zeros the working family credit portion,
-                   "both" neutralizes the entire combined variable.
-        """
-        def modifier(parameters):
-            from policyengine_core.periods import instant
-            start = instant("2020-01-01")
-            stop = instant("2100-12-31")
-            path = parameters.gov.states.mn.tax.income.credits.cwfc
-            if component in ("ctc", "both"):
-                path.ctc.amount.update(start=start, stop=stop, value=0)
-            if component in ("wfc", "both"):
-                for bracket in path.wfc.phase_in.brackets:
-                    bracket.rate.update(start=start, stop=stop, value=0)
-                for bracket in path.wfc.additional.amount.brackets:
-                    bracket.amount.update(start=start, stop=stop, value=0)
-            return parameters
-
-        class MnComponentReform(Reform):
-            def apply(self):
-                self.modify_parameters(modifier_function=modifier)
-
-        return MnComponentReform
-
-    def calculate_gini(incomes, weights):
-        """Calculate Gini coefficient for weighted data."""
-        if len(incomes) == 0 or weights.sum() == 0:
-            return 0
-
-        # Clip negative incomes to zero to avoid Lorenz curve issues
-        # (matches microdf's negatives='zero' approach)
-        incomes = np.clip(incomes, 0, None)
-
-        sorted_indices = np.argsort(incomes)
-        sorted_incomes = incomes[sorted_indices]
-        sorted_weights = weights[sorted_indices]
-
-        cum_weights = np.cumsum(sorted_weights)
-        cum_income = np.cumsum(sorted_incomes * sorted_weights)
-
-        total_weight = cum_weights[-1]
-        total_income = cum_income[-1]
-
-        if total_income == 0:
-            return 0
-
-        cum_weights_norm = cum_weights / total_weight
-        cum_income_norm = cum_income / total_income
-
-        area_under = np.trapezoid(cum_income_norm, cum_weights_norm)
-        gini = 1 - 2 * area_under
-
-        return max(0, min(1, gini))
-
-    def run_simulation(dataset, reform=None, year=year):
-        """Run a single simulation and extract needed data."""
-        if reform:
-            sim = Microsimulation(reform=reform, dataset=dataset)
-        else:
-            sim = Microsimulation(dataset=dataset)
-
-        # Use calculate_dataframe and convert to regular pandas DataFrame
-        # to avoid microdf weight issues when filtering
-        hh_data = pd.DataFrame(sim.calculate_dataframe(
-            [
-                "household_id",
-                "household_weight",
-                "congressional_district_geoid",
-                "household_net_income",
-                "poverty_gap",
-                "equiv_household_net_income",
-                "household_count_people",
-            ],
-            map_to="household",
-            period=year,
-        ))
-
-        person_data = pd.DataFrame(sim.calculate_dataframe(
-            [
-                "person_id",
-                "person_household_id",
-                "person_weight",
-                "person_in_poverty",
-                "is_child",
-            ],
-            map_to="person",
-            period=year,
-        ))
-
-        del sim
-        gc.collect()
-
-        return hh_data, person_data
-
-    def calculate_district_metrics(hh_data, person_data, districts):
-        """Calculate metrics for each district from simulation data."""
-        results = {}
-
-        for district in districts:
-            if pd.isna(district) or district == 0:
-                continue
-
-            district = int(district)
-
-            mask_hh = hh_data["congressional_district_geoid"] == district
-            hh_ids = set(hh_data.loc[mask_hh, "household_id"].values)
-            mask_person = person_data["person_household_id"].isin(hh_ids)
-
-            hh_subset = hh_data.loc[mask_hh]
-
-            net_income = (
-                hh_subset["household_net_income"] * hh_subset["household_weight"]
-            ).sum()
-
-            poverty_gap = (hh_subset["poverty_gap"] * hh_subset["household_weight"]).sum()
-
-            equiv_incomes = hh_subset["equiv_household_net_income"].values
-            gini_weights = (
-                hh_subset["household_weight"] * hh_subset["household_count_people"]
-            ).values
-            gini_index = calculate_gini(equiv_incomes, gini_weights)
-
-            person_subset = person_data.loc[mask_person]
-            total_person_weight = person_subset["person_weight"].sum()
-            poverty_count = (
-                person_subset["person_in_poverty"] * person_subset["person_weight"]
-            ).sum() if total_person_weight > 0 else 0
-            poverty = poverty_count / total_person_weight if total_person_weight > 0 else 0
-
-            children = person_subset[person_subset["is_child"] == True]
-            total_child_weight = children["person_weight"].sum()
-            child_poverty_count = (
-                children["person_in_poverty"] * children["person_weight"]
-            ).sum() if total_child_weight > 0 else 0
-            child_poverty = child_poverty_count / total_child_weight if total_child_weight > 0 else 0
-
-            results[district] = {
-                "net_income": net_income,
-                "poverty": poverty,
-                "child_poverty": child_poverty,
-                "poverty_count": poverty_count,
-                "child_poverty_count": child_poverty_count,
-                "population": total_person_weight,
-                "child_population": total_child_weight,
-                "poverty_gap": poverty_gap,
-                "gini_index": gini_index,
-            }
-
-        return results
 
     print(f"Processing {state}...")
 
-    dataset = f"hf://policyengine/policyengine-us-data/states/{state}.h5"
+    dataset = get_dataset_path()
     state_fips = STATE_FIPS[state]
 
-    # Run baseline simulation
-    print(f"  Running baseline...")
-    hh_baseline, person_baseline = run_simulation(dataset, year=year)
-    districts = hh_baseline["congressional_district_geoid"].unique()
-    baseline_metrics = calculate_district_metrics(hh_baseline, person_baseline, districts)
+    if baseline_metrics is None:
+        baseline_metrics = compute_baseline_metrics.local(year=year)
 
-    # Debug: Check baseline net income for first district
-    first_district = [d for d in districts if not pd.isna(d) and d != 0][0] if len(districts) > 0 else None
-    if first_district:
-        print(f"  DEBUG: Baseline net income for district {first_district}: {baseline_metrics.get(int(first_district), {}).get('net_income', 'N/A')}")
+    # Districts belonging to this state (geoid = state_fips * 100 + district number)
+    districts = sorted(
+        d for d in baseline_metrics if int(d) // 100 == state_fips
+    )
+    state_baseline = {d: baseline_metrics[d] for d in districts}
 
-    del hh_baseline, person_baseline
-    gc.collect()
+    if not districts:
+        print(f"  No districts found for {state}!")
+        return []
+
+    first_district = districts[0]
+    print(
+        f"  {len(districts)} districts; baseline net income for district "
+        f"{first_district}: {state_baseline[first_district]['net_income']:.0f}"
+    )
 
     # Get state-specific credit variables to neutralize (respecting year exclusions)
     # Dynamically discover state credit variables from policyengine-us
@@ -331,7 +402,7 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
             valid_vars = [v for v in reform_spec if v]
             if not valid_vars:
                 print(f"  Skipping {reform_name} neutralization (no applicable credits)")
-                reform_results[reform_name] = baseline_metrics
+                reform_results[reform_name] = state_baseline
                 continue
             print(f"  Running {reform_name} neutralized (vars: {valid_vars})...")
             reform = create_reform(valid_vars)
@@ -342,20 +413,19 @@ def process_single_state(state: str, year: int = YEAR) -> list[dict]:
         )
 
         # Debug: Check reform net income for first district
-        if first_district:
-            reform_income = reform_results[reform_name].get(int(first_district), {}).get('net_income', 'N/A')
-            baseline_income = baseline_metrics.get(int(first_district), {}).get('net_income', 'N/A')
-            if isinstance(reform_income, (int, float)) and isinstance(baseline_income, (int, float)):
-                diff = baseline_income - reform_income
-                print(f"  DEBUG: {reform_name} district {first_district}: baseline={baseline_income:.0f}, reform={reform_income:.0f}, diff={diff:.0f}")
+        reform_income = reform_results[reform_name].get(first_district, {}).get('net_income', 'N/A')
+        baseline_income = state_baseline[first_district]['net_income']
+        if isinstance(reform_income, (int, float)):
+            diff = baseline_income - reform_income
+            print(f"  DEBUG: {reform_name} district {first_district}: baseline={baseline_income:.0f}, reform={reform_income:.0f}, diff={diff:.0f}")
 
         del hh_reform, person_reform
         gc.collect()
 
     # Calculate impacts
     results = []
-    for district in baseline_metrics:
-        baseline = baseline_metrics[district]
+    for district in districts:
+        baseline = state_baseline[district]
 
         for reform_type, reform_metrics in reform_results.items():
             if district not in reform_metrics:
@@ -415,14 +485,19 @@ def generate_all_state_impacts(year: int = YEAR) -> dict:
 
     print("=" * 60)
     print(f"Generating CTC/EITC Impact Data for {year}")
+    print(f"Dataset: {DATASET_REPO}/{DATASET_FILENAME}")
     print(f"Processing {len(STATES)} states in parallel")
     print("=" * 60)
+
+    # National baseline runs once; every state compares against it
+    baseline_metrics = compute_baseline_metrics.remote(year=year)
 
     # Process all states in parallel using Modal's map
     all_district_results = []
 
-    # Use starmap to process states in parallel
-    results = list(process_single_state.map(STATES, kwargs={"year": year}))
+    results = list(process_single_state.map(
+        STATES, kwargs={"year": year, "baseline_metrics": baseline_metrics}
+    ))
 
     for state_results in results:
         if state_results:
@@ -551,7 +626,7 @@ def scheduled_update():
 
 
 @app.local_entrypoint()
-def main(year: int = 2025, get_results: bool = False):
+def main(year: int = 2025, get_results: bool = False, test_state: str = None):
     """Local entrypoint for running the pipeline."""
     if get_results:
         results = get_latest_results.remote()
@@ -559,6 +634,13 @@ def main(year: int = 2025, get_results: bool = False):
             print(results["error"])
         else:
             print(json.dumps(results["state_impacts"], indent=2))
+    elif test_state:
+        # Smoke test: baseline + one state's reforms
+        baseline = compute_baseline_metrics.remote(year=year)
+        results = process_single_state.remote(
+            test_state, year=year, baseline_metrics=baseline
+        )
+        print(json.dumps(results, indent=2))
     else:
         results = generate_all_state_impacts.remote(year=year)
         print(f"\nGenerated {len(results['state_impacts'])} state impact records")
