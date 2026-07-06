@@ -5,6 +5,10 @@ interface StatsBannerProps {
   totalCost: number;
   povertyReduction: number;
   childPovertyReduction: number;
+  baselineRate: number;
+  reformRate: number;
+  baselineChildRate: number;
+  reformChildRate: number;
 }
 
 const styles: Record<string, CSSProperties> = {
@@ -65,7 +69,16 @@ export default function StatsBanner({
   totalCost,
   povertyReduction,
   childPovertyReduction,
+  baselineRate,
+  reformRate,
+  baselineChildRate,
+  reformChildRate,
 }: StatsBannerProps) {
+  // Without the credits the rate would be the reform (repeal) rate; with
+  // them it is the baseline rate — show the level change alongside the
+  // percent reduction.
+  const rateContext = (withCredit: number, withoutCredit: number) =>
+    `${formatValue(withoutCredit, "percent")} → ${formatValue(withCredit, "percent")} (−${formatValue(withoutCredit - withCredit, "pp")})`;
   const stats = [
     {
       eyebrow: "Total Investment",
@@ -75,12 +88,12 @@ export default function StatsBanner({
     {
       eyebrow: "Poverty Reduction",
       value: formatValue(povertyReduction, "percent"),
-      context: "national decrease",
+      context: rateContext(baselineRate, reformRate),
     },
     {
       eyebrow: "Child Poverty Reduction",
       value: formatValue(childPovertyReduction, "percent"),
-      context: "national decrease",
+      context: rateContext(baselineChildRate, reformChildRate),
     },
   ];
 

@@ -16,6 +16,12 @@ interface VisualizationProps {
     cost: number;
     poverty_pct_cut: number;
     child_poverty_pct_cut: number;
+    poverty_pp_cut: number;
+    child_poverty_pp_cut: number;
+    baseline_poverty_rate: number;
+    reform_poverty_rate: number;
+    baseline_child_poverty_rate: number;
+    reform_child_poverty_rate: number;
   } | null;
   onRegionClick: (region: { id: string | number; name: string }) => void;
 }

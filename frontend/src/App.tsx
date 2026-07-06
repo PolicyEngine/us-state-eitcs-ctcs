@@ -96,7 +96,15 @@ export default function App() {
 
   const stats = useMemo(() => {
     if (nationalDistrictData.length === 0)
-      return { totalCost: 0, povertyReduction: 0, childPovertyReduction: 0 };
+      return {
+        totalCost: 0,
+        povertyReduction: 0,
+        childPovertyReduction: 0,
+        baselineRate: 0,
+        reformRate: 0,
+        baselineChildRate: 0,
+        reformChildRate: 0,
+      };
 
     const totalCost = nationalDistrictData.reduce(
       (sum, d) => sum + (d.cost || 0),
@@ -130,7 +138,15 @@ export default function App() {
     const childPovertyReduction = reformChildRate > 0
       ? (reformChildRate - baselineChildRate) / reformChildRate : 0;
 
-    return { totalCost, povertyReduction, childPovertyReduction };
+    return {
+      totalCost,
+      povertyReduction,
+      childPovertyReduction,
+      baselineRate,
+      reformRate,
+      baselineChildRate,
+      reformChildRate,
+    };
   }, [nationalDistrictData]);
 
   const regionData = useMemo(() => {
@@ -150,6 +166,12 @@ export default function App() {
       cost: row.cost as number,
       poverty_pct_cut: row.poverty_pct_cut as number,
       child_poverty_pct_cut: row.child_poverty_pct_cut as number,
+      poverty_pp_cut: row.poverty_pp_cut as number,
+      child_poverty_pp_cut: row.child_poverty_pp_cut as number,
+      baseline_poverty_rate: row.baseline_poverty_rate as number,
+      reform_poverty_rate: row.reform_poverty_rate as number,
+      baseline_child_poverty_rate: row.baseline_child_poverty_rate as number,
+      reform_child_poverty_rate: row.reform_child_poverty_rate as number,
     };
   }, [selectedRegion, filteredData, viewType]);
 
@@ -204,6 +226,10 @@ export default function App() {
           totalCost={stats.totalCost}
           povertyReduction={stats.povertyReduction}
           childPovertyReduction={stats.childPovertyReduction}
+          baselineRate={stats.baselineRate}
+          reformRate={stats.reformRate}
+          baselineChildRate={stats.baselineChildRate}
+          reformChildRate={stats.reformChildRate}
         />
       )}
       <main style={styles.mainContent}>

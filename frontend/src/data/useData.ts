@@ -166,6 +166,48 @@ function transformDistrictGeo(geoJson: GeoJSON): GeoJSON {
   return { type: "FeatureCollection", features };
 }
 
+/** Derive poverty rates and percentage-point cuts from the CSVs' weighted
+ *  count columns. Rates are fractions of the (child) population; the pp cut
+ *  is baseline rate minus reform rate, so positive means the credit lowers
+ *  poverty — the same "bigger is better" orientation as the pct_cut columns. */
+export interface DerivedRates {
+  baseline_poverty_rate: number;
+  reform_poverty_rate: number;
+  poverty_pp_cut: number;
+  baseline_child_poverty_rate: number;
+  reform_child_poverty_rate: number;
+  child_poverty_pp_cut: number;
+}
+
+export function withDerivedRates<
+  T extends {
+    baseline_poverty_count: number;
+    reform_poverty_count: number;
+    population: number;
+    baseline_child_poverty_count: number;
+    reform_child_poverty_count: number;
+    child_population: number;
+  },
+>(row: T): T & DerivedRates {
+  const pop = row.population || 0;
+  const childPop = row.child_population || 0;
+  const baselineRate = pop > 0 ? (row.baseline_poverty_count || 0) / pop : 0;
+  const reformRate = pop > 0 ? (row.reform_poverty_count || 0) / pop : 0;
+  const baselineChildRate =
+    childPop > 0 ? (row.baseline_child_poverty_count || 0) / childPop : 0;
+  const reformChildRate =
+    childPop > 0 ? (row.reform_child_poverty_count || 0) / childPop : 0;
+  return {
+    ...row,
+    baseline_poverty_rate: baselineRate,
+    reform_poverty_rate: reformRate,
+    poverty_pp_cut: baselineRate - reformRate,
+    baseline_child_poverty_rate: baselineChildRate,
+    reform_child_poverty_rate: reformChildRate,
+    child_poverty_pp_cut: baselineChildRate - reformChildRate,
+  };
+}
+
 export function useData(): UseDataReturn {
   const [dataByYear, setDataByYear] = useState<Record<number, DataByYear>>({});
   const [stateGeoData, setStateGeoData] = useState<GeoJSON | null>(null);
@@ -211,8 +253,9 @@ export function useData(): UseDataReturn {
 
           return {
             year,
-            stateData: parseCSV<StateResult>(stateText),
-            districtData: parseCSV<DistrictResult>(districtText),
+            stateData: parseCSV<StateResult>(stateText).map(withDerivedRates),
+            districtData:
+              parseCSV<DistrictResult>(districtText).map(withDerivedRates),
           };
         });
 
