@@ -12,7 +12,7 @@ export interface StateResult {
   child_population: number;
   /** Derived from the count columns (see withDerivedRates): rates as
    *  fractions of the (child) population, and the credit's effect as a
-   *  percentage-point cut (baseline rate minus reform rate; positive =
+   *  percentage-point cut (repeal rate minus baseline rate; positive =
    *  the credit lowers poverty). */
   baseline_poverty_rate: number;
   reform_poverty_rate: number;

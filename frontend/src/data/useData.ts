@@ -167,9 +167,11 @@ function transformDistrictGeo(geoJson: GeoJSON): GeoJSON {
 }
 
 /** Derive poverty rates and percentage-point cuts from the CSVs' weighted
- *  count columns. Rates are fractions of the (child) population; the pp cut
- *  is baseline rate minus reform rate, so positive means the credit lowers
- *  poverty — the same "bigger is better" orientation as the pct_cut columns. */
+ *  count columns. Rates are fractions of the (child) population. "Reform"
+ *  here is the credit's REPEAL, so the pp cut is reform rate minus baseline
+ *  rate — how much higher poverty would be without the credit. Positive
+ *  means the credit lowers poverty, the same orientation as pct_cut
+ *  (= (reform − baseline) / reform in the pipeline). */
 export interface DerivedRates {
   baseline_poverty_rate: number;
   reform_poverty_rate: number;
@@ -201,10 +203,10 @@ export function withDerivedRates<
     ...row,
     baseline_poverty_rate: baselineRate,
     reform_poverty_rate: reformRate,
-    poverty_pp_cut: baselineRate - reformRate,
+    poverty_pp_cut: reformRate - baselineRate,
     baseline_child_poverty_rate: baselineChildRate,
     reform_child_poverty_rate: reformChildRate,
-    child_poverty_pp_cut: baselineChildRate - reformChildRate,
+    child_poverty_pp_cut: reformChildRate - baselineChildRate,
   };
 }
 
