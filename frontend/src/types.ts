@@ -10,6 +10,16 @@ export interface StateResult {
   baseline_child_poverty_count: number;
   reform_child_poverty_count: number;
   child_population: number;
+  /** Derived from the count columns (see withDerivedRates): rates as
+   *  fractions of the (child) population, and the credit's effect as a
+   *  percentage-point cut (repeal rate minus baseline rate; positive =
+   *  the credit lowers poverty). */
+  baseline_poverty_rate: number;
+  reform_poverty_rate: number;
+  poverty_pp_cut: number;
+  baseline_child_poverty_rate: number;
+  reform_child_poverty_rate: number;
+  child_poverty_pp_cut: number;
 }
 
 export interface DistrictResult {
@@ -26,25 +36,46 @@ export interface DistrictResult {
   baseline_child_poverty_count: number;
   reform_child_poverty_count: number;
   child_population: number;
+  baseline_poverty_rate: number;
+  reform_poverty_rate: number;
+  poverty_pp_cut: number;
+  baseline_child_poverty_rate: number;
+  reform_child_poverty_rate: number;
+  child_poverty_pp_cut: number;
 }
 
-export type MetricKey = "cost" | "poverty_pct_cut" | "child_poverty_pct_cut";
+export type MetricKey =
+  | "cost"
+  | "poverty_pct_cut"
+  | "child_poverty_pct_cut"
+  | "poverty_pp_cut"
+  | "child_poverty_pp_cut";
 
 export type ViewType = "state" | "district";
 
 export interface MetricOption {
   label: string;
   key: MetricKey;
-  format: "currency" | "percent";
+  format: "currency" | "percent" | "pp";
 }
 
 export const METRICS: MetricOption[] = [
   { label: "Total Cost", key: "cost", format: "currency" },
-  { label: "Poverty Reduction", key: "poverty_pct_cut", format: "percent" },
+  { label: "Poverty Reduction (%)", key: "poverty_pct_cut", format: "percent" },
   {
-    label: "Child Poverty Reduction",
+    label: "Child Poverty Reduction (%)",
     key: "child_poverty_pct_cut",
     format: "percent",
+  },
+  {
+    label: "Poverty Rate Change (pp)",
+    key: "poverty_pp_cut",
+    format: "pp",
+  },
+  {
+    label: "Child Poverty Rate Change (pp)",
+    key: "child_poverty_pp_cut",
+    format: "pp",
   },
 ];
 

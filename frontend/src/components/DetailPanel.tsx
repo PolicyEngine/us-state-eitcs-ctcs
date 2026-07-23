@@ -7,6 +7,12 @@ interface RegionData {
   cost: number;
   poverty_pct_cut: number;
   child_poverty_pct_cut: number;
+  poverty_pp_cut: number;
+  child_poverty_pp_cut: number;
+  baseline_poverty_rate: number;
+  reform_poverty_rate: number;
+  baseline_child_poverty_rate: number;
+  reform_child_poverty_rate: number;
 }
 
 interface DetailPanelProps {
@@ -91,7 +97,28 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: 600,
     color: "var(--success)",
   },
+  metricSubtext: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 12,
+    color: "var(--slate-400)",
+    marginTop: 2,
+  },
 };
+
+/** For the pp metrics, show the underlying rate movement: without the
+ *  credit (repeal counterfactual) → with it (current law). */
+function rateSubtext(
+  regionData: RegionData,
+  key: string,
+): string | null {
+  if (key === "poverty_pp_cut") {
+    return `${formatValue(regionData.reform_poverty_rate, "percent")} without → ${formatValue(regionData.baseline_poverty_rate, "percent")} with credit`;
+  }
+  if (key === "child_poverty_pp_cut") {
+    return `${formatValue(regionData.reform_child_poverty_rate, "percent")} without → ${formatValue(regionData.baseline_child_poverty_rate, "percent")} with credit`;
+  }
+  return null;
+}
 
 export default function DetailPanel({
   selectedRegion,
@@ -160,7 +187,9 @@ export default function DetailPanel({
       <div style={styles.metrics}>
         {METRICS.map((m, i) => {
           const value = regionData[m.key as keyof RegionData];
-          const isPositivePercent = m.format === "percent" && value > 0;
+          const isPositivePercent =
+            (m.format === "percent" || m.format === "pp") && value > 0;
+          const subtext = rateSubtext(regionData, m.key);
           return (
             <div
               key={m.key}
@@ -170,7 +199,10 @@ export default function DetailPanel({
                   : styles.metricRow
               }
             >
-              <span style={styles.metricLabel}>{m.label}</span>
+              <span style={styles.metricLabel}>
+                {m.label}
+                {subtext && <div style={styles.metricSubtext}>{subtext}</div>}
+              </span>
               <span
                 style={
                   isPositivePercent

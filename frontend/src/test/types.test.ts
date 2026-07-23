@@ -2,8 +2,8 @@ import { describe, it, expect } from "vitest";
 import { METRICS, REFORM_TYPES, STATE_NAMES, SUPPORTED_YEARS } from "../types";
 
 describe("METRICS", () => {
-  it("has 3 metrics", () => {
-    expect(METRICS).toHaveLength(3);
+  it("has 5 metrics", () => {
+    expect(METRICS).toHaveLength(5);
   });
 
   it("includes cost metric", () => {
@@ -12,7 +12,7 @@ describe("METRICS", () => {
 
   it("each metric has a format", () => {
     for (const m of METRICS) {
-      expect(["currency", "percent"]).toContain(m.format);
+      expect(["currency", "percent", "pp"]).toContain(m.format);
     }
   });
 });

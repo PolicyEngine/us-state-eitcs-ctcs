@@ -1,6 +1,6 @@
 export function formatValue(
   value: number | null | undefined,
-  format: "currency" | "percent",
+  format: "currency" | "percent" | "pp",
 ): string {
   if (value === null || value === undefined || isNaN(value)) return "N/A";
   if (format === "currency") {
@@ -10,5 +10,7 @@ export function formatValue(
     if (absValue >= 1e3) return "$" + (value / 1e3).toFixed(1) + "K";
     return "$" + value.toFixed(0);
   }
+  // "pp": a rate difference shown in percentage points (0.005 -> "0.50pp").
+  if (format === "pp") return (value * 100).toFixed(2) + "pp";
   return (value * 100).toFixed(2) + "%";
 }
