@@ -1,8 +1,9 @@
 """
 Modal pipeline for generating state EITC/CTC impact data.
 
-This pipeline runs PolicyEngine microsimulations on the populace-us dataset
-(https://huggingface.co/datasets/policyengine/populace-us) — a single national
+This pipeline runs PolicyEngine microsimulations on per-state slices of the
+local-area Populace/Microcosm release (shared with the CPID backend via the
+cpid-populace-slices Modal Volume) — formerly a single national
 calibrated synthetic microdataset — to calculate the impacts of state-level
 earned income tax credits and child tax credits on poverty, inequality, and
 household finances.
@@ -28,17 +29,24 @@ app = modal.App("state-eitc-ctc-impacts")
 
 # Define the image with required dependencies
 image = modal.Image.debian_slim(python_version="3.12").pip_install(
-    "policyengine-us==1.765.6",  # Pin to specific version for reproducibility
+    # Match the CPID production backend exactly: same model pin, same
+    # local-area dataset, so both surfaces report identical numbers.
+    "policyengine-us==1.808.0",
     "pandas>=2.0.0",
     "numpy>=1.24.0",
-    "tables>=3.9.0",  # pandas HDF reader for the populace SingleYearDataset format
+    "tables>=3.9.0",  # pandas HDF reader for the SingleYearDataset format
     "huggingface_hub>=0.23.0",
 )
 
-# Populace dataset: one national HDF5 file (data year 2024); simulation years
-# beyond 2024 rely on policyengine-us uprating, as with the enhanced CPS.
-DATASET_REPO = "policyengine/populace-us"
-DATASET_FILENAME = "populace_us_2024.h5"
+# Local-area dataset: per-state slices of the pinned Populace/Microcosm
+# release (populace-us-2024-buildp-acs-local-592ae5d6-20260819T020303Z),
+# shared with the CPID backend on the cpid-populace-slices Volume. Slices
+# are verified to reproduce the national state-masked values exactly, so
+# per-state baselines match a national baseline restricted to the state.
+# Data year 2024; later simulation years rely on policyengine-us uprating.
+DATASET_RELEASE = "populace-us-2024-buildp-acs-local-592ae5d6-20260819T020303Z"
+POPULACE_REVISION = "592ae5d6"
+slices_volume = modal.Volume.from_name("cpid-populace-slices")
 
 # State configuration
 STATES = [
@@ -64,15 +72,21 @@ STATE_FIPS = {
 YEAR = 2025
 
 
-def get_dataset_path():
-    """Download the populace-us national dataset and return its local path."""
-    from huggingface_hub import hf_hub_download
+def get_state_dataset_factory(state: str):
+    """Zero-arg factory for the state's slice of the pinned release.
 
-    return hf_hub_download(
-        repo_id=DATASET_REPO,
-        filename=DATASET_FILENAME,
-        repo_type="dataset",
-    )
+    A fresh dataset object per simulation (the loader mutates state, so
+    instances aren't reusable across sims). Requires the
+    cpid-populace-slices Volume mounted at /slices.
+    """
+    slice_path = f"/slices/{POPULACE_REVISION}/{state}.h5"
+
+    def factory():
+        from policyengine_us.data import USSingleYearDataset
+
+        return USSingleYearDataset(file_path=slice_path)
+
+    return factory
 
 
 def get_state_credit_variables(state: str, year: int):
@@ -205,15 +219,15 @@ def calculate_gini(incomes, weights):
 
 
 def run_simulation(dataset, reform=None, year=YEAR):
-    """Run a national simulation and extract needed household/person data."""
+    """Run a simulation on the given dataset factory and extract data."""
     import gc
     import pandas as pd
     from policyengine_us import Microsimulation
 
     if reform:
-        sim = Microsimulation(reform=reform, dataset=dataset)
+        sim = Microsimulation(reform=reform, dataset=dataset())
     else:
-        sim = Microsimulation(dataset=dataset)
+        sim = Microsimulation(dataset=dataset())
 
     # Use calculate_dataframe and convert to regular pandas DataFrame
     # to avoid microdf weight issues when filtering
@@ -312,56 +326,41 @@ def calculate_district_metrics(hh_data, person_data, districts):
 volume = modal.Volume.from_name("state-eitc-ctc-results", create_if_missing=True)
 
 
+# Note: with per-state slices there is no shared national baseline pass.
+# Each state computes its own baseline from its slice inside
+# process_single_state (slices reproduce the national state-masked values
+# exactly, so the results are equivalent).
+
+
 @app.function(
     image=image,
-    timeout=3600,
+    timeout=3600,  # 60 minutes per state (baseline + 3 reform simulations)
     memory=16384,
     cpu=2.0,
+    volumes={"/slices": slices_volume},
 )
-def compute_baseline_metrics(year: int = YEAR) -> dict:
-    """Run the national baseline simulation once and return per-district metrics."""
-    import pandas as pd
-
-    print("Running national baseline simulation...")
-    dataset = get_dataset_path()
-    hh_baseline, person_baseline = run_simulation(dataset, year=year)
-
-    districts = [
-        int(d)
-        for d in hh_baseline["congressional_district_geoid"].unique()
-        if not pd.isna(d) and d != 0
-    ]
-    metrics = calculate_district_metrics(hh_baseline, person_baseline, districts)
-    print(f"Baseline complete: {len(metrics)} districts")
-
-    return {int(k): v for k, v in metrics.items()}
-
-
-@app.function(
-    image=image,
-    timeout=3600,  # 60 minutes per state (3 national reform simulations)
-    memory=16384,  # 16GB RAM for national simulations
-    cpu=2.0,
-)
-def process_single_state(
-    state: str, year: int = YEAR, baseline_metrics: dict = None
-) -> list[dict]:
-    """Run the state's reform simulations and return district-level impacts."""
+def process_single_state(state: str, year: int = YEAR) -> list[dict]:
+    """Run the state's baseline + reform simulations on its slice."""
     import gc
+    import pandas as pd
 
     print(f"Processing {state}...")
 
-    dataset = get_dataset_path()
+    dataset = get_state_dataset_factory(state)
     state_fips = STATE_FIPS[state]
 
-    if baseline_metrics is None:
-        baseline_metrics = compute_baseline_metrics.local(year=year)
-
-    # Districts belonging to this state (geoid = state_fips * 100 + district number)
+    print("  Running baseline...")
+    hh_baseline, person_baseline = run_simulation(dataset, year=year)
     districts = sorted(
-        d for d in baseline_metrics if int(d) // 100 == state_fips
+        int(d)
+        for d in hh_baseline["congressional_district_geoid"].unique()
+        if not pd.isna(d) and d != 0 and int(d) // 100 == state_fips
     )
-    state_baseline = {d: baseline_metrics[d] for d in districts}
+    state_baseline = calculate_district_metrics(
+        hh_baseline, person_baseline, districts
+    )
+    del hh_baseline, person_baseline
+    gc.collect()
 
     if not districts:
         print(f"  No districts found for {state}!")
@@ -485,19 +484,15 @@ def generate_all_state_impacts(year: int = YEAR) -> dict:
 
     print("=" * 60)
     print(f"Generating CTC/EITC Impact Data for {year}")
-    print(f"Dataset: {DATASET_REPO}/{DATASET_FILENAME}")
+    print(f"Dataset: {DATASET_RELEASE} (per-state slices)")
     print(f"Processing {len(STATES)} states in parallel")
     print("=" * 60)
 
-    # National baseline runs once; every state compares against it
-    baseline_metrics = compute_baseline_metrics.remote(year=year)
-
-    # Process all states in parallel using Modal's map
+    # Process all states in parallel using Modal's map; each state computes
+    # its own baseline from its slice.
     all_district_results = []
 
-    results = list(process_single_state.map(
-        STATES, kwargs={"year": year, "baseline_metrics": baseline_metrics}
-    ))
+    results = list(process_single_state.map(STATES, kwargs={"year": year}))
 
     for state_results in results:
         if state_results:
@@ -635,11 +630,8 @@ def main(year: int = 2025, get_results: bool = False, test_state: str = None):
         else:
             print(json.dumps(results["state_impacts"], indent=2))
     elif test_state:
-        # Smoke test: baseline + one state's reforms
-        baseline = compute_baseline_metrics.remote(year=year)
-        results = process_single_state.remote(
-            test_state, year=year, baseline_metrics=baseline
-        )
+        # Smoke test: one state's baseline + reforms on its slice
+        results = process_single_state.remote(test_state, year=year)
         print(json.dumps(results, indent=2))
     else:
         results = generate_all_state_impacts.remote(year=year)
