@@ -1,11 +1,9 @@
 export function parseCSV<T>(text: string): T[] {
-  // Split on ?
- and strip stray : CSVs checked out on Windows can
-  // carry CRLF endings, and a trailing  on the last header would
-  // otherwise silently rename that column (child_population -> zeroed
-  // child stats on the live site).
-  const lines = text.trim().split(/?
-/);
+  // Split on CRLF or LF and trim stray carriage returns: CSVs checked out
+  // on Windows can carry CRLF endings, and a trailing CR on the last
+  // header would otherwise silently rename that column (child_population
+  // became unreadable and zeroed the child stats on the live site).
+  const lines = text.trim().split(/\r?\n/);
   const headers = lines[0].split(",").map((h) => h.trim());
   const data: T[] = [];
   for (let i = 1; i < lines.length; i++) {
