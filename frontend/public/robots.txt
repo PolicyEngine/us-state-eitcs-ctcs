@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://us-state-eitcs-ctcs.vercel.app/sitemap.xml
+Sitemap: https://policyengine.org/us/state-eitcs-ctcs/sitemap.xml

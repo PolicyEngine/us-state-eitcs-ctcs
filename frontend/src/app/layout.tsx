@@ -4,7 +4,9 @@ import "@policyengine/ui-kit/styles.css";
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import './globals.css';
-const SITE_URL = 'https://us-state-eitcs-ctcs.vercel.app';
+// The canonical address: policyengine.org serves this app through a zone
+// rewrite, so links and link previews name it, not the Vercel deployment.
+const SITE_URL = 'https://policyengine.org/us/state-eitcs-ctcs';
 const TITLE = 'State Tax Credits Impact | PolicyEngine';
 const DESCRIPTION =
   'Explore how state-level Earned Income Tax Credits and Child Tax Credits reduce poverty across American communities. Interactive map and data powered by PolicyEngine microsimulation.';
