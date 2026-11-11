@@ -31,7 +31,7 @@ const policyengine = createPolicyEngineApiClient();
 function buildHousehold(
   input: HouseholdInput,
   axes?: { min: number; max: number; count: number },
-) {
+): Record<string, unknown> {
   const y = String(input.year);
   const isJoint = input.filingStatus === "JOINT";
 
@@ -104,7 +104,7 @@ function buildHousehold(
     ];
   }
 
-  return { household };
+  return household;
 }
 
 function pickScalar(
@@ -131,19 +131,20 @@ function pickArray(
   return Array.isArray(v) ? v.map((x) => Number(x) || 0) : [];
 }
 
-async function callApi(body: {
-  household: Record<string, unknown>;
-}): Promise<Record<string, unknown>> {
+/** Calculates a US household under current law; resolves with its result. */
+function calculateUsHousehold(
+  household: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
   return policyengine.calculateHousehold<Record<string, unknown>>({
     country: "us",
-    household: body.household,
+    household,
   });
 }
 
 export async function calculateHousehold(
   input: HouseholdInput,
 ): Promise<CreditBreakdown> {
-  const result = await callApi(buildHousehold(input));
+  const result = await calculateUsHousehold(buildHousehold(input));
   return {
     federalEitc: pickScalar(result, "eitc", input.year),
     federalCtc: pickScalar(result, "ctc_value", input.year),
@@ -161,7 +162,7 @@ export async function sweepEarnings(
   const max = options.max ?? Math.max(200_000, currentEarnings * 2);
   const count = options.count ?? 401;
 
-  const result = await callApi(
+  const result = await calculateUsHousehold(
     buildHousehold(baseInput, { min, max, count }),
   );
   const year = baseInput.year;
