@@ -1,3 +1,5 @@
+import { createPolicyEngineApiClient } from "@policyengine/api-client";
+
 export type FilingStatus = "SINGLE" | "HEAD_OF_HOUSEHOLD" | "JOINT";
 
 export interface HouseholdInput {
@@ -22,7 +24,9 @@ export interface SweepPoint extends CreditBreakdown {
   earnings: number;
 }
 
-const API_URL = "https://api.policyengine.org/us/calculate";
+// www.policyengine.org's dashboard API, which forwards households to the
+// PolicyEngine Public API with PolicyEngine's credential.
+const policyengine = createPolicyEngineApiClient();
 
 function buildHousehold(
   input: HouseholdInput,
@@ -127,17 +131,13 @@ function pickArray(
   return Array.isArray(v) ? v.map((x) => Number(x) || 0) : [];
 }
 
-async function callApi(body: unknown): Promise<Record<string, unknown>> {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+async function callApi(body: {
+  household: Record<string, unknown>;
+}): Promise<Record<string, unknown>> {
+  return policyengine.calculateHousehold<Record<string, unknown>>({
+    country: "us",
+    household: body.household,
   });
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status} ${response.statusText}`);
-  }
-  const json = await response.json();
-  return json.result ?? json;
 }
 
 export async function calculateHousehold(
