@@ -10,9 +10,9 @@ import { STATE_NAMES, SUPPORTED_YEARS, type SupportedYear } from "../types";
 import {
   calculateHousehold,
   HouseholdCalculationError,
+  householdCalculationPauseReason,
   householdCalculationPauseRemaining,
   onHouseholdCalculationPause,
-  SHARED_LIMIT_EXPLANATION,
   sweepEarnings,
   type CreditBreakdown,
   type FilingStatus,
@@ -309,18 +309,25 @@ function deriveFilingStatus(
 
 /**
  * Whole seconds until the page may calculate again after a refusal for the
- * firewall's limit, 0 when it may now. Counts down once a second during a
- * pause.
+ * firewall's limit (0 when it may now), and the refusal's message. Counts
+ * down once a second during a pause.
  */
-function useHouseholdCalculationPause(): number {
+function useHouseholdCalculationPause(): {
+  secondsRemaining: number;
+  reason: string;
+} {
   const [secondsRemaining, setSecondsRemaining] = useState(() =>
     Math.ceil(householdCalculationPauseRemaining() / 1000),
   );
+  const [reason, setReason] = useState(householdCalculationPauseReason);
   useEffect(() => {
     let countdown: ReturnType<typeof setInterval> | undefined;
+    // Reads the pause when the effect runs too, not only at first render,
+    // so a pause that starts or ends in between is not missed.
     const update = () => {
       const seconds = Math.ceil(householdCalculationPauseRemaining() / 1000);
       setSecondsRemaining(seconds);
+      setReason(householdCalculationPauseReason());
       if (seconds > 0 && countdown === undefined) {
         countdown = setInterval(update, 1000);
       } else if (seconds === 0 && countdown !== undefined) {
@@ -337,7 +344,7 @@ function useHouseholdCalculationPause(): number {
       }
     };
   }, []);
-  return secondsRemaining;
+  return { secondsRemaining, reason };
 }
 
 function formatCurrency(n: number): string {
@@ -363,7 +370,10 @@ export default function HouseholdCalculator({ year: initialYear }: Props) {
   const [submittedEarnings, setSubmittedEarnings] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const calculationPauseSeconds = useHouseholdCalculationPause();
+  const {
+    secondsRemaining: calculationPauseSeconds,
+    reason: calculationPauseReason,
+  } = useHouseholdCalculationPause();
   const calculationsPaused = calculationPauseSeconds > 0;
 
   const filingStatus = deriveFilingStatus(hasSpouse, childAges.length > 0);
@@ -417,7 +427,8 @@ export default function HouseholdCalculator({ year: initialYear }: Props) {
     } catch (err) {
       if (err instanceof HouseholdCalculationError && err.rateLimited) {
         // Keep the credits and chart on screen for these inputs; the notice
-        // by the button explains the refusal and counts down the pause.
+        // by the button shows the refusal's message and counts down the
+        // pause.
         return;
       }
       setError(err instanceof Error ? err.message : "Calculation failed");
@@ -607,9 +618,9 @@ export default function HouseholdCalculator({ year: initialYear }: Props) {
           </button>
           {calculationsPaused && (
             <p style={styles.limitNotice}>
-              {/* Only the explanation is announced; the countdown changes
-                  every second. */}
-              <span role="status">{SHARED_LIMIT_EXPLANATION}.</span> This page
+              {/* Only the refusal's message is announced; the countdown
+                  changes every second. */}
+              <span role="status">{calculationPauseReason}</span> This page
               can calculate again in {calculationPauseSeconds} s.
             </p>
           )}

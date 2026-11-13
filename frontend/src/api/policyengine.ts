@@ -42,27 +42,44 @@ export const SHARED_LIMIT_EXPLANATION =
   "limit on calculations a minute";
 
 /**
+ * What a calculation held back during a pause says, and the pause's reason
+ * when none is given: the pause may have started from a request with no
+ * answer, which only may have met the limit.
+ */
+const LIMIT_MAY_HAVE_BEEN_REACHED = `${SHARED_LIMIT_EXPLANATION}, which may have been reached.`;
+
+/**
  * When the page may send household calculations again after a refusal for
  * the firewall's limit, in `Date.now()` milliseconds. Every household
  * calculation checks it before it is sent.
  */
 let householdCalculationsPausedUntil = 0;
+/** The user-facing message of the failure that started the pause. */
+let pauseReason = LIMIT_MAY_HAVE_BEEN_REACHED;
 const pauseListeners = new Set<() => void>();
 
 /**
  * Stops the page from sending household calculations for `milliseconds`
  * (the firewall's 60-second window unless given); 0 ends a pause.
+ * `reason` is the message the page shows during the pause.
  */
 export function pauseHouseholdCalculations(
   milliseconds: number = RATE_LIMIT_WAIT_MILLISECONDS,
+  reason: string = LIMIT_MAY_HAVE_BEEN_REACHED,
 ): void {
   householdCalculationsPausedUntil = Date.now() + milliseconds;
+  pauseReason = reason;
   pauseListeners.forEach((listener) => listener());
 }
 
 /** Milliseconds until the page may send household calculations again; 0 when it may now. */
 export function householdCalculationPauseRemaining(): number {
   return Math.max(0, householdCalculationsPausedUntil - Date.now());
+}
+
+/** The user-facing message of the failure that started the latest pause. */
+export function householdCalculationPauseReason(): string {
+  return pauseReason;
 }
 
 /** Calls `listener` whenever a pause starts or is ended early; returns the unsubscribe function. */
@@ -254,14 +271,8 @@ async function calculateUsHousehold(
   household: Record<string, unknown>,
 ): Promise<Record<string, unknown>> {
   if (householdCalculationPauseRemaining() > 0) {
-    // Held back during the pause after a refusal, so never sent. The pause
-    // may have started from a request with no answer, which only may have
-    // met the limit.
-    throw new HouseholdCalculationError(
-      `${SHARED_LIMIT_EXPLANATION}, which may have been reached.`,
-      null,
-      true,
-    );
+    // Held back during the pause after a refusal, so never sent.
+    throw new HouseholdCalculationError(LIMIT_MAY_HAVE_BEEN_REACHED, null, true);
   }
   try {
     return await policyengine.calculateHousehold<Record<string, unknown>>({
@@ -274,9 +285,10 @@ async function calculateUsHousehold(
     }
     const failure = calculationError(error);
     if (failure.rateLimited) {
-      // Pause at once, even if the page's other calculation has already
-      // failed and the caller never sees this refusal.
-      pauseHouseholdCalculations();
+      // Pause at once, keeping this failure's message for the page to show,
+      // even if the page's other calculation has already failed and the
+      // caller never sees this refusal.
+      pauseHouseholdCalculations(RATE_LIMIT_WAIT_MILLISECONDS, failure.message);
     }
     throw failure;
   }
