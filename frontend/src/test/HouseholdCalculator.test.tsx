@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { pauseHouseholdCalculations } from "../api/policyengine";
@@ -105,6 +105,9 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  // Unmount first, so that ending the pause below updates no mounted component
+  // outside act().
+  cleanup();
   vi.unstubAllGlobals();
   // Real time first, so that ending the pause ends it in real time.
   vi.useRealTimers();
@@ -133,7 +136,8 @@ describe("HouseholdCalculator when calculations are refused for the firewall's l
     expect(screen.getByText("$4,000")).toBeInTheDocument();
     expect(screen.getByText("$7,700")).toBeInTheDocument();
     expect(screen.getByText("Chart of 2 earnings points")).toBeInTheDocument();
-    expect(screen.queryByText(/HTTP 429|could not be reached/)).toBeNull();
+    // Only the notice shows the refusal: an error box with it would make two.
+    expect(screen.getAllByText(LIMIT_REACHED)).toHaveLength(1);
 
     await act(() => vi.advanceTimersByTimeAsync(1000));
     expect(calculateButton()).toHaveTextContent("Calculate again in 59 s");
@@ -162,7 +166,8 @@ describe("HouseholdCalculator when calculations are refused for the firewall's l
     expect(calculateButton()).toHaveTextContent("Calculate again in 60 s");
     expect(calculateButton()).toBeDisabled();
     expect(screen.getByRole("status").textContent).toBe(LIMIT_REACHED);
-    expect(screen.queryByText(/HTTP 429|could not be reached/)).toBeNull();
+    // Only the notice shows the refusal: an error box with it would make two.
+    expect(screen.getAllByText(LIMIT_REACHED)).toHaveLength(1);
     expect(
       screen.getByText(/Enter your household details/),
     ).toBeInTheDocument();
@@ -190,9 +195,8 @@ describe("HouseholdCalculator when calculations are refused for the firewall's l
       `${reason} This page can calculate again in 60 s.`,
     );
     expect(calculateButton()).toBeDisabled();
-    expect(
-      screen.queryByText(/The dashboard API could not be reached/),
-    ).toBeNull();
+    // Only the notice shows the refusal: an error box with it would make two.
+    expect(screen.getAllByText(reason)).toHaveLength(1);
   });
 
   it("given an answer on screen when the single household fails first and the sweep is refused afterwards then the error box shows that failure and the notice shows the refusal", async () => {
