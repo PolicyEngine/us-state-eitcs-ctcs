@@ -94,7 +94,11 @@ async function letAnswersArrive(): Promise<void> {
 async function showAnAnswer(): Promise<void> {
   render(<HouseholdCalculator year={2026} />);
   fireEvent.click(calculateButton());
-  await screen.findByText("Chart of 2 earnings points");
+  // The file's first render also pays the test environment's start-up cost,
+  // which took longer than Testing Library's default one-second wait on CI.
+  await screen.findByText("Chart of 2 earnings points", undefined, {
+    timeout: 5000,
+  });
 }
 
 beforeEach(() => {
