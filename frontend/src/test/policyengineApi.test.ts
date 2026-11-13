@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   calculateHousehold,
+  householdCalculationPauseReason,
   householdCalculationPauseRemaining,
   onHouseholdCalculationPause,
   pauseHouseholdCalculations,
@@ -224,6 +225,21 @@ describe("household calculations refused for the firewall's limit", () => {
     });
   });
 
+  it("given no answer on another origin then calculateHousehold starts the pause", async () => {
+    // Given
+    vi.useFakeTimers();
+    fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
+    await failureOf(calculateHousehold(INPUT));
+
+    // When
+    const heldBack = await failureOf(calculateHousehold(INPUT));
+
+    // Then
+    expect(householdCalculationPauseRemaining()).toBe(60_000);
+    expect(heldBack).toMatchObject({ rateLimited: true });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("given no answer on www.policyengine.org then calculateHousehold reports a network failure and does not pause", async () => {
     // Given: the page shares the dashboard API's origin, so a 429 would be
     // readable there; no answer means a network failure.
@@ -308,6 +324,58 @@ describe("household calculations refused for the firewall's limit", () => {
     expect(firstFailure).toMatchObject({ status: 500 });
     expect(heldBack).toMatchObject({ rateLimited: true });
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("given the other calculation fails first when the sweep is refused then the pause keeps the refusal's message as its reason", async () => {
+    // Given: the caller sees only the single household's failure.
+    let refuseSweep = () => {};
+    const sweepRefused = new Promise<void>((resolve) => {
+      refuseSweep = resolve;
+    });
+    fetchMock.mockImplementation(async (_input, init) => {
+      const body = JSON.parse(String(init?.body));
+      if (body.household.axes !== undefined) {
+        await sweepRefused;
+        return tooManyRequests();
+      }
+      return jsonAnswer(
+        { status: "error", message: "Internal error", result: null },
+        500,
+      );
+    });
+    const sweep = sweepEarnings(INPUT);
+    const firstFailure = await failureOf(
+      Promise.all([calculateHousehold(INPUT), sweep]),
+    );
+
+    // When
+    refuseSweep();
+    await failureOf(sweep);
+
+    // Then
+    expect(firstFailure).toMatchObject({ message: "Internal error" });
+    expect(householdCalculationPauseReason).toBeTypeOf("function");
+    expect(householdCalculationPauseReason()).toBe(
+      `${SHARED_LIMIT_WORDING}, and it has been reached.`,
+    );
+  });
+
+  it("given a reason then pauseHouseholdCalculations keeps it, and without one the reason says the limit may have been reached", () => {
+    // Given
+    vi.useFakeTimers();
+    expect(householdCalculationPauseReason).toBeTypeOf("function");
+
+    // When
+    pauseHouseholdCalculations(60_000, "The reason given.");
+    const givenReason = householdCalculationPauseReason();
+    pauseHouseholdCalculations();
+    const defaultReason = householdCalculationPauseReason();
+
+    // Then
+    expect(givenReason).toBe("The reason given.");
+    expect(defaultReason).toBe(
+      `${SHARED_LIMIT_WORDING}, which may have been reached.`,
+    );
   });
 
   it("given a 504 then calculateHousehold sends it once, keeps its message and does not pause", async () => {

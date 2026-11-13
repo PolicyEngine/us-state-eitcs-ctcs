@@ -15,10 +15,16 @@ const SHARED_LIMIT_WORDING =
   "Everyone on your network, such as a workshop or an office, shares a " +
   "limit on calculations a minute";
 
+const LIMIT_REACHED = `${SHARED_LIMIT_WORDING}, and it has been reached.`;
+
 const fetchMock = vi.fn<typeof fetch>();
 
-/** Whether the firewall refuses household calculations over its limit. */
-let refuseCalculations = false;
+type Answer = (body: {
+  household: Record<string, unknown>;
+}) => Response | Promise<Response>;
+
+/** How the dashboard API answers once a test makes calculations fail; null answers them. */
+let failingAnswer: Answer | null = null;
 
 function okAnswer(result: unknown): Response {
   return new Response(JSON.stringify({ status: "ok", message: null, result }), {
@@ -27,16 +33,28 @@ function okAnswer(result: unknown): Response {
   });
 }
 
-/** Answers the single household and the earnings sweep, or refuses both. */
+/** The firewall's refusal over its limit: text/plain, with no Retry-After. */
+function tooManyRequests(): Response {
+  return new Response("Too Many Requests", {
+    status: 429,
+    headers: { "Content-Type": "text/plain" },
+  });
+}
+
+function internalError(): Response {
+  return new Response(
+    JSON.stringify({ status: "error", message: "Internal error", result: null }),
+    { status: 500, headers: { "Content-Type": "application/json" } },
+  );
+}
+
+/** Answers the single household and the earnings sweep, or fails as the test says. */
 function answerCalculations() {
   fetchMock.mockImplementation(async (_input, init) => {
-    if (refuseCalculations) {
-      return new Response("Too Many Requests", {
-        status: 429,
-        headers: { "Content-Type": "text/plain" },
-      });
-    }
     const body = JSON.parse(String(init?.body));
+    if (failingAnswer !== null) {
+      return failingAnswer(body);
+    }
     if (body.household.axes !== undefined) {
       return okAnswer({
         people: { you: { employment_income: { "2026": [0, 100000] } } },
@@ -72,8 +90,15 @@ async function letAnswersArrive(): Promise<void> {
   await act(() => vi.advanceTimersByTimeAsync(0));
 }
 
+/** Calculates once with real timers and waits for the credits and chart. */
+async function showAnAnswer(): Promise<void> {
+  render(<HouseholdCalculator year={2026} />);
+  fireEvent.click(calculateButton());
+  await screen.findByText("Chart of 2 earnings points");
+}
+
 beforeEach(() => {
-  refuseCalculations = false;
+  failingAnswer = null;
   fetchMock.mockReset();
   vi.stubGlobal("fetch", fetchMock);
   answerCalculations();
@@ -89,11 +114,9 @@ afterEach(() => {
 describe("HouseholdCalculator when calculations are refused for the firewall's limit", () => {
   it("given an answer on screen when the next calculation is refused then the answer stays and the button counts down", async () => {
     // Given
-    render(<HouseholdCalculator year={2026} />);
-    fireEvent.click(calculateButton());
-    await screen.findByText("Chart of 2 earnings points");
+    await showAnAnswer();
     vi.useFakeTimers();
-    refuseCalculations = true;
+    failingAnswer = () => tooManyRequests();
 
     // When
     fireEvent.click(calculateButton());
@@ -103,9 +126,9 @@ describe("HouseholdCalculator when calculations are refused for the firewall's l
     expect(calculateButton()).toHaveTextContent("Calculate again in 60 s");
     expect(calculateButton()).toBeDisabled();
     const explanation = screen.getByRole("status");
-    expect(explanation.textContent).toBe(`${SHARED_LIMIT_WORDING}.`);
+    expect(explanation.textContent).toBe(LIMIT_REACHED);
     expect(explanation.parentElement?.textContent).toBe(
-      `${SHARED_LIMIT_WORDING}. This page can calculate again in 60 s.`,
+      `${LIMIT_REACHED} This page can calculate again in 60 s.`,
     );
     expect(screen.getByText("$4,000")).toBeInTheDocument();
     expect(screen.getByText("$7,700")).toBeInTheDocument();
@@ -115,7 +138,7 @@ describe("HouseholdCalculator when calculations are refused for the firewall's l
     await act(() => vi.advanceTimersByTimeAsync(1000));
     expect(calculateButton()).toHaveTextContent("Calculate again in 59 s");
     expect(explanation.parentElement?.textContent).toBe(
-      `${SHARED_LIMIT_WORDING}. This page can calculate again in 59 s.`,
+      `${LIMIT_REACHED} This page can calculate again in 59 s.`,
     );
 
     await act(() => vi.advanceTimersByTimeAsync(59_000));
@@ -128,7 +151,7 @@ describe("HouseholdCalculator when calculations are refused for the firewall's l
   it("given no answer on screen when the calculation is refused then the notice by the button replaces the error box", async () => {
     // Given
     vi.useFakeTimers();
-    refuseCalculations = true;
+    failingAnswer = () => tooManyRequests();
     render(<HouseholdCalculator year={2026} />);
 
     // When
@@ -138,12 +161,89 @@ describe("HouseholdCalculator when calculations are refused for the firewall's l
     // Then
     expect(calculateButton()).toHaveTextContent("Calculate again in 60 s");
     expect(calculateButton()).toBeDisabled();
-    expect(screen.getByRole("status").textContent).toBe(
-      `${SHARED_LIMIT_WORDING}.`,
-    );
+    expect(screen.getByRole("status").textContent).toBe(LIMIT_REACHED);
     expect(screen.queryByText(/HTTP 429|could not be reached/)).toBeNull();
     expect(
       screen.getByText(/Enter your household details/),
     ).toBeInTheDocument();
+  });
+
+  it("given no answer from the dashboard API on another origin then the notice says the service could not be reached and the limit may have been reached", async () => {
+    // Given: jsdom's page is on http://localhost:3000, which cannot read
+    // the firewall's 429 (it has no CORS headers).
+    vi.useFakeTimers();
+    failingAnswer = () => {
+      throw new TypeError("Failed to fetch");
+    };
+    render(<HouseholdCalculator year={2026} />);
+
+    // When
+    fireEvent.click(calculateButton());
+    await letAnswersArrive();
+
+    // Then
+    const reason =
+      "PolicyEngine's calculation service could not be reached. " +
+      `${SHARED_LIMIT_WORDING}, which may have been reached.`;
+    expect(screen.getByRole("status").textContent).toBe(reason);
+    expect(screen.getByRole("status").parentElement?.textContent).toBe(
+      `${reason} This page can calculate again in 60 s.`,
+    );
+    expect(calculateButton()).toBeDisabled();
+    expect(
+      screen.queryByText(/The dashboard API could not be reached/),
+    ).toBeNull();
+  });
+
+  it("given an answer on screen when the single household fails first and the sweep is refused afterwards then the error box shows that failure and the notice shows the refusal", async () => {
+    // Given: Promise.all rejects with the single household's failure
+    // before the firewall refuses the sweep.
+    await showAnAnswer();
+    vi.useFakeTimers();
+    let refuseSweep = () => {};
+    const sweepRefused = new Promise<void>((resolve) => {
+      refuseSweep = resolve;
+    });
+    failingAnswer = async (body) => {
+      if (body.household.axes !== undefined) {
+        await sweepRefused;
+        return tooManyRequests();
+      }
+      return internalError();
+    };
+
+    // When
+    fireEvent.click(calculateButton());
+    await letAnswersArrive();
+    refuseSweep();
+    await letAnswersArrive();
+
+    // Then
+    expect(screen.getByRole("status").textContent).toBe(LIMIT_REACHED);
+    expect(calculateButton()).toHaveTextContent("Calculate again in 60 s");
+    expect(screen.getByText("Internal error")).toBeInTheDocument();
+    expect(screen.queryByText("$4,000")).toBeNull();
+    expect(screen.queryByText("Chart of 2 earnings points")).toBeNull();
+  });
+});
+
+describe("HouseholdCalculator when a calculation fails for another reason", () => {
+  it("given an answer on screen when the next calculation fails then the error box shows its message and the credits and chart are cleared", async () => {
+    // Given
+    await showAnAnswer();
+    vi.useFakeTimers();
+    failingAnswer = () => internalError();
+
+    // When
+    fireEvent.click(calculateButton());
+    await letAnswersArrive();
+
+    // Then
+    expect(screen.getByText("Internal error")).toBeInTheDocument();
+    expect(screen.queryByText("$4,000")).toBeNull();
+    expect(screen.queryByText("Chart of 2 earnings points")).toBeNull();
+    expect(calculateButton()).toHaveTextContent("Calculate credits");
+    expect(calculateButton()).toBeEnabled();
+    expect(screen.queryByRole("status")).toBeNull();
   });
 });
