@@ -2,6 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   calculateHousehold,
+  householdCalculationPauseRemaining,
+  onHouseholdCalculationPause,
+  pauseHouseholdCalculations,
+  SHARED_LIMIT_EXPLANATION,
   sweepEarnings,
   type HouseholdInput,
 } from "../api/policyengine";
@@ -47,6 +51,28 @@ function okAnswer(result: unknown): Response {
   return jsonAnswer({ status: "ok", message: null, result });
 }
 
+/** The firewall's refusal over its limit: text/plain, with no Retry-After. */
+function tooManyRequests(): Response {
+  return new Response("Too Many Requests", {
+    status: 429,
+    headers: { "Content-Type": "text/plain" },
+  });
+}
+
+/** Resolves with the error a calculation rejects with. */
+async function failureOf(calculation: Promise<unknown>): Promise<unknown> {
+  try {
+    await calculation;
+  } catch (error) {
+    return error;
+  }
+  throw new Error("The calculation did not fail.");
+}
+
+const SHARED_LIMIT_WORDING =
+  "Everyone on your network, such as a workshop or an office, shares a " +
+  "limit on calculations a minute";
+
 beforeEach(() => {
   fetchMock.mockReset();
   vi.stubGlobal("fetch", fetchMock);
@@ -54,6 +80,7 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.useRealTimers();
 });
 
 describe("household calculations through the dashboard API", () => {
@@ -152,5 +179,174 @@ describe("household calculations through the dashboard API", () => {
 
     // Then
     await expect(calculation).rejects.toThrow("Unknown state_name value.");
+  });
+});
+
+describe("household calculations refused for the firewall's limit", () => {
+  it("given the page's wording then the shared-limit explanation is exported verbatim", () => {
+    // Then
+    expect(SHARED_LIMIT_EXPLANATION).toBe(SHARED_LIMIT_WORDING);
+  });
+
+  it("given a 429 then calculateHousehold explains the shared limit and marks the failure rate-limited", async () => {
+    // Given
+    answerFromDashboardApi(() => tooManyRequests());
+
+    // When
+    const failure = await failureOf(calculateHousehold(INPUT));
+
+    // Then
+    expect(failure).toMatchObject({
+      message: `${SHARED_LIMIT_WORDING}, and it has been reached.`,
+      status: 429,
+      rateLimited: true,
+    });
+  });
+
+  it("given no answer on another origin then calculateHousehold says the shared limit may have been reached", async () => {
+    // Given: jsdom's page is on http://localhost:3000, which cannot read
+    // the firewall's 429 (it has no CORS headers), so the browser reports
+    // a network failure instead.
+    fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
+
+    // When
+    const failure = await failureOf(calculateHousehold(INPUT));
+
+    // Then
+    expect(failure).toMatchObject({
+      message:
+        "PolicyEngine's calculation service could not be reached. " +
+        `${SHARED_LIMIT_WORDING}, which may have been reached.`,
+      status: null,
+      rateLimited: true,
+    });
+  });
+
+  it("given no answer on www.policyengine.org then calculateHousehold reports a network failure and does not pause", async () => {
+    // Given: the page shares the dashboard API's origin, so a 429 would be
+    // readable there; no answer means a network failure.
+    vi.stubGlobal("location", { origin: "https://www.policyengine.org" });
+    fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
+
+    // When
+    const failure = await failureOf(calculateHousehold(INPUT));
+    await failureOf(calculateHousehold(INPUT));
+
+    // Then
+    expect(failure).toMatchObject({
+      message:
+        "PolicyEngine's calculation service could not be reached. Check " +
+        "your connection and try again.",
+      status: null,
+      rateLimited: false,
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(householdCalculationPauseRemaining()).toBe(0);
+  });
+
+  it("given a 429 then neither calculation is sent until a minute has passed", async () => {
+    // Given
+    vi.useFakeTimers();
+    answerFromDashboardApi(() => tooManyRequests());
+    await failureOf(calculateHousehold(INPUT));
+
+    // When
+    const heldBackCredits = await failureOf(calculateHousehold(INPUT));
+    const heldBackSweep = await failureOf(sweepEarnings(INPUT));
+
+    // Then
+    const heldBackFailure = {
+      message: `${SHARED_LIMIT_WORDING}, which may have been reached.`,
+      rateLimited: true,
+    };
+    expect(heldBackCredits).toMatchObject(heldBackFailure);
+    expect(heldBackSweep).toMatchObject(heldBackFailure);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(householdCalculationPauseRemaining()).toBe(60_000);
+
+    vi.advanceTimersByTime(59_999);
+    await failureOf(calculateHousehold(INPUT));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    vi.advanceTimersByTime(1);
+    await failureOf(calculateHousehold(INPUT));
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("given the two calculations sent together when the sweep is refused after the other has failed then later calculations are held back", async () => {
+    // Given: the single household fails at once for another reason, and
+    // the firewall refuses the sweep after Promise.all has already
+    // rejected with that other failure.
+    let refuseSweep = () => {};
+    const sweepRefused = new Promise<void>((resolve) => {
+      refuseSweep = resolve;
+    });
+    fetchMock.mockImplementation(async (_input, init) => {
+      const body = JSON.parse(String(init?.body));
+      if (body.household.axes !== undefined) {
+        await sweepRefused;
+        return tooManyRequests();
+      }
+      return jsonAnswer(
+        { status: "error", message: "Internal error", result: null },
+        500,
+      );
+    });
+    const sweep = sweepEarnings(INPUT);
+    const firstFailure = await failureOf(
+      Promise.all([calculateHousehold(INPUT), sweep]),
+    );
+    refuseSweep();
+    await failureOf(sweep);
+
+    // When
+    const heldBack = await failureOf(calculateHousehold(INPUT));
+
+    // Then
+    expect(firstFailure).toMatchObject({ status: 500 });
+    expect(heldBack).toMatchObject({ rateLimited: true });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("given a 504 then calculateHousehold sends it once, keeps its message and does not pause", async () => {
+    // Given: the dashboard API has already waited 750 s for this answer.
+    answerFromDashboardApi(
+      () => new Response("Gateway Timeout", { status: 504 }),
+    );
+
+    // When
+    const failure = await failureOf(calculateHousehold(INPUT));
+    const requestsAfterFailure = fetchMock.mock.calls.length;
+    await failureOf(calculateHousehold(INPUT));
+
+    // Then
+    expect(failure).toMatchObject({
+      message: "The dashboard API answered HTTP 504.",
+      status: 504,
+      rateLimited: false,
+    });
+    expect(requestsAfterFailure).toBe(1);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("given a listener then it hears a pause start and end early, and nothing after unsubscribing", () => {
+    // Given
+    vi.useFakeTimers();
+    expect(onHouseholdCalculationPause).toBeTypeOf("function");
+    const listener = vi.fn();
+    const unsubscribe = onHouseholdCalculationPause(listener);
+
+    // When
+    pauseHouseholdCalculations();
+    const remainingDuringPause = householdCalculationPauseRemaining();
+    pauseHouseholdCalculations(0);
+    const remainingAfterEnd = householdCalculationPauseRemaining();
+    unsubscribe();
+    pauseHouseholdCalculations();
+
+    // Then
+    expect(remainingDuringPause).toBe(60_000);
+    expect(remainingAfterEnd).toBe(0);
+    expect(listener).toHaveBeenCalledTimes(2);
   });
 });
