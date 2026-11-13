@@ -9,6 +9,10 @@ import {
 import { STATE_NAMES, SUPPORTED_YEARS, type SupportedYear } from "../types";
 import {
   calculateHousehold,
+  HouseholdCalculationError,
+  householdCalculationPauseRemaining,
+  onHouseholdCalculationPause,
+  SHARED_LIMIT_EXPLANATION,
   sweepEarnings,
   type CreditBreakdown,
   type FilingStatus,
@@ -114,6 +118,20 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
     boxShadow: "0 2px 4px rgba(13, 148, 136, 0.3)",
     marginTop: 8,
+  },
+  submitPaused: {
+    opacity: 0.6,
+    cursor: "not-allowed",
+  },
+  limitNotice: {
+    color: "var(--slate-700)",
+    fontSize: 13,
+    lineHeight: 1.5,
+    padding: "10px 14px",
+    background: "#fffbeb",
+    borderRadius: 8,
+    border: "1px solid #fde68a",
+    margin: 0,
   },
   results: {
     background: "var(--slate-50)",
@@ -289,6 +307,39 @@ function deriveFilingStatus(
   return "SINGLE";
 }
 
+/**
+ * Whole seconds until the page may calculate again after a refusal for the
+ * firewall's limit, 0 when it may now. Counts down once a second during a
+ * pause.
+ */
+function useHouseholdCalculationPause(): number {
+  const [secondsRemaining, setSecondsRemaining] = useState(() =>
+    Math.ceil(householdCalculationPauseRemaining() / 1000),
+  );
+  useEffect(() => {
+    let countdown: ReturnType<typeof setInterval> | undefined;
+    const update = () => {
+      const seconds = Math.ceil(householdCalculationPauseRemaining() / 1000);
+      setSecondsRemaining(seconds);
+      if (seconds > 0 && countdown === undefined) {
+        countdown = setInterval(update, 1000);
+      } else if (seconds === 0 && countdown !== undefined) {
+        clearInterval(countdown);
+        countdown = undefined;
+      }
+    };
+    update();
+    const unsubscribe = onHouseholdCalculationPause(update);
+    return () => {
+      unsubscribe();
+      if (countdown !== undefined) {
+        clearInterval(countdown);
+      }
+    };
+  }, []);
+  return secondsRemaining;
+}
+
 function formatCurrency(n: number): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -312,6 +363,8 @@ export default function HouseholdCalculator({ year: initialYear }: Props) {
   const [submittedEarnings, setSubmittedEarnings] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const calculationPauseSeconds = useHouseholdCalculationPause();
+  const calculationsPaused = calculationPauseSeconds > 0;
 
   const filingStatus = deriveFilingStatus(hasSpouse, childAges.length > 0);
 
@@ -338,9 +391,11 @@ export default function HouseholdCalculator({ year: initialYear }: Props) {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (householdCalculationPauseRemaining() > 0) {
+      return;
+    }
     setLoading(true);
     setError(null);
-    setSweep(null);
     try {
       const input: HouseholdInput = {
         state,
@@ -360,6 +415,11 @@ export default function HouseholdCalculator({ year: initialYear }: Props) {
       setSweep(s);
       setSubmittedEarnings(employmentIncome);
     } catch (err) {
+      if (err instanceof HouseholdCalculationError && err.rateLimited) {
+        // Keep the credits and chart on screen for these inputs; the notice
+        // by the button explains the refusal and counts down the pause.
+        return;
+      }
       setError(err instanceof Error ? err.message : "Calculation failed");
       setResult(null);
       setSweep(null);
@@ -525,8 +585,18 @@ export default function HouseholdCalculator({ year: initialYear }: Props) {
             </button>
           </div>
 
-          <button type="submit" style={styles.submit} disabled={loading}>
-            {loading ? (
+          <button
+            type="submit"
+            style={
+              calculationsPaused
+                ? { ...styles.submit, ...styles.submitPaused }
+                : styles.submit
+            }
+            disabled={loading || calculationsPaused}
+          >
+            {calculationsPaused ? (
+              `Calculate again in ${calculationPauseSeconds} s`
+            ) : loading ? (
               <span style={styles.btnLoading}>
                 <span style={styles.btnSpinner} aria-hidden="true" />
                 Calculating…
@@ -535,6 +605,14 @@ export default function HouseholdCalculator({ year: initialYear }: Props) {
               "Calculate credits"
             )}
           </button>
+          {calculationsPaused && (
+            <p style={styles.limitNotice}>
+              {/* Only the explanation is announced; the countdown changes
+                  every second. */}
+              <span role="status">{SHARED_LIMIT_EXPLANATION}.</span> This page
+              can calculate again in {calculationPauseSeconds} s.
+            </p>
+          )}
           <p style={styles.helpText}>
             Calculated for tax year {year} using PolicyEngine US.
           </p>

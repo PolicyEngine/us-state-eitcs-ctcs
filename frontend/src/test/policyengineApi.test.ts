@@ -80,7 +80,9 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  // Real time first, so that ending the pause ends it in real time.
   vi.useRealTimers();
+  pauseHouseholdCalculations(0);
 });
 
 describe("household calculations through the dashboard API", () => {

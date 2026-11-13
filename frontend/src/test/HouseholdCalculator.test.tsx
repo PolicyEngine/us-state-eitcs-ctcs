@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { pauseHouseholdCalculations } from "../api/policyengine";
 import HouseholdCalculator from "../components/HouseholdCalculator";
 
 // Plotly does not run in jsdom; the chart only needs to show which sweep it got.
@@ -80,7 +81,9 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  // Real time first, so that ending the pause ends it in real time.
   vi.useRealTimers();
+  pauseHouseholdCalculations(0);
 });
 
 describe("HouseholdCalculator when calculations are refused for the firewall's limit", () => {
