@@ -2,7 +2,7 @@
 Modal pipeline for generating state EITC/CTC impact data.
 
 This pipeline runs PolicyEngine microsimulations on per-state slices of the
-local-area Populace/Microcosm release (shared with the CPID backend via the
+local-area Microcosm release (shared with the CPID backend via the
 cpid-populace-slices Modal Volume) — formerly a single national
 calibrated synthetic microdataset — to calculate the impacts of state-level
 earned income tax credits and child tax credits on poverty, inequality, and
@@ -38,14 +38,14 @@ image = modal.Image.debian_slim(python_version="3.12").pip_install(
     "huggingface_hub>=0.23.0",
 )
 
-# Local-area dataset: per-state slices of the pinned Populace/Microcosm
+# Local-area dataset: per-state slices of the pinned Microcosm
 # release (populace-us-2024-buildp-acs-local-592ae5d6-20260819T020303Z),
 # shared with the CPID backend on the cpid-populace-slices Volume. Slices
 # are verified to reproduce the national state-masked values exactly, so
 # per-state baselines match a national baseline restricted to the state.
 # Data year 2024; later simulation years rely on policyengine-us uprating.
 DATASET_RELEASE = "populace-us-2024-buildp-acs-local-592ae5d6-20260819T020303Z"
-POPULACE_REVISION = "592ae5d6"
+MICROCOSM_REVISION = "592ae5d6"
 slices_volume = modal.Volume.from_name("cpid-populace-slices")
 
 # State configuration
@@ -79,7 +79,7 @@ def get_state_dataset_factory(state: str):
     instances aren't reusable across sims). Requires the
     cpid-populace-slices Volume mounted at /slices.
     """
-    slice_path = f"/slices/{POPULACE_REVISION}/{state}.h5"
+    slice_path = f"/slices/{MICROCOSM_REVISION}/{state}.h5"
 
     def factory():
         from policyengine_us.data import USSingleYearDataset
